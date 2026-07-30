@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAKAN - محل قوار</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FDFBF7;
+            --olive: #2C3E2E;
+            --olive-light: #4A5F4D;
+            --terracotta: #C85A32;
+            --terracotta-dark: #A03820;
+            --terracotta-light: #E8662E;
+            --gold: #D4A359;
+            --gold-dark: #B8893D;
+            --dark: #1A1A1A;
+            --white: #FFFFFF;
+            --border: #E8E2D8;
+            --text-muted: #7A8A7C;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: var(--cream);
+            color: var(--olive);
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--dark); }
+        ::-webkit-scrollbar-thumb { background: var(--terracotta); border-radius: 4px; }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.2rem 3rem;
+            transition: all 0.4s ease;
+            background: transparent;
+        }
+
+        nav.scrolled {
+            background: rgba(253, 251, 247, 0.97);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 2px 30px rgba(200, 90, 50, 0.1);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--terracotta);
+            letter-spacing: 6px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--olive);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background: var(--terracotta);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--terracotta);
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: var(--dark);
+            overflow: hidden;
+        }
+
+        .hero-slideshow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transform: scale(1.1);
+            transition: opacity 1.5s ease, transform 8s ease;
+        }
+
+        .hero-slide.active {
+            opacity: 0.5;
+            transform: scale(1);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                rgba(26, 26, 26, 0.8) 0%,
+                rgba(200, 90, 50, 0.25) 50%,
+                rgba(26, 26, 26, 0.9) 100%
+            );
+            z-index: 2;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 10;
+            padding: 2rem;
+        }
+
+        .pottery-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            animation: bounce 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(200, 90, 50, 0.4));
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .hero h1 {
+            font-size: 6rem;
+            font-weight: 900;
+            color: var(--white);
+            letter-spacing: 20px;
+            text-shadow: 0 0 40px rgba(200, 90, 50, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--cream);
+            font-weight: 300;
+            letter-spacing: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .hero-location {
+            font-size: 1.1rem;
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            padding: 1.2rem 3.5rem;
+            background: var(--gold);
+            color: var(--dark);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 30px rgba(212, 163, 89, 0.3);
+            border: 2px solid var(--gold);
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 50px rgba(212, 163, 89, 0.5);
+            background: transparent;
+            color: var(--gold);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: scrollBounce 2s infinite;
+        }
+
+        @keyframes scrollBounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+            50% { transform: translateX(-50%) translateY(10px); opacity: 0.5; }
+        }
+
+        .scroll-indicator span {
+            display: block;
+            width: 30px;
+            height: 30px;
+            border-left: 2px solid var(--gold);
+            border-bottom: 2px solid var(--gold);
+            transform: rotate(-45deg);
+        }
+
+        section {
+            padding: 6rem 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--terracotta);
+            position: relative;
+            display: inline-block;
+            letter-spacing: 3px;
+        }
+
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            right: 50%;
+            transform: translateX(50%);
+            width: 100px;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 2px;
+        }
+
+        .section-header p {
+            color: var(--olive-light);
+            font-size: 1.1rem;
+            margin-top: 1.5rem;
+        }
+
+        .products-section {
+            background: var(--cream);
+        }
+
+        .products-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 25px rgba(44, 62, 46, 0.08);
+            transition: all 0.4s ease;
+            position: relative;
+            border: 1px solid var(--border);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(200, 90, 50, 0.15);
+            border-color: var(--terracotta);
+        }
+
+        .product-image {
+            height: 300px;
+            background: #EDE8E0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-slider {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .product-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .product-slide.active {
+            opacity: 1;
+        }
+
+        .product-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slider-dots {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .slider-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .slider-dot.active {
+            background: var(--terracotta);
+            transform: scale(1.3);
+        }
+
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(200, 90, 50, 0.85);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            color: white;
+            z-index: 10;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slider-arrow:hover {
+            background: var(--terracotta);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .slider-arrow.prev { right: 10px; }
+        .slider-arrow.next { left: 10px; }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--gold);
+            color: var(--dark);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            z-index: 5;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .product-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--olive);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-size {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+
+        .product-price {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--terracotta);
+            margin-bottom: 1rem;
+        }
+
+        .product-price span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+
+        .order-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--terracotta);
+            color: white;
+            border: 2px solid var(--terracotta);
+            border-radius: 12px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .order-btn:hover {
+            background: transparent;
+            color: var(--terracotta);
+        }
+
+        .about-section {
+            background: var(--white);
+            color: var(--olive);
+            border-top: 1px solid var(--border);
+        }
+
+        .about-section .section-header h2 {
+            color: var(--terracotta);
+        }
+
+        .about-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text p {
+            font-size: 1.15rem;
+            line-height: 2.2;
+            color: var(--olive-light);
+        }
+
+        .about-text strong {
+            color: var(--terracotta);
+        }
+
+        .about-features {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1.2rem;
+            background: rgba(200, 90, 50, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(200, 90, 50, 0.12);
+            transition: all 0.3s;
+        }
+
+        .feature:hover {
+            background: rgba(200, 90, 50, 0.08);
+            border-color: rgba(200, 90, 50, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            width: 65px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(200, 90, 50, 0.1);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .feature-text h4 {
+            font-weight: 700;
+            color: var(--olive);
+            margin-bottom: 0.3rem;
+        }
+
+        .feature-text p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .delivery-section {
+            background: linear-gradient(135deg, var(--terracotta) 0%, var(--terracotta-dark) 100%);
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .delivery-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        .delivery-section::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -5%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 50%;
+        }
+
+        .delivery-container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .delivery-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .delivery-icon {
+            font-size: 3.5rem;
+            display: block;
+            margin-bottom: 1rem;
+            animation: drive 2s ease-in-out infinite;
+        }
+
+        @keyframes drive {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+
+        .delivery-header h2 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--white);
+            letter-spacing: 3px;
+        }
+
+        .delivery-cards {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .delivery-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            border-radius: 20px;
+            padding: 2.5rem 3.5rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            min-width: 220px;
+        }
+
+        .delivery-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .delivery-city {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--cream);
+            margin-bottom: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .delivery-price {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--gold);
+            line-height: 1;
+        }
+
+        .delivery-price span {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--cream);
+            margin-right: 0.3rem;
+        }
+
+        .delivery-divider {
+            width: 3px;
+            height: 80px;
+            background: linear-gradient(180deg, transparent, var(--gold), transparent);
+            border-radius: 2px;
+        }
+
+        .contact-section {
+            background: var(--cream);
+            border-top: 1px solid var(--border);
+        }
+
+        .contact-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .contact-card {
+            background: var(--white);
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 5px 25px rgba(44, 62, 46, 0.06);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+        }
+
+        .contact-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 35px rgba(200, 90, 50, 0.12);
+            border-color: var(--terracotta);
+        }
+
+        .contact-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--olive);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .contact-card a {
+            display: inline-block;
+            padding: 0.7rem 1.8rem;
+            background: var(--gold);
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--gold);
+        }
+
+        .contact-card a:hover {
+            background: transparent;
+            color: var(--gold);
+        }
+
+        .map-section { padding: 0; }
+
+        .map-container {
+            width: 100%;
+            height: 400px;
+            background: var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .map-placeholder {
+            text-align: center;
+            color: var(--white);
+        }
+
+        .map-placeholder .map-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .map-placeholder h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--cream);
+        }
+
+        .map-placeholder p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        .map-placeholder a {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.8rem 2rem;
+            background: var(--terracotta);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .map-placeholder a:hover {
+            background: var(--gold);
+            color: var(--dark);
+        }
+
+        footer {
+            background: var(--olive);
+            color: var(--cream);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(200, 90, 50, 0.2);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: 8px;
+            margin-bottom: 1rem;
+            color: var(--cream);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--gold);
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .developer-section {
+            background: linear-gradient(135deg, var(--olive) 0%, var(--olive-light) 100%);
+            padding: 2rem;
+            border-top: 2px solid var(--terracotta);
+        }
+
+        .developer-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .dev-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(200, 90, 50, 0.5), transparent);
+        }
+
+        .dev-badge {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 2rem;
+            background: rgba(200, 90, 50, 0.15);
+            border: 1px solid rgba(200, 90, 50, 0.4);
+            border-radius: 15px;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        .dev-badge:hover {
+            background: rgba(200, 90, 50, 0.25);
+            border-color: var(--gold);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(200, 90, 50, 0.3);
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(200, 90, 50, 0.2); }
+            50% { box-shadow: 0 0 25px rgba(200, 90, 50, 0.4); }
+        }
+
+        .dev-icon {
+            font-size: 1.3rem;
+            color: var(--terracotta);
+            animation: spin 4s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .dev-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.2rem;
+        }
+
+        .dev-sub {
+            font-size: 0.8rem;
+            color: var(--cream);
+            letter-spacing: 2px;
+        }
+
+        .dev-name {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--gold);
+            letter-spacing: 3px;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 1rem 1.5rem; }
+            .nav-links { display: none; }
+            .nav-links.active {
+                display: flex;
+                position: fixed;
+                top: 60px;
+                right: 0;
+                width: 100%;
+                background: var(--cream);
+                border-top: 1px solid var(--border);
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem;
+                gap: 1.5rem;
+                z-index: 999;
+            }
+            .nav-links a { color: var(--olive); }
+            .menu-btn {
+                display: block;
+                background: none;
+                border: none;
+                color: var(--terracotta);
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+            .hero h1 { font-size: 3rem; letter-spacing: 8px; }
+            .hero-subtitle { font-size: 1rem; letter-spacing: 4px; }
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+            .about-content { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .section-header h2 { font-size: 2rem; }
+        }
+
+        @media (min-width: 769px) {
+            .menu-btn { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <div class="nav-content">
+            <div class="logo">MAKAN</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">الرئيسية</a></li>
+                <li><a href="#products">المنتجات</a></li>
+                <li><a href="#about">عن المكان</a></li>
+                <li><a href="#contact">تواصل معنا</a></li>
+            </ul>
+            <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="hero-slideshow">
+            <div class="hero-slide active" style="background-image: url('images/product1-1.jpg')"></div>
+            <div class="hero-slide" style="background-image: url('images/product2-1.jpg')"></div>
+            <div class="hero-slide" style="background-image: url('images/product3-1.jpg')"></div>
+            <div class="hero-slide" style="background-image: url('images/product4-1.jpg')"></div>
+            <div class="hero-slide" style="background-image: url('images/product5-1.jpg')"></div>
+            <div class="hero-slide" style="background-image: url('images/product6-1.jpg')"></div>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="pottery-icon">🏺</div>
+            <h1>MAKAN</h1>
+            <p class="hero-subtitle">قوار يحكي قصة أرضنا</p>
+            <p class="hero-location">
+                <span>📍</span>
+                نتواجد حولك في كل مكان
+            </p>
+            <a href="#products" class="hero-cta">اكتشف منتجاتنا</a>
+        </div>
+        <div class="scroll-indicator">
+            <span></span>
+        </div>
+    </section>
+
+    <section class="products-section" id="products">
+        <div class="section-header fade-in">
+            <h2>منتجاتنا</h2>
+            <p>قطع فخارية يدوية الصنع بتصميمات عصرية تجمع بين الأصالة والحداثة</p>
+        </div>
+        <div class="products-grid">
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <span class="product-badge">الأكثر مبيعاً</span>
+                    <div class="product-slider" data-product="1">
+                        <div class="product-slide active"><img src="images/product1-1.jpg" alt="أصيص زرع طويل"></div>
+                        <div class="product-slide"><img src="images/product1-2.jpg" alt="أصيص زرع طويل"></div>
+                        <div class="product-slide"><img src="images/product1-3.jpg" alt="أصيص زرع طويل"></div>
+                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
+                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
+                        <div class="slider-dots">
+                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">أصيص زرع طويل</h3>
+                    <p class="product-size">📏 ارتفاع 64 سم | عرض 40 سم</p>
+                    <p class="product-price">18 <span>دينار</span></p>
+                    <button class="order-btn" onclick="orderProduct('أصيص زرع طويل - 64x40 سم')">اطلب الآن</button>
+                </div>
+            </div>
+
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <div class="product-slider" data-product="2">
+                        <div class="product-slide active"><img src="images/product2-1.jpg" alt="أصيص كلاسيكي"></div>
+                        <div class="product-slide"><img src="images/product2-2.jpg" alt="أصيص كلاسيكي"></div>
+                        <div class="product-slide"><img src="images/product2-3.jpg" alt="أصيص كلاسيكي"></div>
+                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
+                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
+                        <div class="slider-dots">
+                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">أصيص كلاسيكي أبيض</h3>
+                    <p class="product-size">📏 ارتفاع 76 سم | عرض 57 سم</p>
+                    <p class="product-price">30 <span>دينار</span></p>
+                    <button class="order-btn" onclick="orderProduct('أصيص كلاسيكي أبيض - 76x57 سم')">اطلب الآن</button>
+                </div>
+            </div>
+
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <div class="product-slider" data-product="3">
+                        <div class="product-slide active"><img src="images/product3-1.jpg" alt="أصيص مزخرف"></div>
+                        <div class="product-slide"><img src="images/product3-2.jpg" alt="أصيص مزخرف"></div>
+                        <div class="product-slide"><img src="images/product3-3.jpg" alt="أصيص مزخرف"></div>
+                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
+                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
+                        <div class="slider-dots">
+                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">أصيص مزخرف بالورود</h3>
+                    <p class="product-size">📏 ارتفاع 55 سم | عرض 45 سم</p>
+                    <p class="product-price">20 <span>دينار</span></p>
+                    <button class="order-btn" onclick="orderProduct('أصيص مزخرف بالورود - 55x45 سم')">اطلب الآن</button>
+                </div>
+            </div>
+
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <div class="product-slider" data-product="4">
+                        <div class="product-slide active"><img src="images/product4-1.jpg" alt="أصيص متر"></div>
+                        <div class="product-slide"><img src="images/product4-2.jpg" alt="أصيص متر"></div>
+                        <div class="product-slide"><img src="images/product4-3.jpg" alt="أصيص متر"></div>
+                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
+                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
+                        <div class="slider-dots">
+                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">أصيص متر</h3>
+                    <p class="product-size">📏 ارتفاع 34 سم | عرض 32 سم</p>
+                    <p class="product-price">20 <span>دينار</span></p>
+                    <button class="order-btn" onclick="orderProduct('أصيص متر - 34x32 سم')">اطلب الآن</button>
+                </div>
+            </div>
+
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <div class="product-slider" data-product="5">
+                        <div class="product-slide active"><img src="images/product5-1.jpg" alt="أصيص متر"></div>
+                        <div class="product-slide"><img src="images/product5-2.jpg" alt="أصيص متر"></div>
+                        <div class="product-slide"><img src="images/product5-3.jpg" alt="أصيص متر"></div>
+                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
+                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
+                        <div class="slider-dots">
+                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">أصيص متر</h3>
+                    <p class="product-size">📏 ارتفاع 39 سم | عرض 31 سم</p>
+                    <p class="product-price">20 <span>دينار</span></p>
+                    <button class="order-btn" onclick="orderProduct('أصيص متر - 39x31 سم')">اطلب الآن</button>
+                </div>
+            </div>
+
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <div class="product-slider" data-product="6">
+                        <div class="product-slide active"><img src="images/product6-1.jpg" alt="أصيص طويل"></div>
+                        <div class="product-slide"><img src="images/product6-2.jpg" alt="أصيص طويل"></div>
+                        <div class="product-slide"><img src="images/product6-3.jpg" alt="أصيص طويل"></div>
+                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
+                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
+                        <div class="slider-dots">
+                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">أصيص طويل</h3>
+                    <p class="product-size">📏 ارتفاع 95 سم | عرض 38 سم</p>
+                    <p class="product-price">25 <span>دينار</span></p>
+                    <button class="order-btn" onclick="orderProduct('أصيص طويل - 95x38 سم')">اطلب الآن</button>
+                </div>
+            </div>
+
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <div class="product-slider" data-product="7">
+                        <div class="product-slide active"><img src="images/product7-1.jpg" alt="أصيص متوسط"></div>
+                        <div class="product-slide"><img src="images/product7-2.jpg" alt="أصيص متوسط"></div>
+                        <div class="product-slide"><img src="images/product7-3.jpg" alt="أصيص متوسط"></div>
+                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
+                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
+                        <div class="slider-dots">
+                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">أصيص متوسط</h3>
+                    <p class="product-size">📏 ارتفاع 45 سم | عرض 40 سم</p>
+                    <p class="product-price">15 <span>دينار</span></p>
+                    <button class="order-btn" onclick="orderProduct('أصيص متوسط - 45x40 سم')">اطلب الآن</button>
+                </div>
+            </div>
+
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <div class="product-slider" data-product="8">
+                        <div class="product-slide active"><img src="images/product8-1.jpg" alt="أصيص كبير"></div>
+                        <div class="product-slide"><img src="images/product8-2.jpg" alt="أصيص كبير"></div>
+                        <div class="product-slide"><img src="images/product8-3.jpg" alt="أصيص كبير"></div>
+                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
+                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
+                        <div class="slider-dots">
+                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">أصيص كبير</h3>
+                    <p class="product-size">📏 ارتفاع 80 سم | عرض 45 سم</p>
+                    <p class="product-price">25 <span>دينار</span></p>
+                    <button class="order-btn" onclick="orderProduct('أصيص كبير - 80x45 سم')">اطلب الآن</button>
+                </div>
+            </div>
+
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <div class="product-slider" data-product="9">
+                        <div class="product-slide active"><img src="images/product9-1.jpg" alt="أصيص ضخم"></div>
+                        <div class="product-slide"><img src="images/product9-2.jpg" alt="أصيص ضخم"></div>
+                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
+                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
+                        <div class="slider-dots">
+                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">أصيص ضخم</h3>
+                    <p class="product-size">📏 ارتفاع 95 سم | عرض 63 سم</p>
+                    <p class="product-price">30 <span>دينار</span></p>
+                    <button class="order-btn" onclick="orderProduct('أصيص ضخم - 95x63 سم')">اطلب الآن</button>
+                </div>
+            </div>
+
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <div class="product-slider" data-product="10">
+                        <div class="product-slide active"><img src="images/product10-1.jpg" alt="أصيص مربع"></div>
+                        <div class="product-slide"><img src="images/product10-2.jpg" alt="أصيص مربع"></div>
+                        <div class="product-slide"><img src="images/product10-3.jpg" alt="أصيص مربع"></div>
+                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
+                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
+                        <div class="slider-dots">
+                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">أصيص مربع</h3>
+                    <p class="product-size">📏 ارتفاع 50 سم | عرض 50 سم</p>
+                    <p class="product-price">15 <span>دينار</span></p>
+                    <button class="order-btn" onclick="orderProduct('أصيص مربع - 50x50 سم')">اطلب الآن</button>
+                </div>
+            </div>
+
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <div class="product-slider" data-product="11">
+                        <div class="product-slide active"><img src="images/product11-1.jpg" alt="أصيص عالي ونحيف"></div>
+                        <div class="product-slide"><img src="images/product11-2.jpg" alt="أصيص عالي ونحيف"></div>
+                        <div class="product-slide"><img src="images/product12-1.jpg" alt="أصيص عالي ونحيف"></div>
+                        <div class="product-slide"><img src="images/product12-2.jpg" alt="أصيص عالي ونحيف"></div>
+                        <div class="product-slide"><img src="images/product12-3.jpg" alt="أصيص عالي ونحيف"></div>
+                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
+                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
+                        <div class="slider-dots">
+                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 3)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 4)"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">أصيص عالي ونحيف</h3>
+                    <p class="product-size">📏 ارتفاع 84-90 سم | عرض 38-50 سم</p>
+                    <p class="product-price">25 <span>دينار</span></p>
+                    <button class="order-btn" onclick="orderProduct('أصيص عالي ونحيف - 25 دينار')">اطلب الآن</button>
+                </div>
+            </div>
+
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <div class="product-slider" data-product="13">
+                        <div class="product-slide active"><img src="images/product13-1.jpg" alt="أصيص زرع طويل"></div>
+                        <div class="product-slide"><img src="images/product13-2.jpg" alt="أصيص زرع طويل"></div>
+                        <div class="product-slide"><img src="images/product13-3.jpg" alt="أصيص زرع طويل"></div>
+                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
+                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
+                        <div class="slider-dots">
+                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">أصيص زرع طويل</h3>
+                    <p class="product-size">📏 ارتفاع 64 سم | عرض 40 سم</p>
+                    <p class="product-price">22 <span>دينار</span></p>
+                    <button class="order-btn" onclick="orderProduct('أصيص زرع طويل - 64x40 سم')">اطلب الآن</button>
+                </div>
+            </div>
+
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <span class="product-badge">جديد</span>
+                    <div class="product-slider" data-product="14">
+                        <div class="product-slide active"><img src="images/product14-1.jpg" alt="أصيص مناسل"></div>
+                        <div class="product-slide"><img src="images/product14-2.jpg" alt="أصيص مناسل"></div>
+                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
+                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
+                        <div class="slider-dots">
+                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">أصيص مناسل</h3>
+                    <p class="product-size">📏 ارتفاع 65 سم | عرض 65 سم | طول 65 سم</p>
+                    <p class="product-price">50 <span>دينار</span></p>
+                    <button class="order-btn" onclick="orderProduct('أصيص مناسل - 65x65x65 سم')">اطلب الآن</button>
+                </div>
+            </div>
+
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <span class="product-badge">جديد</span>
+                    <div class="product-slider" data-product="15">
+                        <div class="product-slide active"><img src="images/product15-1.jpg" alt="أصيص مناسب"></div>
+                        <div class="product-slide"><img src="images/product15-2.jpg" alt="أصيص مناسب"></div>
+                        <div class="product-slide"><img src="images/product15-3.jpg" alt="أصيص مناسب"></div>
+                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
+                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
+                        <div class="slider-dots">
+                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">أصيص مناسب</h3>
+                    <p class="product-size">📏 ارتفاع 25 سم | عرض 25 سم | طول 90 سم</p>
+                    <p class="product-price">15 <span>دينار</span></p>
+                    <button class="order-btn" onclick="orderProduct('أصيص مناسب - 25x25x90 سم')">اطلب الآن</button>
+                </div>
+            </div>
+
+            <div class="product-card fade-in">
+                <div class="product-image">
+                    <span class="product-badge">جديد</span>
+                    <div class="product-slider" data-product="16">
+                        <div class="product-slide active"><img src="images/product16-1.jpg" alt="أصيص متر مزخرف"></div>
+                        <div class="product-slide"><img src="images/product16-2.jpg" alt="أصيص متر مزخرف"></div>
+                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
+                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
+                        <div class="slider-dots">
+                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
+                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">أصيص متر مزخرف</h3>
+                    <p class="product-size">📏 ارتفاع 37 سم | عرض 36 سم</p>
+                    <p class="product-price">20 <span>دينار</span></p>
+                    <button class="order-btn" onclick="orderProduct('أصيص متر مزخرف - 37x36 سم')">اطلب الآن</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section" id="about">
+        <div class="section-header fade-in">
+            <h2>عن MAKAN</h2>
+            <p>أكثر من مجرد محل قوار - هو تجربة تربطك بأرض جرش</p>
+        </div>
+        <div class="about-content">
+            <div class="about-text fade-in">
+                <p>
+                    في قلب جرش، بين أعمدة المعبد الروماني وجبال الجلعود، وُلد <strong>MAKAN</strong> من حب عميق لأرضنا وأصالتها.
+                </p>
+                <br>
+                <p>
+                    كل قطعة قوار عندنا تحكي قصة - قصة الحرفيين الذين يشكلون الطين بأيديهم، قصة التقاليد التي توارثناها من آبائنا، وقصة الحب لهذه الأرض الطيبة.
+                </p>
+                <br>
+                <p>
+                    نجمع بين الفنون التقليدية والتصميمات العصرية لنقدم لك قطعاً فريدة تليق بذوقك وتضيف لمسة دافئة لمنزلك.
+                </p>
+            </div>
+            <div class="about-features fade-in">
+                <div class="feature">
+                    <div class="feature-icon">🤲</div>
+                    <div class="feature-text">
+                        <h4>صنع يدوي</h4>
+                        <p>كل قطعة تُصنع يدوياً بعناية وحرفية</p>
+                    </div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🌿</div>
+                    <div class="feature-text">
+                        <h4>طبيعي 100%</h4>
+                        <p>خامات طبيعية من تراب جرش الأصيل</p>
+                    </div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🎨</div>
+                    <div class="feature-text">
+                        <h4>تصاميم حصرية</h4>
+                        <p>تصاميم تجمع بين الأصالة والحداثة</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="map-section">
+        <div class="map-container">
+            <div class="map-placeholder">
+                <div class="map-icon">🌍</div>
+                <h3>نتواجد حولك</h3>
+                <p>في كل مكان تحبه</p>
+                <a href="https://maps.google.com/?q=Jerash+Mukhayim+Souf" target="_blank">اكتشف موقعنا</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="delivery-section">
+        <div class="delivery-container">
+            <div class="delivery-header">
+                <span class="delivery-icon">🚚</span>
+                <h2>توصيل لجميع المحافظات</h2>
+            </div>
+            <div class="delivery-cards">
+                <div class="delivery-card">
+                    <div class="delivery-city">عمان</div>
+                    <div class="delivery-price">5 <span>د</span></div>
+                </div>
+                <div class="delivery-divider"></div>
+                <div class="delivery-card">
+                    <div class="delivery-city">جميع المحافظات</div>
+                    <div class="delivery-price">7 <span>د</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section" id="contact">
+        <div class="section-header fade-in">
+            <h2>تواصل معنا</h2>
+            <p>نحن هنا لمساعدتك - تواصل معنا بأي طريقة تناسبك</p>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-card fade-in">
+                <div class="contact-icon">📱</div>
+                <h3>اتصل بنا</h3>
+                <p>متاح للاتصال والاستفسار</p>
+                <a href="tel:+962795028192">0795028192</a>
+            </div>
+            <div class="contact-card fade-in">
+                <div class="contact-icon">📘</div>
+                <h3>فيسبوك</h3>
+                <p>تابعنا للأخبار والعروض</p>
+                <a href="https://www.facebook.com/share/p/19FTmXtV5M/?mibextid=wwXIfr" target="_blank">زوروا صفحتنا</a>
+            </div>
+            <div class="contact-card fade-in">
+                <div class="contact-icon">📷</div>
+                <h3>إنستغرام</h3>
+                <p>تابعنا للأخبار والعروض</p>
+                <a href="https://www.instagram.com/p/DaU-dgvCOrb/?igsh=MXczdXZtNjg5b3pibg==" target="_blank">زوروا صفحتنا</a>
+            </div>
+            <div class="contact-card fade-in">
+                <div class="contact-icon">🌍</div>
+                <h3>نتواجد حولك</h3>
+                <p>في كل مكان تحبه</p>
+                <a href="https://maps.google.com/?q=Jerash+Mukhayim+Souf" target="_blank">اكتشف موقعنا</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="developer-section">
+        <div class="developer-container">
+            <div class="dev-line"></div>
+            <a href="https://www.instagram.com/mz2.vv?utm_source=qr" target="_blank" class="dev-badge">
+                <div class="dev-icon">✦</div>
+                <div class="dev-text">
+                    <span class="dev-sub">تصميم وتطوير</span>
+                    <span class="dev-name">MZ Studio</span>
+                </div>
+                <div class="dev-icon">✦</div>
+            </a>
+            <div class="dev-line"></div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">MAKAN</div>
+            <div class="footer-links">
+                <a href="#home">الرئيسية</a>
+                <a href="#products">المنتجات</a>
+                <a href="#about">عن المكان</a>
+                <a href="#contact">تواصل معنا</a>
+            </div>
+            <p class="copyright">&copy; 2026 MAKAN - محل قوار</p>
+        </div>
+    </footer>
+
+    <script>
+        var heroSlides = document.querySelectorAll('.hero-slide');
+        var currentHeroSlide = 0;
+
+        function nextHeroSlide() {
+            heroSlides[currentHeroSlide].classList.remove('active');
+            currentHeroSlide = (currentHeroSlide + 1) % heroSlides.length;
+            heroSlides[currentHeroSlide].classList.add('active');
+        }
+
+        setInterval(nextHeroSlide, 4000);
+
+        window.addEventListener('scroll', function() {
+            var navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                var target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.fade-in').forEach(function(el) {
+            observer.observe(el);
+        });
+
+        function orderProduct(productName) {
+            var message = encodeURIComponent('مرحباً، أريد طلب ' + productName + ' من متجر MAKAN');
+            window.open('https://wa.me/962795028192?text=' + message, '_blank');
+        }
+
+        function toggleMenu() {
+            var navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        function changeSlide(btn, direction) {
+            var slider = btn.closest('.product-slider');
+            var slides = slider.querySelectorAll('.product-slide');
+            var dots = slider.querySelectorAll('.slider-dot');
+            var currentIndex = 0;
+            for (var i = 0; i < slides.length; i++) {
+                if (slides[i].classList.contains('active')) { currentIndex = i; break; }
+            }
+            slides[currentIndex].classList.remove('active');
+            dots[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + direction + slides.length) % slides.length;
+            slides[currentIndex].classList.add('active');
+            dots[currentIndex].classList.add('active');
+        }
+
+        function goToSlide(dot, index) {
+            var slider = dot.closest('.product-slider');
+            var slides = slider.querySelectorAll('.product-slide');
+            var dots = slider.querySelectorAll('.slider-dot');
+            slides.forEach(function(s) { s.classList.remove('active'); });
+            dots.forEach(function(d) { d.classList.remove('active'); });
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+        }
+    </script>
+</body>
+</html>
