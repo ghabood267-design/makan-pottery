@@ -1548,9 +1548,8 @@
                 <a href="#contact">تواصل معنا</a>
             </div>
             <div style="margin: 1.5rem 0;">
-                <a href="https://www.hitwebcounter.com" target="_blank">
-                    <img src="https://c.hitwebcounter.com/bw/1ef1c2b7038d6e5e3d6c5b7a9c1e2b3a" alt="Visitor Counter" style="border: 0;">
-                </a>
+                <span style="color: var(--text-muted); font-size: 0.9rem;">عدد الزوار: </span>
+                <span id="visitor-count" style="color: var(--gold); font-weight: 700; font-size: 1.1rem;">-</span>
             </div>
             <p class="copyright">&copy; 2026 MAKAN - محل قوار</p>
         </div>
@@ -1690,6 +1689,15 @@
             if (e.key === 'ArrowRight') navLightbox(-1);
             if (e.key === 'ArrowLeft') navLightbox(1);
         });
+
+        fetch('https://api.counterapi.dev/v1/makan-pottery/hits/up')
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                document.getElementById('visitor-count').textContent = data.count;
+            })
+            .catch(function() {
+                document.getElementById('visitor-count').textContent = '-';
+            });
     </script>
 
     <div id="lightbox" class="lightbox">
