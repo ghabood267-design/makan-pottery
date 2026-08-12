@@ -3,419 +3,268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAKAN - إدارة المنتجات</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <title>MAKAN - إدارة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --cream: #FDFBF7;
-            --olive: #2C3E2E;
-            --terracotta: #C85A32;
-            --terracotta-dark: #A03820;
-            --gold: #D4A359;
-            --dark: #1A1A1A;
-            --white: #FFFFFF;
-            --border: #E8E2D8;
-            --text-muted: #7A8A7C;
-            --success: #27ae60;
-            --danger: #e74c3c;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Tajawal', sans-serif; background: var(--cream); color: var(--olive); min-height: 100vh; }
-        .header { background: var(--olive); color: var(--cream); padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; }
-        .header h1 { font-size: 1.8rem; font-weight: 900; letter-spacing: 4px; }
-        .header a { color: var(--gold); text-decoration: none; font-weight: 600; }
-        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
-        .card { background: var(--white); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border: 1px solid var(--border); }
-        .card h2 { font-size: 1.5rem; font-weight: 800; color: var(--terracotta); margin-bottom: 1.5rem; border-bottom: 3px solid var(--gold); padding-bottom: 0.5rem; display: inline-block; }
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-        .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
-        .form-group.full { grid-column: 1 / -1; }
-        label { font-weight: 600; font-size: 0.95rem; color: var(--olive); }
-        input, textarea, select { padding: 0.8rem 1rem; border: 2px solid var(--border); border-radius: 10px; font-family: 'Tajawal', sans-serif; font-size: 1rem; transition: all 0.3s; background: var(--cream); }
-        input:focus, textarea:focus { border-color: var(--terracotta); outline: none; box-shadow: 0 0 0 3px rgba(200,90,50,0.1); }
-        textarea { resize: vertical; min-height: 80px; }
-        .btn { padding: 0.9rem 2rem; border: none; border-radius: 10px; font-family: 'Tajawal', sans-serif; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all 0.3s; }
-        .btn-primary { background: var(--terracotta); color: white; }
-        .btn-primary:hover { background: var(--terracotta-dark); transform: translateY(-2px); }
-        .btn-danger { background: var(--danger); color: white; }
-        .btn-danger:hover { background: #c0392b; }
-        .btn-gold { background: var(--gold); color: var(--dark); }
-        .btn-gold:hover { background: #c4953d; }
-        .btn-sm { padding: 0.5rem 1.2rem; font-size: 0.9rem; }
-        .product-item { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--cream); border-radius: 12px; border: 1px solid var(--border); margin-bottom: 0.8rem; transition: all 0.3s; }
-        .product-item:hover { border-color: var(--terracotta); }
-        .product-thumb { width: 80px; height: 80px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
-        .product-details { flex: 1; }
-        .product-details h4 { font-size: 1.1rem; color: var(--olive); margin-bottom: 0.3rem; }
-        .product-details p { font-size: 0.9rem; color: var(--text-muted); }
-        .product-actions { display: flex; gap: 0.5rem; }
-        .image-preview { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
-        .image-preview img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 2px solid var(--border); }
-        .badge-options { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-        .badge-option { padding: 0.4rem 1rem; border: 2px solid var(--border); border-radius: 20px; cursor: pointer; font-size: 0.85rem; transition: all 0.3s; }
-        .badge-option.active { border-color: var(--gold); background: var(--gold); color: var(--dark); font-weight: 700; }
-        .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); padding: 1rem 2rem; border-radius: 10px; color: white; font-weight: 600; z-index: 9999; animation: slideUp 0.3s ease; }
-        .toast-success { background: var(--success); }
-        .toast-error { background: var(--danger); }
-        @keyframes slideUp { from { transform: translateX(-50%) translateY(20px); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } }
-        .spinner { display: inline-block; width: 40px; height: 40px; border: 4px solid var(--border); border-top-color: var(--terracotta); border-radius: 50%; animation: spin 0.8s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .url-input-group { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; }
-        .url-input-group input { flex: 1; }
-        .token-section { background: rgba(212,163,89,0.1); border: 1px solid var(--gold); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; }
-        .token-section h3 { color: var(--gold); margin-bottom: 0.5rem; }
-        .token-section p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; }
-        .token-input-group { display: flex; gap: 0.5rem; }
-        .token-input-group input { flex: 1; }
-        .token-status { margin-top: 0.5rem; font-size: 0.9rem; font-weight: 600; }
-        .token-status.valid { color: var(--success); }
-        .token-status.invalid { color: var(--danger); }
-
-        .lock-screen {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background: var(--cream);
-        }
-        .lock-card {
-            background: var(--white);
-            border-radius: 20px;
-            padding: 3rem;
-            text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            border: 1px solid var(--border);
-            max-width: 400px;
-            width: 90%;
-        }
-        .lock-card .lock-icon { font-size: 4rem; margin-bottom: 1rem; }
-        .lock-card h2 { color: var(--olive); margin-bottom: 0.5rem; }
-        .lock-card p { color: var(--text-muted); margin-bottom: 2rem; }
-        .lock-card input { width: 100%; text-align: center; font-size: 1.5rem; letter-spacing: 8px; margin-bottom: 1rem; }
-        .lock-card .btn { width: 100%; }
-        .lock-card .error-msg { color: var(--danger); font-weight: 600; margin-top: 0.5rem; display: none; }
-        .hidden { display: none !important; }
-
-        .delete-btn { background: var(--danger); color: white; border: none; border-radius: 8px; padding: 0.4rem 1rem; cursor: pointer; font-family: 'Tajawal'; font-weight: 600; font-size: 0.85rem; }
-        .delete-btn:hover { background: #c0392b; }
-
-        @media (max-width: 768px) {
-            .form-grid { grid-template-columns: 1fr; }
-            .product-item { flex-direction: column; text-align: center; }
-            .product-actions { justify-content: center; }
-            .token-input-group { flex-direction: column; }
-        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Tajawal',sans-serif;background:#FDFBF7;color:#2C3E2E}
+        .header{background:#2C3E2E;color:#FDFBF7;padding:1.5rem 2rem;display:flex;justify-content:space-between;align-items:center}
+        .header h1{font-size:1.5rem;font-weight:900;letter-spacing:3px}
+        .header a{color:#D4A359;text-decoration:none;font-weight:600}
+        .container{max-width:900px;margin:2rem auto;padding:0 1rem}
+        .card{background:#fff;border-radius:16px;padding:2rem;margin-bottom:2rem;box-shadow:0 4px 20px rgba(0,0,0,.06);border:1px solid #E8E2D8}
+        .card h2{font-size:1.3rem;font-weight:800;color:#C85A32;margin-bottom:1rem;border-bottom:3px solid #D4A359;padding-bottom:.5rem;display:inline-block}
+        label{font-weight:600;display:block;margin-bottom:.3rem}
+        input[type=text],input[type=number],input[type=url],input[type=password]{width:100%;padding:.7rem;border:2px solid #E8E2D8;border-radius:8px;font-family:'Tajawal';font-size:1rem}
+        input:focus{border-color:#C85A32;outline:none}
+        .row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+        .mb{margin-bottom:1rem}
+        .btn{padding:.7rem 1.5rem;border:none;border-radius:8px;font-family:'Tajawal';font-size:1rem;font-weight:700;cursor:pointer}
+        .btn-p{background:#C85A32;color:#fff}
+        .btn-g{background:#D4A359;color:#1A1A1A}
+        .btn-d{background:#e74c3c;color:#fff}
+        .btn:hover{opacity:.85}
+        .badges{display:flex;gap:.5rem;flex-wrap:wrap}
+        .badge-opt{padding:.3rem .8rem;border:2px solid #E8E2D8;border-radius:20px;cursor:pointer;font-size:.85rem}
+        .badge-opt.on{border-color:#D4A359;background:#D4A359;color:#1A1A1A;font-weight:700}
+        .item{display:flex;align-items:center;gap:1rem;padding:1rem;background:#FDFBF7;border-radius:10px;border:1px solid #E8E2D8;margin-bottom:.5rem}
+        .item .info{flex:1}
+        .item .info h4{font-size:1rem}
+        .item .info p{font-size:.85rem;color:#7A8A7C}
+        .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);padding:1rem 2rem;border-radius:10px;color:#fff;font-weight:600;z-index:9999}
+        .ok{background:#27ae60}
+        .er{background:#e74c3c}
+        .lock{display:flex;align-items:center;justify-content:center;min-height:100vh}
+        .lock-box{background:#fff;border-radius:20px;padding:3rem;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.1);max-width:400px;width:90%}
+        .lock-box .icon{font-size:4rem;margin-bottom:1rem}
+        .lock-box input{text-align:center;font-size:1.5rem;letter-spacing:5px;margin:1rem 0;width:100%}
+        .lock-box .err{color:#e74c3c;font-weight:600;margin-top:.5rem;display:none}
+        .hidden{display:none!important}
     </style>
 </head>
 <body>
-    <div id="lockScreen" class="lock-screen">
-        <div class="lock-card">
-            <div class="lock-icon">🔒</div>
-            <h2>MAKAN - إدارة المنتجات</h2>
-            <p>أدخل كلمة السر للدخول</p>
-            <input type="password" id="passwordInput" placeholder="كلمة السر" onkeypress="if(event.key==='Enter')checkPassword()">
-            <button class="btn btn-primary" onclick="checkPassword()">دخول</button>
-            <div id="errorMsg" class="error-msg">كلمة السر خاطئة!</div>
+    <div id="lockScreen" class="lock">
+        <div class="lock-box">
+            <div class="icon">🔒</div>
+            <h2>MAKAN - إدارة</h2>
+            <p>أدخل كلمة السر</p>
+            <input type="password" id="pwd" placeholder="••••" onkeypress="if(event.key==='Enter')login()">
+            <button class="btn btn-p" style="width:100%;margin-top:.5rem" onclick="login()">دخول</button>
+            <div id="err" class="err">كلمة السر خاطئة!</div>
         </div>
     </div>
 
-    <div id="adminPanel" class="hidden">
+    <div id="app" class="hidden">
         <div class="header">
-            <h1>MAKAN - إدارة المنتجات</h1>
-            <a href="index.html">العودة للموقع</a>
+            <h1>MAKAN - إدارة</h1>
+            <a href="index.html">الموقع</a>
         </div>
         <div class="container">
-            <div class="token-section">
-                <h3> GitHub Token</h3>
-                <p>لتضيف منتجات جديدة للموقع. <a href="https://github.com/settings/tokens/new?scopes=repo&description=makan-admin" target="_blank" style="color:var(--terracotta);">أنشئ واحد من هنا</a></p>
-                <div class="token-input-group">
-                    <input type="password" id="tokenInput" placeholder="ghp_xxxxxxxxxxxx">
-                    <button class="btn btn-gold" onclick="saveToken()">حفظ Token</button>
+            <div class="card" style="background:rgba(212,163,89,.1);border-color:#D4A359">
+                <h2 style="border-color:#2C3E2E">GitHub Token</h2>
+                <p style="color:#7A8A7C;margin-bottom:.8rem;font-size:.9rem">لتضيف/تحذف منتجات من الموقع. <a href="https://github.com/settings/tokens/new?scopes=repo" target="_blank" style="color:#C85A32">أنشئ من هنا</a></p>
+                <div style="display:flex;gap:.5rem">
+                    <input type="password" id="token" placeholder="ghp_xxxxxxxx" style="flex:1">
+                    <button class="btn btn-g" onclick="saveToken()">حفظ</button>
                 </div>
-                <div id="tokenStatus" class="token-status"></div>
+                <p id="tokStatus" style="margin-top:.5rem;font-size:.85rem;font-weight:600"></p>
             </div>
 
             <div class="card">
-                <h2>إضافة منتج جديد</h2>
-                <form id="productForm">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>اسم المنتج *</label>
-                            <input type="text" id="productName" required placeholder="قوار زرع طويل">
-                        </div>
-                        <div class="form-group">
-                            <label>السعر (دينار) *</label>
-                            <input type="number" id="productPrice" required min="0" placeholder="18">
-                        </div>
-                        <div class="form-group full">
-                            <label>المقاس *</label>
-                            <input type="text" id="productSize" required placeholder="📏 ارتفاع 64 سم | عرض 40 سم">
-                        </div>
-                        <div class="form-group full">
-                            <label>الشارة (اختياري)</label>
-                            <div class="badge-options">
-                                <span class="badge-option" data-value="" onclick="selectBadge(this)">بدون</span>
-                                <span class="badge-option" data-value="جديد" onclick="selectBadge(this)">جديد</span>
-                                <span class="badge-option" data-value="الأكثر مبيعاً" onclick="selectBadge(this)">الأكثر مبيعاً</span>
-                                <span class="badge-option" data-value="عرض خاص" onclick="selectBadge(this)">عرض خاص</span>
-                            </div>
-                            <input type="hidden" id="productBadge" value="">
-                        </div>
+                <h2>إضافة منتج</h2>
+                <form onsubmit="addProduct(event)">
+                    <div class="row mb">
+                        <div><label>الاسم *</label><input type="text" id="pName" required placeholder="قوار زرع"></div>
+                        <div><label>السعر *</label><input type="number" id="pPrice" required min="0" placeholder="18"></div>
                     </div>
-
-                    <div class="form-group full" style="margin-top: 1.5rem;">
+                    <div class="mb"><label>المقاس *</label><input type="text" id="pSize" required placeholder="📏 ارتفاع 64 سم | عرض 40 سم"></div>
+                    <div class="mb">
+                        <label>الشارة</label>
+                        <div class="badges">
+                            <span class="badge-opt on" data-v="" onclick="pickBadge(this)">بدون</span>
+                            <span class="badge-opt" data-v="جديد" onclick="pickBadge(this)">جديد</span>
+                            <span class="badge-opt" data-v="الأكثر مبيعاً" onclick="pickBadge(this)">الأكثر مبيعاً</span>
+                            <span class="badge-opt" data-v="عرض خاص" onclick="pickBadge(this)">عرض خاص</span>
+                        </div>
+                        <input type="hidden" id="pBadge" value="">
+                    </div>
+                    <div class="mb">
                         <label>صور المنتج (روابط URL) *</label>
-                        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:0.5rem;">أضف رابط صورة واحد على الأقل</p>
-                        <div id="urlInputs">
-                            <div class="url-input-group">
-                                <input type="url" class="imageUrl" placeholder="https://example.com/image.jpg">
-                                <button type="button" class="btn btn-gold btn-sm" onclick="addUrlRow()">+</button>
-                            </div>
+                        <p style="font-size:.8rem;color:#7A8A7C;margin-bottom:.3rem">أضف رابط صورة واحد على الأقل</p>
+                        <div id="urlList">
+                            <input type="url" class="pUrl mb" placeholder="https://example.com/image.jpg">
                         </div>
-                        <div class="image-preview" id="imagePreview"></div>
+                        <button type="button" class="btn btn-g" onclick="addUrl()" style="font-size:.85rem">+ إضافة صورة</button>
                     </div>
-
-                    <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
-                        <button type="submit" class="btn btn-primary" id="submitBtn">إضافة المنتج للموقع</button>
-                    </div>
+                    <button type="submit" class="btn btn-p">إضافة للموقع</button>
                 </form>
             </div>
 
             <div class="card">
                 <h2>حذف منتج</h2>
-                <div id="deleteList" style="text-align:center;padding:1rem;color:var(--text-muted);">
-                    <div class="spinner"></div>
-                    <p>جاري تحميل المنتجات...</p>
-                </div>
+                <div id="delList"><p style="color:#7A8A7C">جاري التحميل...</p></div>
             </div>
         </div>
     </div>
 
     <script>
-        var githubToken = localStorage.getItem('github_token') || '';
-        var repoOwner = 'ghabood267-design';
-        var repoName = 'makan-pottery';
-        var indexHtmlSha = '';
-        var indexHtmlContent = '';
-        var ADMIN_PASSWORD = '2050';
+        var TK=localStorage.getItem('gh_token')||'';
+        var OWNER='ghabood267-design';
+        var REPO='makan-pottery';
+        var SHA='',HTML='';
 
-        function checkPassword() {
-            var pass = document.getElementById('passwordInput').value;
-            if (pass === ADMIN_PASSWORD) {
+        function login(){
+            if(document.getElementById('pwd').value==='2050'){
                 document.getElementById('lockScreen').classList.add('hidden');
-                document.getElementById('adminPanel').classList.remove('hidden');
-                initAdmin();
-            } else {
-                document.getElementById('errorMsg').style.display = 'block';
-                document.getElementById('passwordInput').value = '';
-                document.getElementById('passwordInput').focus();
+                document.getElementById('app').classList.remove('hidden');
+                init();
+            }else{
+                document.getElementById('err').style.display='block';
+                document.getElementById('pwd').value='';
             }
         }
 
-        function initAdmin() {
-            checkTokenStatus();
-            loadIndexHtml();
+        function init(){
+            if(TK){document.getElementById('token').value=TK;document.getElementById('tokStatus').textContent='Token محفوظ ✓';document.getElementById('tokStatus').style.color='#27ae60';}
+            else{document.getElementById('tokStatus').textContent='أدخل Token أولاً';document.getElementById('tokStatus').style.color='#e74c3c';}
+            loadHtml();
         }
 
-        function checkTokenStatus() {
-            var status = document.getElementById('tokenStatus');
-            var input = document.getElementById('tokenInput');
-            if (githubToken) {
-                input.value = githubToken;
-                status.textContent = 'Token محفوظ ✓';
-                status.className = 'token-status valid';
-            } else {
-                status.textContent = 'لم يتم إدخال Token بعد';
-                status.className = 'token-status invalid';
+        function saveToken(){
+            var v=document.getElementById('token').value.trim();
+            if(v){TK=v;localStorage.setItem('gh_token',TK);document.getElementById('tokStatus').textContent='تم الحفظ ✓';document.getElementById('tokStatus').style.color='#27ae60';toast('تم الحفظ','ok');}
+        }
+
+        function loadHtml(){
+            if(!TK){document.getElementById('delList').innerHTML='<p style="color:#e74c3c">أدخل Token أولاً</p>';return;}
+            fetch('https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/index.html',{headers:{'Authorization':'token '+TK,'Accept':'application/vnd.github.v3+json'}})
+            .then(function(r){if(!r.ok)throw new Error('Token خاطئ أو لا يوجد صلاحية ('+r.status+')');return r.json();})
+            .then(function(d){SHA=d.sha;HTML=decodeURIComponent(escape(atob(d.content)));showProducts();})
+            .catch(function(e){document.getElementById('delList').innerHTML='<p style="color:#e74c3c">خطأ: '+e.message+'</p>';});
+        }
+
+        function showProducts(){
+            var list=document.getElementById('delList');
+            var parts=HTML.split('<div class="product-card');
+            var html='';
+            if(parts.length<=1){list.innerHTML='<p>لا يوجد منتجات</p>';return;}
+            for(var i=1;i<parts.length;i++){
+                var nameMatch=parts[i].match(/<h3 class="product-name">(.*?)<\/h3>/);
+                var name=nameMatch?nameMatch[1]:'منتج '+i;
+                var priceMatch=parts[i].match(/<p class="product-price">(\d+)/);
+                var price=priceMatch?priceMatch[1]:'';
+                html+='<div class="item"><div class="info"><h4>'+name+'</h4><p>'+price+' دينار</p></div><button class="btn btn-d" onclick="delProduct('+i+')">حذف '+name+'</button></div>';
             }
+            list.innerHTML=html;
         }
 
-        function saveToken() {
-            var input = document.getElementById('tokenInput').value.trim();
-            if (input) {
-                githubToken = input;
-                localStorage.setItem('github_token', githubToken);
-                checkTokenStatus();
-                showToast('تم حفظ Token بنجاح!', 'success');
-            } else {
-                showToast('أدخل Token صالح', 'error');
-            }
+        function addUrl(){
+            var inp=document.createElement('input');
+            inp.type='url';inp.className='pUrl mb';inp.placeholder='https://example.com/image.jpg';
+            document.getElementById('urlList').appendChild(inp);
         }
 
-        function loadIndexHtml() {
-            if (!githubToken) {
-                document.getElementById('deleteList').innerHTML = '<p style="color:var(--danger);">أدخل GitHub Token أولاً</p>';
-                return;
-            }
-            fetch('https://api.github.com/repos/' + repoOwner + '/' + repoName + '/contents/index.html', {
-                headers: { 'Authorization': 'token ' + githubToken, 'Accept': 'application/vnd.github.v3+json' }
-            })
-            .then(function(r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-            .then(function(data) {
-                indexHtmlSha = data.sha;
-                indexHtmlContent = decodeURIComponent(escape(atob(data.content)));
-                renderDeleteList();
-            })
-            .catch(function(e) {
-                document.getElementById('deleteList').innerHTML = '<p style="color:var(--danger);">خطأ: ' + e.message + '</p>';
-            });
+        function pickBadge(el){
+            document.querySelectorAll('.badge-opt').forEach(function(b){b.classList.remove('on');});
+            el.classList.add('on');
+            document.getElementById('pBadge').value=el.dataset.v;
         }
 
-        function renderDeleteList() {
-            var parser = new DOMParser();
-            var doc = parser.parseFromString(indexHtmlContent, 'text/html');
-            var cards = doc.querySelectorAll('.product-card');
-            var list = document.getElementById('deleteList');
-
-            if (cards.length === 0) {
-                list.innerHTML = '<p>لا يوجد منتجات</p>';
-                return;
-            }
-            var html = '';
-            cards.forEach(function(card, i) {
-                var name = card.querySelector('.product-name');
-                var price = card.querySelector('.product-price');
-                var img = card.querySelector('.product-slide img');
-                var nameText = name ? name.textContent.trim() : 'منتج ' + (i+1);
-                var priceText = price ? price.textContent.trim() : '';
-                var imgSrc = img ? img.getAttribute('src') : '';
-                html += '<div class="product-item">' +
-                    (imgSrc ? '<img src="' + imgSrc + '" class="product-thumb" onerror="this.style.display=\'none\'">' : '') +
-                    '<div class="product-details">' +
-                    '<h4>' + nameText + '</h4>' +
-                    '<p>' + priceText + '</p>' +
-                    '</div>' +
-                    '<button class="delete-btn" onclick="deleteProduct(' + i + ', \'' + nameText.replace(/'/g, "\\'") + '\')">حذف</button>' +
-                    '</div>';
-            });
-            list.innerHTML = html;
-        }
-
-        function deleteProduct(index, name) {
-            if (!confirm('هل أنت متأكد من حذف: ' + name + '؟')) return;
-            if (!githubToken) { showToast('أدخل Token أولاً', 'error'); return; }
-
-            var parser = new DOMParser();
-            var doc = parser.parseFromString(indexHtmlContent, 'text/html');
-            var cards = doc.querySelectorAll('.product-card');
-            if (index >= cards.length) { showToast('خطأ: المنتج غير موجود', 'error'); return; }
-
-            var card = cards[index];
-            var parent = card.parentNode;
-            parent.removeChild(card);
-
-            var serializer = new XMLSerializer();
-            var newHtml = '<!DOCTYPE html>\n' + serializer.serializeToString(doc.documentElement);
-            newHtml = newHtml.replace(/ xmlns="http:\/\/www.w3.org\/1999\/xhtml"/g, '');
-
-            showToast('جاري الحذف...', 'success');
-            var content = btoa(unescape(encodeURIComponent(newHtml)));
-            fetch('https://api.github.com/repos/' + repoOwner + '/' + repoName + '/contents/index.html', {
-                method: 'PUT',
-                headers: { 'Authorization': 'token ' + githubToken, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
-                body: JSON.stringify({ message: 'Delete product: ' + name, content: content, sha: indexHtmlSha })
-            })
-            .then(function(r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-            .then(function() {
-                showToast('تم الحذف بنجاح!', 'success');
-                loadIndexHtml();
-            })
-            .catch(function(e) { showToast('خطأ: ' + e.message, 'error'); });
-        }
-
-        function addUrlRow() {
-            var container = document.getElementById('urlInputs');
-            var row = document.createElement('div');
-            row.className = 'url-input-group';
-            row.innerHTML = '<input type="url" class="imageUrl" placeholder="https://example.com/image.jpg">' +
-                '<button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">✕</button>';
-            container.appendChild(row);
-        }
-
-        function selectBadge(el) {
-            document.querySelectorAll('.badge-option').forEach(function(b) { b.classList.remove('active'); });
-            el.classList.add('active');
-            document.getElementById('productBadge').value = el.dataset.value;
-        }
-
-        document.getElementById('productForm').addEventListener('submit', function(e) {
+        function addProduct(e){
             e.preventDefault();
-            if (!githubToken) { showToast('أدخل GitHub Token أولاً!', 'error'); return; }
-            if (!indexHtmlContent) { showToast('جاري تحميل البيانات...', 'error'); return; }
+            if(!TK){toast('أدخل Token أولاً','er');return;}
+            if(!HTML){toast('جاري التحميل...','er');return;}
 
-            var name = document.getElementById('productName').value.trim();
-            var price = document.getElementById('productPrice').value;
-            var size = document.getElementById('productSize').value.trim();
-            var badge = document.getElementById('productBadge').value;
+            var name=document.getElementById('pName').value.trim();
+            var price=document.getElementById('pPrice').value;
+            var size=document.getElementById('pSize').value.trim();
+            var badge=document.getElementById('pBadge').value;
 
-            var urls = [];
-            document.querySelectorAll('.imageUrl').forEach(function(input) {
-                var val = input.value.trim();
-                if (val) urls.push(val);
-            });
-            if (urls.length === 0) { showToast('أضف صورة واحدة على الأقل', 'error'); return; }
+            var urls=[];
+            document.querySelectorAll('.pUrl').forEach(function(i){if(i.value.trim())urls.push(i.value.trim());});
+            if(!urls.length){toast('أضف صورة واحدة على الأقل','er');return;}
 
-            var badgeHtml = badge ? '\n                    <span class="product-badge">' + badge + '</span>' : '';
-            var slidesHtml = '';
-            var dotsHtml = '';
-            urls.forEach(function(url, i) {
-                slidesHtml += '\n                        <div class="product-slide' + (i === 0 ? ' active' : '') + '"><img src="' + url + '" alt="' + name + '"></div>';
-                dotsHtml += '\n                            <button class="slider-dot' + (i === 0 ? ' active' : '') + '" onclick="goToSlide(this, ' + i + ')"></button>';
+            var badgeH=badge?'                    <span class="product-badge">'+badge+'</span>\n':'';
+            var slides='';var dots='';
+            urls.forEach(function(u,j){
+                slides+='                        <div class="product-slide'+(j===0?' active':'')+'"><img src="'+u+'" alt="'+name+'"></div>\n';
+                dots+='                            <button class="slider-dot'+(j===0?' active':'')+'" onclick="goToSlide(this,'+j+')"></button>\n';
             });
 
-            var productHtml = '\n            <div class="product-card fade-in">\n' +
-                '                <div class="product-image">\n' +
-                badgeHtml + '\n' +
-                '                    <div class="product-slider">\n' +
-                slidesHtml + '\n' +
-                '                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>\n' +
-                '                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>\n' +
-                '                        <div class="slider-dots">' + dotsHtml + '\n                        </div>\n' +
-                '                    </div>\n' +
-                '                </div>\n' +
-                '                <div class="product-info">\n' +
-                '                    <h3 class="product-name">' + name + '</h3>\n' +
-                '                    <p class="product-size">' + size + '</p>\n' +
-                '                    <p class="product-price">' + price + ' <span>دينار</span></p>\n' +
-                '                    <button class="order-btn" onclick="orderProduct(\'' + name.replace(/'/g, "\\'") + ' - ' + price + ' دينار\')">اطلب الآن</button>\n' +
-                '                </div>\n' +
+            var card='\n            <div class="product-card fade-in">\n'+
+                '                <div class="product-image">\n'+
+                badgeH+
+                '                    <div class="product-slider">\n'+
+                slides+
+                '                        <button class="slider-arrow prev" onclick="changeSlide(this,-1)">❮</button>\n'+
+                '                        <button class="slider-arrow next" onclick="changeSlide(this,1)">❯</button>\n'+
+                '                        <div class="slider-dots">\n'+
+                dots+
+                '                        </div>\n'+
+                '                    </div>\n'+
+                '                </div>\n'+
+                '                <div class="product-info">\n'+
+                '                    <h3 class="product-name">'+name+'</h3>\n'+
+                '                    <p class="product-size">'+size+'</p>\n'+
+                '                    <p class="product-price">'+price+' <span>دينار</span></p>\n'+
+                '                    <button class="order-btn" onclick="orderProduct(\''+name.replace(/'/g,"\\'")+' - '+price+' دينار\')">اطلب الآن</button>\n'+
+                '                </div>\n'+
                 '            </div>';
 
-            var marker = '        </div>\n    </section>\n\n    <section class="about-section"';
-            var replacement = productHtml + '\n        </div>\n    </section>\n\n    <section class="about-section"';
+            var newHtml=HTML.replace(
+                '        </div>\n    </section>\n\n    <section class="about-section" id="about">',
+                card+'        </div>\n    </section>\n\n    <section class="about-section" id="about">'
+            );
 
-            var newHtml = indexHtmlContent.replace(marker, replacement);
+            if(newHtml===HTML){toast('خطأ في موقع الإدراج','er');return;}
 
-            if (newHtml === indexHtmlContent) {
-                showToast('خطأ: لم يتم العثور على مكان الإدراج', 'error');
-                return;
-            }
-
-            showToast('جاري الحفظ...', 'success');
-            var content = btoa(unescape(encodeURIComponent(newHtml)));
-            fetch('https://api.github.com/repos/' + repoOwner + '/' + repoName + '/contents/index.html', {
-                method: 'PUT',
-                headers: { 'Authorization': 'token ' + githubToken, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
-                body: JSON.stringify({ message: 'Add product: ' + name, content: content, sha: indexHtmlSha })
+            toast('جاري الحفظ...','ok');
+            var content=btoa(unescape(encodeURIComponent(newHtml)));
+            fetch('https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/index.html',{
+                method:'PUT',
+                headers:{'Authorization':'token '+TK,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},
+                body:JSON.stringify({message:'Add: '+name,content:content,sha:SHA})
             })
-            .then(function(r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-            .then(function() {
-                showToast('تم الإضافة بنجاح! سيظهر للموقع خلال دقائق', 'success');
-                document.getElementById('productForm').reset();
-                document.querySelectorAll('.badge-option').forEach(function(b) { b.classList.remove('active'); });
-                document.getElementById('urlInputs').innerHTML = '<div class="url-input-group"><input type="url" class="imageUrl" placeholder="https://example.com/image.jpg"><button type="button" class="btn btn-gold btn-sm" onclick="addUrlRow()">+</button></div>';
-                document.getElementById('imagePreview').innerHTML = '';
-                loadIndexHtml();
+            .then(function(r){if(!r.ok)throw new Error(r.status);return r.json();})
+            .then(function(){
+                toast('تمت الإضافة! ستظهر بعد دقائق','ok');
+                document.querySelector('form').reset();
+                document.querySelectorAll('.badge-opt').forEach(function(b){b.classList.remove('on');});
+                document.querySelector('.badge-opt').classList.add('on');
+                document.getElementById('urlList').innerHTML='<input type="url" class="pUrl mb" placeholder="https://example.com/image.jpg">';
+                loadHtml();
             })
-            .catch(function(e) { showToast('خطأ: ' + e.message, 'error'); });
-        });
+            .catch(function(e){toast('خطأ: '+e.message,'er');});
+        }
 
-        function showToast(msg, type) {
-            var toast = document.createElement('div');
-            toast.className = 'toast toast-' + type;
-            toast.textContent = msg;
-            document.body.appendChild(toast);
-            setTimeout(function() { toast.remove(); }, 3000);
+        function delProduct(idx){
+            if(!confirm('هل أنت متأكد من الحذف؟'))return;
+            if(!TK){toast('أدخل Token','er');return;}
+
+            var parts=HTML.split('<div class="product-card');
+            if(idx<1||idx>=parts.length){toast('المنتج غير موجود','er');return;}
+
+            var before=parts.slice(0,idx).join('<div class="product-card');
+            var after=parts.slice(idx+1).join('<div class="product-card');
+            var newHtml=before+after;
+
+            toast('جاري الحذف...','ok');
+            var content=btoa(unescape(encodeURIComponent(newHtml)));
+            fetch('https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/index.html',{
+                method:'PUT',
+                headers:{'Authorization':'token '+TK,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},
+                body:JSON.stringify({message:'Delete product',content:content,sha:SHA})
+            })
+            .then(function(r){if(!r.ok)throw new Error(r.status);return r.json();})
+            .then(function(){toast('تم الحذف!','ok');loadHtml();})
+            .catch(function(e){toast('خطأ: '+e.message,'er');});
+        }
+
+        function toast(msg,type){
+            var t=document.createElement('div');
+            t.className='toast '+type;t.textContent=msg;
+            document.body.appendChild(t);
+            setTimeout(function(){t.remove();},3000);
         }
     </script>
 </body>
