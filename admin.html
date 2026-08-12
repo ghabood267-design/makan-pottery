@@ -212,8 +212,8 @@
                 '            </div>';
 
             var newHtml=HTML.replace(
-                '        </div>\n    </section>\n\n    <section class="about-section" id="about">',
-                card+'        </div>\n    </section>\n\n    <section class="about-section" id="about">'
+                /\n\s*<\/div>\s*\n\s*<\/section>\s*\n\s*<section class="about-section"/,
+                '\n'+card+'\n        </div>\n    </section>\n\n    <section class="about-section"'
             );
 
             if(newHtml===HTML){toast('خطأ في موقع الإدراج','er');return;}
