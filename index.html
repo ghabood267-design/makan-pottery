@@ -1030,6 +1030,7 @@
                 <li><a href="#products">المنتجات</a></li>
                 <li><a href="#about">عن المكان</a></li>
                 <li><a href="#contact">تواصل معنا</a></li>
+                <li><a href="admin.html" style="color:var(--terracotta);font-weight:700;">الإدارة</a></li>
             </ul>
             <button class="menu-btn" onclick="toggleMenu()">☰</button>
         </div>
@@ -1065,354 +1066,7 @@
             <h2>منتجاتنا</h2>
             <p>قواوير إسمنتية يدوية الصنع بتصميمات عصرية تجمع بين الأصالة والحداثة</p>
         </div>
-        <div class="products-grid">
-            <div class="product-card fade-in">
-                <div class="product-image">
-                    <span class="product-badge">الأكثر مبيعاً</span>
-                    <div class="product-slider" data-product="1">
-                        <div class="product-slide active"><img src="images/product1-1.jpg" alt="قوار زرع طويل"></div>
-                        <div class="product-slide"><img src="images/product1-2.jpg" alt="قوار زرع طويل"></div>
-                        <div class="product-slide"><img src="images/product1-3.jpg" alt="قوار زرع طويل"></div>
-                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
-                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
-                        <div class="slider-dots">
-                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">قوار زرع طويل</h3>
-                    <p class="product-size">📏 ارتفاع 64 سم | عرض 40 سم</p>
-                    <p class="product-price">18 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار زرع طويل - 64x40 سم')">اطلب الآن</button>
-                </div>
-            </div>
-
-            <div class="product-card fade-in">
-                <div class="product-image">
-                    <div class="product-slider" data-product="2">
-                        <div class="product-slide active"><img src="images/product2-1.jpg" alt="قوار كلاسيكي"></div>
-                        <div class="product-slide"><img src="images/product2-2.jpg" alt="قوار كلاسيكي"></div>
-                        <div class="product-slide"><img src="images/product2-3.jpg" alt="قوار كلاسيكي"></div>
-                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
-                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
-                        <div class="slider-dots">
-                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">قوار كلاسيكي أبيض</h3>
-                    <p class="product-size">📏 ارتفاع 76 سم | عرض 57 سم</p>
-                    <p class="product-price">30 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار كلاسيكي أبيض - 76x57 سم')">اطلب الآن</button>
-                </div>
-            </div>
-
-            <div class="product-card fade-in">
-                <div class="product-image">
-                    <div class="product-slider" data-product="3">
-                        <div class="product-slide active"><img src="images/product3-1.jpg" alt="قوار مزخرف"></div>
-                        <div class="product-slide"><img src="images/product3-2.jpg" alt="قوار مزخرف"></div>
-                        <div class="product-slide"><img src="images/product3-3.jpg" alt="قوار مزخرف"></div>
-                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
-                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
-                        <div class="slider-dots">
-                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">قوار مزخرف بالورود</h3>
-                    <p class="product-size">📏 ارتفاع 55 سم | عرض 45 سم</p>
-                    <p class="product-price">20 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار مزخرف بالورود - 55x45 سم')">اطلب الآن</button>
-                </div>
-            </div>
-
-            <div class="product-card fade-in">
-                <div class="product-image">
-                    <div class="product-slider" data-product="4">
-                        <div class="product-slide active"><img src="images/product4-1.jpg" alt="قوار متر"></div>
-                        <div class="product-slide"><img src="images/product4-2.jpg" alt="قوار متر"></div>
-                        <div class="product-slide"><img src="images/product4-3.jpg" alt="قوار متر"></div>
-                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
-                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
-                        <div class="slider-dots">
-                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">قوار متر</h3>
-                    <p class="product-size">📏 ارتفاع 34 سم | عرض 32 سم</p>
-                    <p class="product-price">20 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار متر - 34x32 سم')">اطلب الآن</button>
-                </div>
-            </div>
-
-            <div class="product-card fade-in">
-                <div class="product-image">
-                    <div class="product-slider" data-product="5">
-                        <div class="product-slide active"><img src="images/product5-1.jpg" alt="قوار متر"></div>
-                        <div class="product-slide"><img src="images/product5-2.jpg" alt="قوار متر"></div>
-                        <div class="product-slide"><img src="images/product5-3.jpg" alt="قوار متر"></div>
-                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
-                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
-                        <div class="slider-dots">
-                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">قوار متر</h3>
-                    <p class="product-size">📏 ارتفاع 39 سم | عرض 31 سم</p>
-                    <p class="product-price">20 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار متر - 39x31 سم')">اطلب الآن</button>
-                </div>
-            </div>
-
-            <div class="product-card fade-in">
-                <div class="product-image">
-                    <div class="product-slider" data-product="6">
-                        <div class="product-slide active"><img src="images/product6-1.jpg" alt="قوار طويل"></div>
-                        <div class="product-slide"><img src="images/product6-2.jpg" alt="قوار طويل"></div>
-                        <div class="product-slide"><img src="images/product6-3.jpg" alt="قوار طويل"></div>
-                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
-                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
-                        <div class="slider-dots">
-                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">قوار طويل</h3>
-                    <p class="product-size">📏 ارتفاع 95 سم | عرض 38 سم</p>
-                    <p class="product-price">25 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار طويل - 95x38 سم')">اطلب الآن</button>
-                </div>
-            </div>
-
-            <div class="product-card fade-in">
-                <div class="product-image">
-                    <div class="product-slider" data-product="7">
-                        <div class="product-slide active"><img src="images/product7-1.jpg" alt="قوار متوسط"></div>
-                        <div class="product-slide"><img src="images/product7-2.jpg" alt="قوار متوسط"></div>
-                        <div class="product-slide"><img src="images/product7-3.jpg" alt="قوار متوسط"></div>
-                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
-                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
-                        <div class="slider-dots">
-                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">قوار متوسط</h3>
-                    <p class="product-size">📏 ارتفاع 45 سم | عرض 40 سم</p>
-                    <p class="product-price">15 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار متوسط - 45x40 سم')">اطلب الآن</button>
-                </div>
-            </div>
-
-            <div class="product-card fade-in">
-                <div class="product-image">
-                    <div class="product-slider" data-product="8">
-                        <div class="product-slide active"><img src="images/product8-1.jpg" alt="قوار كبير"></div>
-                        <div class="product-slide"><img src="images/product8-2.jpg" alt="قوار كبير"></div>
-                        <div class="product-slide"><img src="images/product8-3.jpg" alt="قوار كبير"></div>
-                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
-                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
-                        <div class="slider-dots">
-                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">قوار كبير</h3>
-                    <p class="product-size">📏 ارتفاع 80 سم | عرض 45 سم</p>
-                    <p class="product-price">25 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار كبير - 80x45 سم')">اطلب الآن</button>
-                </div>
-            </div>
-
-            <div class="product-card fade-in">
-                <div class="product-image">
-                    <div class="product-slider" data-product="9">
-                        <div class="product-slide active"><img src="images/product9-1.jpg" alt="قوار ضخم"></div>
-                        <div class="product-slide"><img src="images/product9-2.jpg" alt="قوار ضخم"></div>
-                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
-                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
-                        <div class="slider-dots">
-                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">قوار ضخم</h3>
-                    <p class="product-size">📏 ارتفاع 95 سم | عرض 63 سم</p>
-                    <p class="product-price">30 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار ضخم - 95x63 سم')">اطلب الآن</button>
-                </div>
-            </div>
-
-            <div class="product-card fade-in">
-                <div class="product-image">
-                    <div class="product-slider" data-product="10">
-                        <div class="product-slide active"><img src="images/product10-1.jpg" alt="قوار مربع"></div>
-                        <div class="product-slide"><img src="images/product10-2.jpg" alt="قوار مربع"></div>
-                        <div class="product-slide"><img src="images/product10-3.jpg" alt="قوار مربع"></div>
-                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
-                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
-                        <div class="slider-dots">
-                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">قوار مربع</h3>
-                    <p class="product-size">📏 ارتفاع 50 سم | عرض 50 سم</p>
-                    <p class="product-price">15 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار مربع - 50x50 سم')">اطلب الآن</button>
-                </div>
-            </div>
-
-            <div class="product-card fade-in">
-                <div class="product-image">
-                    <div class="product-slider" data-product="11">
-                        <div class="product-slide active"><img src="images/product11-1.jpg" alt="قوار عالي ونحيف"></div>
-                        <div class="product-slide"><img src="images/product11-2.jpg" alt="قوار عالي ونحيف"></div>
-                        <div class="product-slide"><img src="images/product12-1.jpg" alt="قوار عالي ونحيف"></div>
-                        <div class="product-slide"><img src="images/product12-2.jpg" alt="قوار عالي ونحيف"></div>
-                        <div class="product-slide"><img src="images/product12-3.jpg" alt="قوار عالي ونحيف"></div>
-                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
-                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
-                        <div class="slider-dots">
-                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 3)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 4)"></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">قوار عالي ونحيف</h3>
-                    <p class="product-size">📏 ارتفاع 84-90 سم | عرض 38-50 سم</p>
-                    <p class="product-price">25 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار عالي ونحيف - 25 دينار')">اطلب الآن</button>
-                </div>
-            </div>
-
-            <div class="product-card fade-in">
-                <div class="product-image">
-                    <div class="product-slider" data-product="13">
-                        <div class="product-slide active"><img src="images/product13-1.jpg" alt="قوار زرع طويل"></div>
-                        <div class="product-slide"><img src="images/product13-2.jpg" alt="قوار زرع طويل"></div>
-                        <div class="product-slide"><img src="images/product13-3.jpg" alt="قوار زرع طويل"></div>
-                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
-                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
-                        <div class="slider-dots">
-                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">قوار زرع طويل</h3>
-                    <p class="product-size">📏 ارتفاع 64 سم | عرض 40 سم</p>
-                    <p class="product-price">22 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار زرع طويل - 64x40 سم')">اطلب الآن</button>
-                </div>
-            </div>
-
-            <div class="product-card fade-in">
-                <div class="product-image">
-                    <span class="product-badge">جديد</span>
-                    <div class="product-slider" data-product="14">
-                        <div class="product-slide active"><img src="images/product14-1.jpg" alt="قوار مناسل"></div>
-                        <div class="product-slide"><img src="images/product14-2.jpg" alt="قوار مناسل"></div>
-                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
-                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
-                        <div class="slider-dots">
-                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">قوار مناسل</h3>
-                    <p class="product-size">📏 ارتفاع 65 سم | عرض 65 سم | طول 65 سم</p>
-                    <p class="product-price">50 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار مناسل - 65x65x65 سم')">اطلب الآن</button>
-                </div>
-            </div>
-
-            <div class="product-card fade-in">
-                <div class="product-image">
-                    <span class="product-badge">جديد</span>
-                    <div class="product-slider" data-product="15">
-                        <div class="product-slide active"><img src="images/product15-1.jpg" alt="قوار مناسب"></div>
-                        <div class="product-slide"><img src="images/product15-2.jpg" alt="قوار مناسب"></div>
-                        <div class="product-slide"><img src="images/product15-3.jpg" alt="قوار مناسب"></div>
-                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
-                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
-                        <div class="slider-dots">
-                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 2)"></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">قوار مناسب</h3>
-                    <p class="product-size">📏 ارتفاع 25 سم | عرض 25 سم | طول 90 سم</p>
-                    <p class="product-price">15 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار مناسب - 25x25x90 سم')">اطلب الآن</button>
-                </div>
-            </div>
-
-            <div class="product-card fade-in">
-                <div class="product-image">
-                    <span class="product-badge">جديد</span>
-                    <div class="product-slider" data-product="16">
-                        <div class="product-slide active"><img src="images/product16-1.jpg" alt="قوار متر مزخرف"></div>
-                        <div class="product-slide"><img src="images/product16-2.jpg" alt="قوار متر مزخرف"></div>
-                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>
-                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>
-                        <div class="slider-dots">
-                            <button class="slider-dot active" onclick="goToSlide(this, 0)"></button>
-                            <button class="slider-dot" onclick="goToSlide(this, 1)"></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">قوار متر مزخرف</h3>
-                    <p class="product-size">📏 ارتفاع 37 سم | عرض 36 سم</p>
-                    <p class="product-price">20 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار متر مزخرف - 37x36 سم')">اطلب الآن</button>
-                </div>
-            </div>
-        </div>
+        <div class="products-grid" id="products-grid"></div>
     </section>
 
     <section class="about-section" id="about">
@@ -1546,6 +1200,7 @@
                 <a href="#products">المنتجات</a>
                 <a href="#about">عن المكان</a>
                 <a href="#contact">تواصل معنا</a>
+                <a href="admin.html" style="color:var(--gold);">الإدارة</a>
             </div>
             <div style="margin: 1.5rem 0;">
                 <span style="color: var(--text-muted); font-size: 0.9rem;">عدد الزوار: </span>
@@ -1556,6 +1211,62 @@
     </footer>
 
     <script>
+        function loadProducts() {
+            fetch('products.json')
+                .then(function(response) { return response.json(); })
+                .then(function(products) {
+                    var grid = document.getElementById('products-grid');
+                    grid.innerHTML = '';
+                    products.forEach(function(product) {
+                        var slidesHtml = '';
+                        var dotsHtml = '';
+                        product.images.forEach(function(img, i) {
+                            slidesHtml += '<div class="product-slide' + (i === 0 ? ' active' : '') + '"><img src="' + img + '" alt="' + product.name + '"></div>';
+                            dotsHtml += '<button class="slider-dot' + (i === 0 ? ' active' : '') + '" onclick="goToSlide(this, ' + i + ')"></button>';
+                        });
+                        var badgeHtml = product.badge ? '<span class="product-badge">' + product.badge + '</span>' : '';
+                        var cardHtml = '<div class="product-card fade-in">' +
+                            '<div class="product-image">' +
+                            badgeHtml +
+                            '<div class="product-slider">' +
+                            slidesHtml +
+                            '<button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>' +
+                            '<button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>' +
+                            '<div class="slider-dots">' + dotsHtml + '</div>' +
+                            '</div></div>' +
+                            '<div class="product-info">' +
+                            '<h3 class="product-name">' + product.name + '</h3>' +
+                            '<p class="product-size">' + product.size + '</p>' +
+                            '<p class="product-price">' + product.price + ' <span>دينار</span></p>' +
+                            '<button class="order-btn" onclick="orderProduct(\'' + product.name + ' - ' + product.price + ' دينار\')">اطلب الآن</button>' +
+                            '</div></div>';
+                        grid.innerHTML += cardHtml;
+                    });
+                    document.querySelectorAll('.product-card.fade-in').forEach(function(el) {
+                        observer.observe(el);
+                    });
+                    document.querySelectorAll('.product-slide img').forEach(function(img) {
+                        img.style.cursor = 'pointer';
+                        img.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            var card = this.closest('.product-card');
+                            openLightbox(card, this.src);
+                        });
+                    });
+                    document.querySelectorAll('.product-card').forEach(function(card) {
+                        card.addEventListener('click', function(e) {
+                            if (e.target.tagName !== 'BUTTON') {
+                                var activeImg = this.querySelector('.product-slide.active img');
+                                if (activeImg) openLightbox(this, activeImg.src);
+                            }
+                        });
+                    });
+                })
+                .catch(function() {
+                    document.getElementById('products-grid').innerHTML = '<p style="text-align:center;color:#7A8A7C;grid-column:1/-1;">جاري تحميل المنتجات...</p>';
+                });
+        }
+
         var heroSlides = document.querySelectorAll('.hero-slide');
         var currentHeroSlide = 0;
 
@@ -1660,24 +1371,6 @@
             document.getElementById('lightboxImg').src = lightboxImages[lightboxIndex];
         }
 
-        document.querySelectorAll('.product-slide img').forEach(function(img) {
-            img.style.cursor = 'pointer';
-            img.addEventListener('click', function(e) {
-                e.stopPropagation();
-                var card = this.closest('.product-card');
-                openLightbox(card, this.src);
-            });
-        });
-
-        document.querySelectorAll('.product-card').forEach(function(card) {
-            card.addEventListener('click', function(e) {
-                if (e.target.tagName !== 'BUTTON') {
-                    var activeImg = this.querySelector('.product-slide.active img');
-                    if (activeImg) openLightbox(this, activeImg.src);
-                }
-            });
-        });
-
         document.getElementById('lightbox').addEventListener('click', function(e) {
             if (e.target === this) closeLightbox();
         });
@@ -1698,6 +1391,8 @@
             .catch(function() {
                 document.getElementById('visitor-count').textContent = '-';
             });
+
+        loadProducts();
     </script>
 
     <div id="lightbox" class="lightbox">
