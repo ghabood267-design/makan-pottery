@@ -49,9 +49,6 @@
         .product-details h4 { font-size: 1.1rem; color: var(--olive); margin-bottom: 0.3rem; }
         .product-details p { font-size: 0.9rem; color: var(--text-muted); }
         .product-actions { display: flex; gap: 0.5rem; }
-        .upload-area { border: 3px dashed var(--border); border-radius: 12px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s; background: var(--cream); }
-        .upload-area:hover { border-color: var(--terracotta); }
-        .upload-area p { color: var(--text-muted); margin-top: 0.5rem; }
         .image-preview { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
         .image-preview img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 2px solid var(--border); }
         .badge-options { display: flex; gap: 0.5rem; flex-wrap: wrap; }
@@ -63,12 +60,7 @@
         @keyframes slideUp { from { transform: translateX(-50%) translateY(20px); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } }
         .spinner { display: inline-block; width: 40px; height: 40px; border: 4px solid var(--border); border-top-color: var(--terracotta); border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
-        .tab { padding: 0.7rem 1.5rem; border-radius: 10px 10px 0 0; cursor: pointer; font-weight: 600; transition: all 0.3s; border: none; background: none; font-family: 'Tajawal', sans-serif; font-size: 1rem; }
-        .tab.active { background: var(--terracotta); color: white; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        .url-input-group { display: flex; gap: 0.5rem; }
+        .url-input-group { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; }
         .url-input-group input { flex: 1; }
         .token-section { background: rgba(212,163,89,0.1); border: 1px solid var(--gold); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; }
         .token-section h3 { color: var(--gold); margin-bottom: 0.5rem; }
@@ -78,6 +70,35 @@
         .token-status { margin-top: 0.5rem; font-size: 0.9rem; font-weight: 600; }
         .token-status.valid { color: var(--success); }
         .token-status.invalid { color: var(--danger); }
+
+        .lock-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: var(--cream);
+        }
+        .lock-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+            max-width: 400px;
+            width: 90%;
+        }
+        .lock-card .lock-icon { font-size: 4rem; margin-bottom: 1rem; }
+        .lock-card h2 { color: var(--olive); margin-bottom: 0.5rem; }
+        .lock-card p { color: var(--text-muted); margin-bottom: 2rem; }
+        .lock-card input { width: 100%; text-align: center; font-size: 1.5rem; letter-spacing: 8px; margin-bottom: 1rem; }
+        .lock-card .btn { width: 100%; }
+        .lock-card .error-msg { color: var(--danger); font-weight: 600; margin-top: 0.5rem; display: none; }
+        .hidden { display: none !important; }
+
+        .delete-btn { background: var(--danger); color: white; border: none; border-radius: 8px; padding: 0.4rem 1rem; cursor: pointer; font-family: 'Tajawal'; font-weight: 600; font-size: 0.85rem; }
+        .delete-btn:hover { background: #c0392b; }
+
         @media (max-width: 768px) {
             .form-grid { grid-template-columns: 1fr; }
             .product-item { flex-direction: column; text-align: center; }
@@ -87,73 +108,85 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>MAKAN - إدارة المنتجات</h1>
-        <a href="index.html">العودة للموقع</a>
+    <div id="lockScreen" class="lock-screen">
+        <div class="lock-card">
+            <div class="lock-icon">🔒</div>
+            <h2>MAKAN - إدارة المنتجات</h2>
+            <p>أدخل كلمة السر للدخول</p>
+            <input type="password" id="passwordInput" placeholder="كلمة السر" onkeypress="if(event.key==='Enter')checkPassword()">
+            <button class="btn btn-primary" onclick="checkPassword()">دخول</button>
+            <div id="errorMsg" class="error-msg">كلمة السر خاطئة!</div>
+        </div>
     </div>
 
-    <div class="container">
-        <div class="token-section">
-            <h3> GitHub Token</h3>
-            <p>لحفظ التغييرات على الموقع، تحتاج GitHub Personal Access Token. <a href="https://github.com/settings/tokens/new?scopes=repo&description=makan-admin" target="_blank" style="color:var(--terracotta);">أنشئ واحد من هنا</a></p>
-            <div class="token-input-group">
-                <input type="password" id="tokenInput" placeholder="ghp_xxxxxxxxxxxx">
-                <button class="btn btn-gold" onclick="saveToken()">حفظ Token</button>
+    <div id="adminPanel" class="hidden">
+        <div class="header">
+            <h1>MAKAN - إدارة المنتجات</h1>
+            <a href="index.html">العودة للموقع</a>
+        </div>
+        <div class="container">
+            <div class="token-section">
+                <h3> GitHub Token</h3>
+                <p>لتضيف منتجات جديدة للموقع. <a href="https://github.com/settings/tokens/new?scopes=repo&description=makan-admin" target="_blank" style="color:var(--terracotta);">أنشئ واحد من هنا</a></p>
+                <div class="token-input-group">
+                    <input type="password" id="tokenInput" placeholder="ghp_xxxxxxxxxxxx">
+                    <button class="btn btn-gold" onclick="saveToken()">حفظ Token</button>
+                </div>
+                <div id="tokenStatus" class="token-status"></div>
             </div>
-            <div id="tokenStatus" class="token-status"></div>
-        </div>
 
-        <div class="card">
-            <h2>إضافة منتج جديد</h2>
-            <form id="productForm">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>اسم المنتج *</label>
-                        <input type="text" id="productName" required placeholder="مثال: قوار زرع طويل">
-                    </div>
-                    <div class="form-group">
-                        <label>السعر (دينار) *</label>
-                        <input type="number" id="productPrice" required min="0" placeholder="18">
-                    </div>
-                    <div class="form-group full">
-                        <label>المقاس *</label>
-                        <input type="text" id="productSize" required placeholder="مثال: 📏 ارتفاع 64 سم | عرض 40 سم">
-                    </div>
-                    <div class="form-group full">
-                        <label>الشارة (اختياري)</label>
-                        <div class="badge-options">
-                            <span class="badge-option" data-value="" onclick="selectBadge(this)">بدون</span>
-                            <span class="badge-option" data-value="جديد" onclick="selectBadge(this)">جديد</span>
-                            <span class="badge-option" data-value="الأكثر مبيعاً" onclick="selectBadge(this)">الأكثر مبيعاً</span>
-                            <span class="badge-option" data-value="عرض خاص" onclick="selectBadge(this)">عرض خاص</span>
+            <div class="card">
+                <h2>إضافة منتج جديد</h2>
+                <form id="productForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>اسم المنتج *</label>
+                            <input type="text" id="productName" required placeholder="قوار زرع طويل">
                         </div>
-                        <input type="hidden" id="productBadge" value="">
-                    </div>
-                </div>
-
-                <div class="form-group full" style="margin-top: 1.5rem;">
-                    <label>صور المنتج (رابط URL) *</label>
-                    <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:0.5rem;">أضف رابط صورة واحدة على الأقل. الصور تكون روابط (مثلاً من Google Drive أو أي مكان)</p>
-                    <div id="urlInputs">
-                        <div class="url-input-group" style="margin-bottom:0.5rem;">
-                            <input type="url" class="imageUrl" placeholder="https://example.com/image.jpg">
-                            <button type="button" class="btn btn-gold btn-sm" onclick="addUrlRow()">+</button>
+                        <div class="form-group">
+                            <label>السعر (دينار) *</label>
+                            <input type="number" id="productPrice" required min="0" placeholder="18">
+                        </div>
+                        <div class="form-group full">
+                            <label>المقاس *</label>
+                            <input type="text" id="productSize" required placeholder="📏 ارتفاع 64 سم | عرض 40 سم">
+                        </div>
+                        <div class="form-group full">
+                            <label>الشارة (اختياري)</label>
+                            <div class="badge-options">
+                                <span class="badge-option" data-value="" onclick="selectBadge(this)">بدون</span>
+                                <span class="badge-option" data-value="جديد" onclick="selectBadge(this)">جديد</span>
+                                <span class="badge-option" data-value="الأكثر مبيعاً" onclick="selectBadge(this)">الأكثر مبيعاً</span>
+                                <span class="badge-option" data-value="عرض خاص" onclick="selectBadge(this)">عرض خاص</span>
+                            </div>
+                            <input type="hidden" id="productBadge" value="">
                         </div>
                     </div>
-                    <div class="image-preview" id="imagePreview"></div>
-                </div>
 
-                <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
-                    <button type="submit" class="btn btn-primary" id="submitBtn">إضافة المنتج للموقع</button>
-                </div>
-            </form>
-        </div>
+                    <div class="form-group full" style="margin-top: 1.5rem;">
+                        <label>صور المنتج (روابط URL) *</label>
+                        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:0.5rem;">أضف رابط صورة واحد على الأقل</p>
+                        <div id="urlInputs">
+                            <div class="url-input-group">
+                                <input type="url" class="imageUrl" placeholder="https://example.com/image.jpg">
+                                <button type="button" class="btn btn-gold btn-sm" onclick="addUrlRow()">+</button>
+                            </div>
+                        </div>
+                        <div class="image-preview" id="imagePreview"></div>
+                    </div>
 
-        <div class="card">
-            <h2>المنتجات الحالية في الموقع</h2>
-            <div id="productsList" style="text-align:center;padding:2rem;color:var(--text-muted);">
-                <div class="spinner"></div>
-                <p>جاري تحميل المنتجات من الموقع...</p>
+                    <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                        <button type="submit" class="btn btn-primary" id="submitBtn">إضافة المنتج للموقع</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>حذف منتج</h2>
+                <div id="deleteList" style="text-align:center;padding:1rem;color:var(--text-muted);">
+                    <div class="spinner"></div>
+                    <p>جاري تحميل المنتجات...</p>
+                </div>
             </div>
         </div>
     </div>
@@ -164,11 +197,24 @@
         var repoName = 'makan-pottery';
         var indexHtmlSha = '';
         var indexHtmlContent = '';
-        var productCount = 0;
+        var ADMIN_PASSWORD = '2050';
 
-        function init() {
+        function checkPassword() {
+            var pass = document.getElementById('passwordInput').value;
+            if (pass === ADMIN_PASSWORD) {
+                document.getElementById('lockScreen').classList.add('hidden');
+                document.getElementById('adminPanel').classList.remove('hidden');
+                initAdmin();
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordInput').focus();
+            }
+        }
+
+        function initAdmin() {
             checkTokenStatus();
-            loadProducts();
+            loadIndexHtml();
         }
 
         function checkTokenStatus() {
@@ -196,9 +242,9 @@
             }
         }
 
-        function loadProducts() {
+        function loadIndexHtml() {
             if (!githubToken) {
-                document.getElementById('productsList').innerHTML = '<p style="color:var(--danger);text-align:center;">أدخل GitHub Token أولاً لتحميل المنتجات</p>';
+                document.getElementById('deleteList').innerHTML = '<p style="color:var(--danger);">أدخل GitHub Token أولاً</p>';
                 return;
             }
             fetch('https://api.github.com/repos/' + repoOwner + '/' + repoName + '/contents/index.html', {
@@ -208,21 +254,21 @@
             .then(function(data) {
                 indexHtmlSha = data.sha;
                 indexHtmlContent = decodeURIComponent(escape(atob(data.content)));
-                parseProducts();
+                renderDeleteList();
             })
             .catch(function(e) {
-                document.getElementById('productsList').innerHTML = '<p style="color:var(--danger);text-align:center;">خطأ في التحميل: ' + e.message + '</p>';
+                document.getElementById('deleteList').innerHTML = '<p style="color:var(--danger);">خطأ: ' + e.message + '</p>';
             });
         }
 
-        function parseProducts() {
+        function renderDeleteList() {
             var parser = new DOMParser();
             var doc = parser.parseFromString(indexHtmlContent, 'text/html');
             var cards = doc.querySelectorAll('.product-card');
-            productCount = cards.length;
-            var list = document.getElementById('productsList');
+            var list = document.getElementById('deleteList');
+
             if (cards.length === 0) {
-                list.innerHTML = '<p style="text-align:center;color:var(--text-muted);">لا يوجد منتجات</p>';
+                list.innerHTML = '<p>لا يوجد منتجات</p>';
                 return;
             }
             var html = '';
@@ -234,20 +280,53 @@
                 var priceText = price ? price.textContent.trim() : '';
                 var imgSrc = img ? img.getAttribute('src') : '';
                 html += '<div class="product-item">' +
-                    (imgSrc ? '<img src="' + imgSrc + '" class="product-thumb" alt="" onerror="this.style.display=\'none\'">' : '') +
+                    (imgSrc ? '<img src="' + imgSrc + '" class="product-thumb" onerror="this.style.display=\'none\'">' : '') +
                     '<div class="product-details">' +
                     '<h4>' + nameText + '</h4>' +
                     '<p>' + priceText + '</p>' +
-                    '</div></div>';
+                    '</div>' +
+                    '<button class="delete-btn" onclick="deleteProduct(' + i + ', \'' + nameText.replace(/'/g, "\\'") + '\')">حذف</button>' +
+                    '</div>';
             });
             list.innerHTML = html;
+        }
+
+        function deleteProduct(index, name) {
+            if (!confirm('هل أنت متأكد من حذف: ' + name + '؟')) return;
+            if (!githubToken) { showToast('أدخل Token أولاً', 'error'); return; }
+
+            var parser = new DOMParser();
+            var doc = parser.parseFromString(indexHtmlContent, 'text/html');
+            var cards = doc.querySelectorAll('.product-card');
+            if (index >= cards.length) { showToast('خطأ: المنتج غير موجود', 'error'); return; }
+
+            var card = cards[index];
+            var parent = card.parentNode;
+            parent.removeChild(card);
+
+            var serializer = new XMLSerializer();
+            var newHtml = '<!DOCTYPE html>\n' + serializer.serializeToString(doc.documentElement);
+            newHtml = newHtml.replace(/ xmlns="http:\/\/www.w3.org\/1999\/xhtml"/g, '');
+
+            showToast('جاري الحذف...', 'success');
+            var content = btoa(unescape(encodeURIComponent(newHtml)));
+            fetch('https://api.github.com/repos/' + repoOwner + '/' + repoName + '/contents/index.html', {
+                method: 'PUT',
+                headers: { 'Authorization': 'token ' + githubToken, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
+                body: JSON.stringify({ message: 'Delete product: ' + name, content: content, sha: indexHtmlSha })
+            })
+            .then(function(r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+            .then(function() {
+                showToast('تم الحذف بنجاح!', 'success');
+                loadIndexHtml();
+            })
+            .catch(function(e) { showToast('خطأ: ' + e.message, 'error'); });
         }
 
         function addUrlRow() {
             var container = document.getElementById('urlInputs');
             var row = document.createElement('div');
             row.className = 'url-input-group';
-            row.style.marginBottom = '0.5rem';
             row.innerHTML = '<input type="url" class="imageUrl" placeholder="https://example.com/image.jpg">' +
                 '<button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">✕</button>';
             container.appendChild(row);
@@ -276,32 +355,29 @@
             });
             if (urls.length === 0) { showToast('أضف صورة واحدة على الأقل', 'error'); return; }
 
-            productCount++;
-            var badgeHtml = badge ? '<span class="product-badge">' + badge + '</span>' : '';
+            var badgeHtml = badge ? '\n                    <span class="product-badge">' + badge + '</span>' : '';
             var slidesHtml = '';
             var dotsHtml = '';
             urls.forEach(function(url, i) {
-                slidesHtml += '<div class="product-slide' + (i === 0 ? ' active' : '') + '"><img src="' + url + '" alt="' + name + '"></div>';
-                dotsHtml += '<button class="slider-dot' + (i === 0 ? ' active' : '') + '" onclick="goToSlide(this, ' + i + ')"></button>';
+                slidesHtml += '\n                        <div class="product-slide' + (i === 0 ? ' active' : '') + '"><img src="' + url + '" alt="' + name + '"></div>';
+                dotsHtml += '\n                            <button class="slider-dot' + (i === 0 ? ' active' : '') + '" onclick="goToSlide(this, ' + i + ')"></button>';
             });
 
             var productHtml = '\n            <div class="product-card fade-in">\n' +
                 '                <div class="product-image">\n' +
-                (badge ? '                    ' + badgeHtml + '\n' : '') +
-                '                    <div class="product-slider" data-product="' + productCount + '">\n' +
-                slidesHtml.split('\n').map(function(l) { return '                        ' + l; }).join('\n') + '\n' +
+                badgeHtml + '\n' +
+                '                    <div class="product-slider">\n' +
+                slidesHtml + '\n' +
                 '                        <button class="slider-arrow prev" onclick="changeSlide(this, -1)">❮</button>\n' +
                 '                        <button class="slider-arrow next" onclick="changeSlide(this, 1)">❯</button>\n' +
-                '                        <div class="slider-dots">\n' +
-                dotsHtml.split('\n').map(function(l) { return '                            ' + l; }).join('\n') + '\n' +
-                '                        </div>\n' +
+                '                        <div class="slider-dots">' + dotsHtml + '\n                        </div>\n' +
                 '                    </div>\n' +
                 '                </div>\n' +
                 '                <div class="product-info">\n' +
                 '                    <h3 class="product-name">' + name + '</h3>\n' +
                 '                    <p class="product-size">' + size + '</p>\n' +
                 '                    <p class="product-price">' + price + ' <span>دينار</span></p>\n' +
-                '                    <button class="order-btn" onclick="orderProduct(\'' + name + ' - ' + price + ' دينار\')">اطلب الآن</button>\n' +
+                '                    <button class="order-btn" onclick="orderProduct(\'' + name.replace(/'/g, "\\'") + ' - ' + price + ' دينار\')">اطلب الآن</button>\n' +
                 '                </div>\n' +
                 '            </div>';
 
@@ -316,32 +392,22 @@
             }
 
             showToast('جاري الحفظ...', 'success');
-
             var content = btoa(unescape(encodeURIComponent(newHtml)));
             fetch('https://api.github.com/repos/' + repoOwner + '/' + repoName + '/contents/index.html', {
                 method: 'PUT',
                 headers: { 'Authorization': 'token ' + githubToken, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
-                body: JSON.stringify({
-                    message: 'Add product: ' + name,
-                    content: content,
-                    sha: indexHtmlSha
-                })
+                body: JSON.stringify({ message: 'Add product: ' + name, content: content, sha: indexHtmlSha })
             })
             .then(function(r) { if (!r.ok) throw new Error(r.status); return r.json(); })
             .then(function() {
-                showToast('تم إضافة المنتج بنجاح! سيظهر للموقع خلال دقائق', 'success');
+                showToast('تم الإضافة بنجاح! سيظهر للموقع خلال دقائق', 'success');
                 document.getElementById('productForm').reset();
                 document.querySelectorAll('.badge-option').forEach(function(b) { b.classList.remove('active'); });
-                document.getElementById('urlInputs').innerHTML = '<div class="url-input-group" style="margin-bottom:0.5rem;"><input type="url" class="imageUrl" placeholder="https://example.com/image.jpg"><button type="button" class="btn btn-gold btn-sm" onclick="addUrlRow()">+</button></div>';
+                document.getElementById('urlInputs').innerHTML = '<div class="url-input-group"><input type="url" class="imageUrl" placeholder="https://example.com/image.jpg"><button type="button" class="btn btn-gold btn-sm" onclick="addUrlRow()">+</button></div>';
                 document.getElementById('imagePreview').innerHTML = '';
-                indexHtmlContent = newHtml;
-                indexHtmlSha = '';
-                parseProducts();
-                loadProducts();
+                loadIndexHtml();
             })
-            .catch(function(e) {
-                showToast('خطأ في الحفظ: ' + e.message, 'error');
-            });
+            .catch(function(e) { showToast('خطأ: ' + e.message, 'error'); });
         });
 
         function showToast(msg, type) {
@@ -351,8 +417,6 @@
             document.body.appendChild(toast);
             setTimeout(function() { toast.remove(); }, 3000);
         }
-
-        init();
     </script>
 </body>
 </html>
