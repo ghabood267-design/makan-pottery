@@ -418,10 +418,41 @@
             .then(function() {
                 showToast('تم الحفظ بنجاح!', 'success');
                 renderProducts();
+                updateIndexHtml();
             })
             .catch(function(e) {
                 console.error('Save error:', e);
                 showToast(e.message, 'error');
+            });
+        }
+
+        function updateIndexHtml() {
+            var productsJs = 'var productsData = ' + JSON.stringify(products, null, 2).replace(/\n/g, '\n        ') + ';';
+            fetch('https://api.github.com/repos/' + repoOwner + '/' + repoName + '/contents/index.html', {
+                headers: { 'Authorization': 'token ' + githubToken, 'Accept': 'application/vnd.github.v3+json' }
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                var html = decodeURIComponent(escape(atob(data.content)));
+                var regex = /var productsData = \[[\s\S]*?\];/;
+                html = html.replace(regex, productsJs);
+                var newContent = btoa(unescape(encodeURIComponent(html)));
+                return fetch('https://api.github.com/repos/' + repoOwner + '/' + repoName + '/contents/index.html', {
+                    method: 'PUT',
+                    headers: { 'Authorization': 'token ' + githubToken, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
+                    body: JSON.stringify({
+                        message: 'Update products data in index.html via admin panel',
+                        content: newContent,
+                        sha: data.sha
+                    })
+                });
+            })
+            .then(function(r) { return r.json(); })
+            .then(function() {
+                showToast('تم تحديث الموقع الرئيسي!', 'success');
+            })
+            .catch(function(e) {
+                console.error('Index update error:', e);
             });
         }
 
