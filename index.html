@@ -1243,7 +1243,7 @@
                         grid.innerHTML += cardHtml;
                     });
                     document.querySelectorAll('.product-card.fade-in').forEach(function(el) {
-                        observer.observe(el);
+                        el.classList.add('visible');
                     });
                     document.querySelectorAll('.product-slide img').forEach(function(img) {
                         img.style.cursor = 'pointer';
