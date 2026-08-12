@@ -76,10 +76,19 @@
         .tab-content.active { display: block; }
         .url-input-group { display: flex; gap: 0.5rem; }
         .url-input-group input { flex: 1; }
+        .token-section { background: rgba(212,163,89,0.1); border: 1px solid var(--gold); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; }
+        .token-section h3 { color: var(--gold); margin-bottom: 0.5rem; }
+        .token-section p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; }
+        .token-input-group { display: flex; gap: 0.5rem; }
+        .token-input-group input { flex: 1; }
+        .token-status { margin-top: 0.5rem; font-size: 0.9rem; font-weight: 600; }
+        .token-status.valid { color: var(--success); }
+        .token-status.invalid { color: var(--danger); }
         @media (max-width: 768px) {
             .form-grid { grid-template-columns: 1fr; }
             .product-item { flex-direction: column; text-align: center; }
             .product-actions { justify-content: center; }
+            .token-input-group { flex-direction: column; }
         }
     </style>
 </head>
@@ -90,6 +99,16 @@
     </div>
 
     <div class="container">
+        <div class="token-section">
+            <h3> GitHub Token</h3>
+            <p>لحفظ التغييرات على الموقع، تحتاج GitHub Personal Access Token. <a href="https://github.com/settings/tokens/new?scopes=repo&description=makan-admin" target="_blank" style="color:var(--terracotta);">أنشئ واحد من هنا</a></p>
+            <div class="token-input-group">
+                <input type="password" id="tokenInput" placeholder="ghp_xxxxxxxxxxxx">
+                <button class="btn btn-gold" onclick="saveToken()">حفظ Token</button>
+            </div>
+            <div id="tokenStatus" class="token-status"></div>
+        </div>
+
         <div class="card">
             <h2>إضافة منتج جديد</h2>
             <form id="productForm">
@@ -121,8 +140,8 @@
                 <div class="form-group full" style="margin-top: 1.5rem;">
                     <label>صور المنتج *</label>
                     <div class="tabs">
-                        <button type="button" class="tab active" onclick="switchTab('upload')">رفع من الجهاز</button>
-                        <button type="button" class="tab" onclick="switchTab('url')">رابط الصورة</button>
+                        <button type="button" class="tab active" onclick="switchTab(this, 'upload')">رفع من الجهاز</button>
+                        <button type="button" class="tab" onclick="switchTab(this, 'url')">رابط الصورة</button>
                     </div>
                     <div class="tab-content active" id="tab-upload">
                         <div class="upload-area" id="uploadArea">
@@ -167,25 +186,49 @@
         var repoName = 'makan-pottery';
 
         function init() {
-            if (!githubToken) {
-                githubToken = prompt('أدخل GitHub Personal Access Token:\n(يجب أن يكون لديك صلاحية repo)\n\nمن GitHub > Settings > Developer settings > Personal access tokens');
-                if (githubToken) {
-                    localStorage.setItem('github_token', githubToken);
-                }
-            }
+            checkTokenStatus();
             loadProducts();
             setupUpload();
         }
 
+        function checkTokenStatus() {
+            var status = document.getElementById('tokenStatus');
+            var input = document.getElementById('tokenInput');
+            if (githubToken) {
+                input.value = githubToken;
+                status.textContent = 'Token محفوظ ✓';
+                status.className = 'token-status valid';
+            } else {
+                status.textContent = 'لم يتم إدخال Token بعد';
+                status.className = 'token-status invalid';
+            }
+        }
+
+        function saveToken() {
+            var input = document.getElementById('tokenInput').value.trim();
+            if (input) {
+                githubToken = input;
+                localStorage.setItem('github_token', githubToken);
+                checkTokenStatus();
+                showToast('تم حفظ Token بنجاح!', 'success');
+            } else {
+                showToast('أدخل Token صالح', 'error');
+            }
+        }
+
         function loadProducts() {
-            fetch('products.json')
-                .then(function(r) { return r.json(); })
+            fetch('products.json?' + Date.now())
+                .then(function(r) {
+                    if (!r.ok) throw new Error('HTTP ' + r.status);
+                    return r.json();
+                })
                 .then(function(data) {
                     products = data;
                     renderProducts();
                 })
-                .catch(function() {
-                    document.getElementById('productsList').innerHTML = '<p style="color:var(--danger);text-align:center;">خطأ في تحميل المنتجات</p>';
+                .catch(function(e) {
+                    console.error('Error loading products:', e);
+                    document.getElementById('productsList').innerHTML = '<p style="color:var(--danger);text-align:center;">خطأ في تحميل المنتجات: ' + e.message + '</p>';
                 });
         }
 
@@ -199,7 +242,7 @@
             products.forEach(function(p) {
                 var thumb = p.images && p.images.length > 0 ? p.images[0] : '';
                 html += '<div class="product-item">' +
-                    (thumb ? '<img src="' + thumb + '" class="product-thumb" alt="' + p.name + '">' : '') +
+                    (thumb ? '<img src="' + thumb + '" class="product-thumb" alt="' + p.name + '" onerror="this.style.display=\'none\'">' : '') +
                     '<div class="product-details">' +
                     '<h4>' + p.name + (p.badge ? ' <span style="color:var(--gold);font-size:0.8rem;">(' + p.badge + ')</span>' : '') + '</h4>' +
                     '<p>' + p.size + ' | ' + p.price + ' دينار | ' + p.images.length + ' صور</p>' +
@@ -256,6 +299,7 @@
                 var imgEl = document.createElement('img');
                 imgEl.src = img.data;
                 imgEl.alt = img.name;
+                imgEl.onerror = function() { this.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><rect fill="%23ddd" width="80" height="80"/><text fill="%23999" x="50%" y="50%" text-anchor="middle" dy=".3em" font-size="12">خطأ</text></svg>'; };
                 var removeBtn = document.createElement('button');
                 removeBtn.textContent = '✕';
                 removeBtn.style.cssText = 'position:absolute;top:-5px;right:-5px;background:var(--danger);color:white;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:0.7rem;';
@@ -272,10 +316,10 @@
             document.getElementById('productBadge').value = el.dataset.value;
         }
 
-        function switchTab(tab) {
+        function switchTab(btn, tab) {
             document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
             document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
-            event.target.classList.add('active');
+            btn.classList.add('active');
             document.getElementById('tab-' + tab).classList.add('active');
         }
 
@@ -341,6 +385,10 @@
         }
 
         function saveProducts() {
+            if (!githubToken) {
+                showToast('أدخل GitHub Token أولاً!', 'error');
+                return;
+            }
             var json = JSON.stringify(products, null, 2);
             var content = btoa(unescape(encodeURIComponent(json)));
             showToast('جاري الحفظ...', 'success');
@@ -348,7 +396,10 @@
             fetch('https://api.github.com/repos/' + repoOwner + '/' + repoName + '/contents/products.json', {
                 headers: { 'Authorization': 'token ' + githubToken, 'Accept': 'application/vnd.github.v3+json' }
             })
-            .then(function(r) { return r.json(); })
+            .then(function(r) {
+                if (!r.ok) throw new Error('خطأ في جلب البيانات: ' + r.status);
+                return r.json();
+            })
             .then(function(data) {
                 return fetch('https://api.github.com/repos/' + repoOwner + '/' + repoName + '/contents/products.json', {
                     method: 'PUT',
@@ -360,13 +411,17 @@
                     })
                 });
             })
-            .then(function(r) { return r.json(); })
+            .then(function(r) {
+                if (!r.ok) throw new Error('خطأ في الحفظ: ' + r.status);
+                return r.json();
+            })
             .then(function() {
                 showToast('تم الحفظ بنجاح!', 'success');
                 renderProducts();
             })
             .catch(function(e) {
-                showToast('خطأ في الحفظ: ' + e.message, 'error');
+                console.error('Save error:', e);
+                showToast(e.message, 'error');
             });
         }
 
