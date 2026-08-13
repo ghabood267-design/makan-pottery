@@ -2209,10 +2209,10 @@
 
         updateCartUI();
 
-        fetch('https://api.counterapi.dev/v1/makan-pottery/hits/up')
+        fetch('https://countapi.mileshilliard.com/api/v1/hit/makan_pottery_visits')
             .then(function(response) { return response.json(); })
             .then(function(data) {
-                document.getElementById('visitor-count').textContent = data.count;
+                document.getElementById('visitor-count').textContent = data.value;
             })
             .catch(function() {
                 document.getElementById('visitor-count').textContent = '-';
