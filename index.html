@@ -1018,6 +1018,290 @@
             .lightbox-nav.next { left: 10px; }
             .lightbox-content img { max-width: 95vw; }
         }
+
+        /* ===== Cart ===== */
+        .cart-btn {
+            position: relative;
+            background: none;
+            border: 2px solid var(--terracotta);
+            color: var(--terracotta);
+            font-size: 1.25rem;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.6rem;
+            flex-shrink: 0;
+        }
+        .cart-btn:hover {
+            background: var(--terracotta);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(200, 90, 50, 0.4);
+        }
+        .cart-count {
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            background: var(--gold);
+            color: var(--dark);
+            font-size: 0.72rem;
+            font-weight: 800;
+            min-width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            border: 2px solid var(--cream);
+        }
+        .cart-count.bump { animation: cartBump 0.45s ease; }
+        @keyframes cartBump {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.7) rotate(10deg); }
+            100% { transform: scale(1); }
+        }
+        .cart-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(26, 26, 26, 0.55);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+        .cart-overlay.active { opacity: 1; visibility: visible; }
+        .cart-drawer {
+            position: fixed;
+            top: 0; left: 0;
+            height: 100%;
+            width: 400px;
+            max-width: 92vw;
+            background: var(--cream);
+            z-index: 2001;
+            transform: translateX(-105%);
+            transition: transform 0.35s ease;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 60px rgba(26, 26, 26, 0.4);
+            border-left: 1px solid var(--border);
+        }
+        .cart-drawer.active { transform: translateX(0); }
+        .cart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.2rem 1.5rem;
+            background: var(--olive);
+            color: var(--cream);
+            border-bottom: 3px solid var(--terracotta);
+        }
+        .cart-header h3 { font-size: 1.2rem; font-weight: 800; letter-spacing: 1px; }
+        .cart-close {
+            background: none;
+            border: none;
+            color: var(--cream);
+            font-size: 1.3rem;
+            cursor: pointer;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .cart-close:hover { background: rgba(255, 255, 255, 0.15); transform: rotate(90deg); }
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+        .cart-empty {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 3rem 1rem;
+            font-size: 1.05rem;
+            line-height: 2;
+        }
+        .cart-empty .cart-empty-icon { font-size: 3.2rem; display: block; margin-bottom: 0.8rem; }
+        .cart-item {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 0.8rem;
+            margin-bottom: 0.8rem;
+            transition: all 0.3s;
+        }
+        .cart-item:hover { border-color: var(--terracotta); box-shadow: 0 5px 15px rgba(200, 90, 50, 0.1); }
+        .cart-item img {
+            width: 62px;
+            height: 62px;
+            object-fit: cover;
+            border-radius: 10px;
+            flex-shrink: 0;
+            border: 1px solid var(--border);
+        }
+        .cart-item-info { flex: 1; min-width: 0; }
+        .cart-item-name { font-weight: 700; color: var(--olive); font-size: 0.95rem; margin-bottom: 0.15rem; }
+        .cart-item-size { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.3rem; }
+        .cart-item-price { color: var(--terracotta); font-weight: 800; font-size: 0.95rem; }
+        .cart-qty {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            flex-shrink: 0;
+        }
+        .cart-qty button {
+            width: 27px;
+            height: 27px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--cream);
+            color: var(--olive);
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            line-height: 1;
+        }
+        .cart-qty button:hover { background: var(--gold); color: var(--dark); border-color: var(--gold); }
+        .cart-qty span { min-width: 24px; text-align: center; font-weight: 800; color: var(--olive); }
+        .cart-remove {
+            background: none;
+            border: none;
+            color: #c0392b;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+            padding: 4px;
+            flex-shrink: 0;
+        }
+        .cart-remove:hover { transform: scale(1.3); }
+        .cart-footer {
+            padding: 1rem 1.5rem 1.5rem;
+            background: var(--white);
+            border-top: 1px solid var(--border);
+        }
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--olive);
+            margin-bottom: 1rem;
+        }
+        .cart-total span:last-child { color: var(--terracotta); font-size: 1.4rem; }
+        .cart-checkout {
+            width: 100%;
+            padding: 1rem;
+            background: #25D366;
+            color: white;
+            border: 2px solid #25D366;
+            border-radius: 12px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .cart-checkout:hover {
+            background: transparent;
+            color: #25D366;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+        }
+        .cart-clear {
+            width: 100%;
+            padding: 0.7rem;
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            border-radius: 12px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .cart-clear:hover { border-color: #c0392b; color: #c0392b; }
+        .card-actions {
+            display: flex;
+            gap: 0.6rem;
+        }
+        .add-cart-btn {
+            flex: 1;
+            padding: 0.9rem 0.5rem;
+            background: var(--terracotta);
+            color: white;
+            border: 2px solid var(--terracotta);
+            border-radius: 12px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+        .add-cart-btn:hover {
+            background: transparent;
+            color: var(--terracotta);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(200, 90, 50, 0.25);
+        }
+        .card-actions .order-btn {
+            flex: 1;
+            padding: 0.9rem 0.5rem;
+            font-size: 0.95rem;
+            background: transparent;
+            color: var(--terracotta);
+            border: 2px solid var(--terracotta);
+        }
+        .card-actions .order-btn:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--dark);
+        }
+        .cart-toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(30px);
+            background: var(--olive);
+            color: var(--cream);
+            padding: 0.9rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            z-index: 3000;
+            opacity: 0;
+            transition: all 0.35s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--gold);
+            pointer-events: none;
+            max-width: 92vw;
+            text-align: center;
+        }
+        .cart-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        @media (max-width: 768px) {
+            .cart-drawer { width: 92vw; }
+            .card-actions { flex-direction: column; gap: 0.5rem; }
+            .cart-btn { width: 42px; height: 42px; font-size: 1.1rem; }
+        }
     </style>
 </head>
 <body>
@@ -1031,6 +1315,7 @@
                 <li><a href="#contact">تواصل معنا</a></li>
                 <li><a href="admin.html" style="color:var(--terracotta);font-weight:700;">الإدارة</a></li>
             </ul>
+            <button class="cart-btn" onclick="toggleCart()" aria-label="سلة المشتريات">🛒<span class="cart-count" id="cartCount">0</span></button>
             <button class="menu-btn" onclick="toggleMenu()">☰</button>
         </div>
     </nav>
@@ -1086,7 +1371,10 @@
                     <h3 class="product-name">قوار زرع طويل</h3>
                     <p class="product-size">📏 ارتفاع 64 سم | عرض 40 سم</p>
                     <p class="product-price">18 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار زرع طويل - 64x40 سم')">اطلب الآن</button>
+                    <div class="card-actions">
+                        <button class="add-cart-btn" onclick="addToCart(1,'قوار زرع طويل',18,'📏 ارتفاع 64 سم | عرض 40 سم','images/product1-1.jpg')">🛒 أضف للسلة</button>
+                        <button class="order-btn" onclick="orderProduct('قوار زرع طويل - 64x40 سم')">اطلب الآن</button>
+                    </div>
                 </div>
             </div>
 
@@ -1109,7 +1397,10 @@
                     <h3 class="product-name">قوار كلاسيكي أبيض</h3>
                     <p class="product-size">📏 ارتفاع 76 سم | عرض 57 سم</p>
                     <p class="product-price">30 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار كلاسيكي أبيض - 76x57 سم')">اطلب الآن</button>
+                    <div class="card-actions">
+                        <button class="add-cart-btn" onclick="addToCart(2,'قوار كلاسيكي أبيض',30,'📏 ارتفاع 76 سم | عرض 57 سم','images/product2-1.jpg')">🛒 أضف للسلة</button>
+                        <button class="order-btn" onclick="orderProduct('قوار كلاسيكي أبيض - 76x57 سم')">اطلب الآن</button>
+                    </div>
                 </div>
             </div>
 
@@ -1134,7 +1425,10 @@
                     <h3 class="product-name">قوار مزخرف بالورود</h3>
                     <p class="product-size">📏 ارتفاع 55 سم | عرض 45 سم</p>
                     <p class="product-price">20 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار مزخرف بالورود - 55x45 سم')">اطلب الآن</button>
+                    <div class="card-actions">
+                        <button class="add-cart-btn" onclick="addToCart(3,'قوار مزخرف بالورود',20,'📏 ارتفاع 55 سم | عرض 45 سم','images/product3-1.jpg')">🛒 أضف للسلة</button>
+                        <button class="order-btn" onclick="orderProduct('قوار مزخرف بالورود - 55x45 سم')">اطلب الآن</button>
+                    </div>
                 </div>
             </div>
 
@@ -1157,7 +1451,10 @@
                     <h3 class="product-name">قوار متر</h3>
                     <p class="product-size">📏 ارتفاع 34 سم | عرض 32 سم</p>
                     <p class="product-price">20 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار متر - 34x32 سم')">اطلب الآن</button>
+                    <div class="card-actions">
+                        <button class="add-cart-btn" onclick="addToCart(4,'قوار متر',20,'📏 ارتفاع 34 سم | عرض 32 سم','images/product4-1.jpg')">🛒 أضف للسلة</button>
+                        <button class="order-btn" onclick="orderProduct('قوار متر - 34x32 سم')">اطلب الآن</button>
+                    </div>
                 </div>
             </div>
 
@@ -1180,7 +1477,10 @@
                     <h3 class="product-name">قوار متر</h3>
                     <p class="product-size">📏 ارتفاع 39 سم | عرض 31 سم</p>
                     <p class="product-price">20 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار متر - 39x31 سم')">اطلب الآن</button>
+                    <div class="card-actions">
+                        <button class="add-cart-btn" onclick="addToCart(5,'قوار متر',20,'📏 ارتفاع 39 سم | عرض 31 سم','images/product5-1.jpg')">🛒 أضف للسلة</button>
+                        <button class="order-btn" onclick="orderProduct('قوار متر - 39x31 سم')">اطلب الآن</button>
+                    </div>
                 </div>
             </div>
 
@@ -1203,7 +1503,10 @@
                     <h3 class="product-name">قوار طويل</h3>
                     <p class="product-size">📏 ارتفاع 95 سم | عرض 38 سم</p>
                     <p class="product-price">25 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار طويل - 95x38 سم')">اطلب الآن</button>
+                    <div class="card-actions">
+                        <button class="add-cart-btn" onclick="addToCart(6,'قوار طويل',25,'📏 ارتفاع 95 سم | عرض 38 سم','images/product6-1.jpg')">🛒 أضف للسلة</button>
+                        <button class="order-btn" onclick="orderProduct('قوار طويل - 95x38 سم')">اطلب الآن</button>
+                    </div>
                 </div>
             </div>
 
@@ -1226,7 +1529,10 @@
                     <h3 class="product-name">قوار متوسط</h3>
                     <p class="product-size">📏 ارتفاع 45 سم | عرض 40 سم</p>
                     <p class="product-price">15 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار متوسط - 45x40 سم')">اطلب الآن</button>
+                    <div class="card-actions">
+                        <button class="add-cart-btn" onclick="addToCart(7,'قوار متوسط',15,'📏 ارتفاع 45 سم | عرض 40 سم','images/product7-1.jpg')">🛒 أضف للسلة</button>
+                        <button class="order-btn" onclick="orderProduct('قوار متوسط - 45x40 سم')">اطلب الآن</button>
+                    </div>
                 </div>
             </div>
 
@@ -1259,7 +1565,10 @@
                     <h3 class="product-name">قوار كبير</h3>
                     <p class="product-size">📏 ارتفاع 80 سم | عرض 45 سم</p>
                     <p class="product-price">25 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار كبير - 80x45 سم')">اطلب الآن</button>
+                    <div class="card-actions">
+                        <button class="add-cart-btn" onclick="addToCart(8,'قوار كبير',25,'📏 ارتفاع 80 سم | عرض 45 سم','images/product8-1.jpg')">🛒 أضف للسلة</button>
+                        <button class="order-btn" onclick="orderProduct('قوار كبير - 80x45 سم')">اطلب الآن</button>
+                    </div>
                 </div>
             </div>
 
@@ -1280,7 +1589,10 @@
                     <h3 class="product-name">قوار ضخم</h3>
                     <p class="product-size">📏 ارتفاع 95 سم | عرض 63 سم</p>
                     <p class="product-price">30 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار ضخم - 95x63 سم')">اطلب الآن</button>
+                    <div class="card-actions">
+                        <button class="add-cart-btn" onclick="addToCart(9,'قوار ضخم',30,'📏 ارتفاع 95 سم | عرض 63 سم','images/product9-1.jpg')">🛒 أضف للسلة</button>
+                        <button class="order-btn" onclick="orderProduct('قوار ضخم - 95x63 سم')">اطلب الآن</button>
+                    </div>
                 </div>
             </div>
 
@@ -1305,7 +1617,10 @@
                     <h3 class="product-name">قوار مربع</h3>
                     <p class="product-size">📏 ارتفاع 50 سم | عرض 50 سم</p>
                     <p class="product-price">15 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار مربع - 50x50 سم')">اطلب الآن</button>
+                    <div class="card-actions">
+                        <button class="add-cart-btn" onclick="addToCart(10,'قوار مربع',15,'📏 ارتفاع 50 سم | عرض 50 سم','images/product10-1.jpg')">🛒 أضف للسلة</button>
+                        <button class="order-btn" onclick="orderProduct('قوار مربع - 50x50 سم')">اطلب الآن</button>
+                    </div>
                 </div>
             </div>
 
@@ -1332,7 +1647,10 @@
                     <h3 class="product-name">قوار عالي ونحيف</h3>
                     <p class="product-size">📏 ارتفاع 84-90 سم | عرض 38-50 سم</p>
                     <p class="product-price">25 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار عالي ونحيف - 25 دينار')">اطلب الآن</button>
+                    <div class="card-actions">
+                        <button class="add-cart-btn" onclick="addToCart(11,'قوار عالي ونحيف',25,'📏 ارتفاع 84-90 سم | عرض 38-50 سم','images/product11-1.jpg')">🛒 أضف للسلة</button>
+                        <button class="order-btn" onclick="orderProduct('قوار عالي ونحيف - 25 دينار')">اطلب الآن</button>
+                    </div>
                 </div>
             </div>
 
@@ -1355,7 +1673,10 @@
                     <h3 class="product-name">قوار زرع طويل</h3>
                     <p class="product-size">📏 ارتفاع 64 سم | عرض 40 سم</p>
                     <p class="product-price">22 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار زرع طويل - 64x40 سم')">اطلب الآن</button>
+                    <div class="card-actions">
+                        <button class="add-cart-btn" onclick="addToCart(13,'قوار زرع طويل',22,'📏 ارتفاع 64 سم | عرض 40 سم','images/product13-1.jpg')">🛒 أضف للسلة</button>
+                        <button class="order-btn" onclick="orderProduct('قوار زرع طويل - 64x40 سم')">اطلب الآن</button>
+                    </div>
                 </div>
             </div>
 
@@ -1377,7 +1698,10 @@
                     <h3 class="product-name">قوار مناسل</h3>
                     <p class="product-size">📏 ارتفاع 65 سم | عرض 65 سم | طول 65 سم</p>
                     <p class="product-price">50 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار مناسل - 65x65x65 سم')">اطلب الآن</button>
+                    <div class="card-actions">
+                        <button class="add-cart-btn" onclick="addToCart(14,'قوار مناسل',50,'📏 ارتفاع 65 سم | عرض 65 سم | طول 65 سم','images/product14-1.jpg')">🛒 أضف للسلة</button>
+                        <button class="order-btn" onclick="orderProduct('قوار مناسل - 65x65x65 سم')">اطلب الآن</button>
+                    </div>
                 </div>
             </div>
 
@@ -1401,7 +1725,10 @@
                     <h3 class="product-name">قوار مناسب</h3>
                     <p class="product-size">📏 ارتفاع 25 سم | عرض 25 سم | طول 90 سم</p>
                     <p class="product-price">15 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار مناسب - 25x25x90 سم')">اطلب الآن</button>
+                    <div class="card-actions">
+                        <button class="add-cart-btn" onclick="addToCart(15,'قوار مناسب',15,'📏 ارتفاع 25 سم | عرض 25 سم | طول 90 سم','images/product15-1.jpg')">🛒 أضف للسلة</button>
+                        <button class="order-btn" onclick="orderProduct('قوار مناسب - 25x25x90 سم')">اطلب الآن</button>
+                    </div>
                 </div>
             </div>
 
@@ -1423,7 +1750,10 @@
                     <h3 class="product-name">قوار متر مزخرف</h3>
                     <p class="product-size">📏 ارتفاع 37 سم | عرض 36 سم</p>
                     <p class="product-price">20 <span>دينار</span></p>
-                    <button class="order-btn" onclick="orderProduct('قوار متر مزخرف - 37x36 سم')">اطلب الآن</button>
+                    <div class="card-actions">
+                        <button class="add-cart-btn" onclick="addToCart(16,'قوار متر مزخرف',20,'📏 ارتفاع 37 سم | عرض 36 سم','images/product16-1.jpg')">🛒 أضف للسلة</button>
+                        <button class="order-btn" onclick="orderProduct('قوار متر مزخرف - 37x36 سم')">اطلب الآن</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1570,6 +1900,33 @@
         </div>
     </footer>
 
+    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <aside class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h3>🛒 سلة المشتريات</h3>
+            <button class="cart-close" onclick="closeCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer" id="cartFooter">
+            <div class="cart-total">
+                <span>الإجمالي</span>
+                <span id="cartTotal">0 دينار</span>
+            </div>
+            <button class="cart-checkout" onclick="checkoutWhatsApp()">إتمام الطلب عبر واتساب</button>
+            <button class="cart-clear" onclick="clearCart()">إفراغ السلة</button>
+        </div>
+    </aside>
+    <div class="cart-toast" id="cartToast"></div>
+
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+            <img id="lightboxImg" src="" alt="صورة المنتج" />
+            <button class="lightbox-nav prev" onclick="navLightbox(-1)">❮</button>
+            <button class="lightbox-nav next" onclick="navLightbox(1)">❯</button>
+        </div>
+    </div>
+
     <script>
         var heroSlides = document.querySelectorAll('.hero-slide');
         var currentHeroSlide = 0;
@@ -1699,11 +2056,158 @@
 
         document.addEventListener('keydown', function(e) {
             var lightbox = document.getElementById('lightbox');
-            if (!lightbox.classList.contains('active')) return;
-            if (e.key === 'Escape') closeLightbox();
-            if (e.key === 'ArrowRight') navLightbox(-1);
-            if (e.key === 'ArrowLeft') navLightbox(1);
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowRight') navLightbox(-1);
+                if (e.key === 'ArrowLeft') navLightbox(1);
+            }
+            var drawer = document.getElementById('cartDrawer');
+            if (drawer.classList.contains('active') && e.key === 'Escape') closeCart();
         });
+
+        // ===== Cart =====
+        var cart = [];
+        try { cart = JSON.parse(localStorage.getItem('makan_cart') || '[]'); } catch (e) { cart = []; }
+
+        function saveCart() {
+            localStorage.setItem('makan_cart', JSON.stringify(cart));
+        }
+
+        function addToCart(id, name, price, size, img) {
+            var found = null;
+            for (var i = 0; i < cart.length; i++) {
+                if (String(cart[i].id) === String(id)) { found = cart[i]; break; }
+            }
+            if (found) {
+                found.qty++;
+            } else {
+                cart.push({ id: String(id), name: name, price: price, size: size, img: img, qty: 1 });
+            }
+            saveCart();
+            updateCartUI();
+            var badge = document.getElementById('cartCount');
+            badge.classList.remove('bump');
+            void badge.offsetWidth;
+            badge.classList.add('bump');
+            showCartToast('✓ تمت إضافة «' + name + '» إلى السلة');
+        }
+
+        function cartTotal() {
+            var t = 0;
+            cart.forEach(function(i) { t += i.price * i.qty; });
+            return t;
+        }
+
+        function cartCount() {
+            var c = 0;
+            cart.forEach(function(i) { c += i.qty; });
+            return c;
+        }
+
+        function changeQty(id, delta) {
+            for (var i = 0; i < cart.length; i++) {
+                if (String(cart[i].id) === String(id)) {
+                    cart[i].qty += delta;
+                    if (cart[i].qty <= 0) { cart.splice(i, 1); }
+                    break;
+                }
+            }
+            saveCart();
+            updateCartUI();
+        }
+
+        function removeFromCart(id) {
+            for (var i = 0; i < cart.length; i++) {
+                if (String(cart[i].id) === String(id)) { cart.splice(i, 1); break; }
+            }
+            saveCart();
+            updateCartUI();
+        }
+
+        function clearCart() {
+            cart = [];
+            saveCart();
+            updateCartUI();
+        }
+
+        function renderCart() {
+            var items = document.getElementById('cartItems');
+            var footer = document.getElementById('cartFooter');
+            if (!cart.length) {
+                items.innerHTML = '<div class="cart-empty"><span class="cart-empty-icon">🛒</span>سلتك فارغة حالياً<br>أضف منتجات وستظهر هنا</div>';
+                footer.style.display = 'none';
+                return;
+            }
+            footer.style.display = '';
+            var html = '';
+            cart.forEach(function(item) {
+                html +=
+                    '<div class="cart-item">' +
+                        '<img src="' + item.img + '" alt="' + item.name + '" />' +
+                        '<div class="cart-item-info">' +
+                            '<div class="cart-item-name">' + item.name + '</div>' +
+                            '<div class="cart-item-size">' + item.size + '</div>' +
+                            '<div class="cart-item-price">' + item.price + ' دينار</div>' +
+                        '</div>' +
+                        '<div class="cart-qty">' +
+                            '<button onclick="changeQty(' + item.id + ',-1)" aria-label="إنقاص">−</button>' +
+                            '<span>' + item.qty + '</span>' +
+                            '<button onclick="changeQty(' + item.id + ',1)" aria-label="زيادة">+</button>' +
+                        '</div>' +
+                        '<button class="cart-remove" onclick="removeFromCart(' + item.id + ')" title="حذف">🗑</button>' +
+                    '</div>';
+            });
+            items.innerHTML = html;
+            document.getElementById('cartTotal').textContent = cartTotal() + ' دينار';
+        }
+
+        function updateCartUI() {
+            document.getElementById('cartCount').textContent = cartCount();
+            renderCart();
+        }
+
+        function toggleCart() {
+            if (document.getElementById('cartDrawer').classList.contains('active')) {
+                closeCart();
+            } else {
+                openCart();
+            }
+        }
+
+        function openCart() {
+            document.getElementById('cartDrawer').classList.add('active');
+            document.getElementById('cartOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCart() {
+            document.getElementById('cartDrawer').classList.remove('active');
+            document.getElementById('cartOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function checkoutWhatsApp() {
+            if (!cart.length) { return; }
+            var lines = ['مرحباً، أريد إتمام طلبي من متجر MAKAN:'];
+            cart.forEach(function(item) {
+                lines.push('• ' + item.name + ' (' + item.size.replace('📏 ', '') + ') × ' + item.qty + ' = ' + (item.price * item.qty) + ' دينار');
+            });
+            lines.push('الإجمالي: ' + cartTotal() + ' دينار');
+            var message = encodeURIComponent(lines.join('\n'));
+            window.open('https://wa.me/962795028192?text=' + message, '_blank');
+            showCartToast('✓ تم تجهيز طلبك في واتساب');
+        }
+
+        var cartToastTimer = null;
+        function showCartToast(msg) {
+            var t = document.getElementById('cartToast');
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(cartToastTimer);
+            cartToastTimer = setTimeout(function() { t.classList.remove('show'); }, 2200);
+        }
+
+        updateCartUI();
 
         fetch('https://api.counterapi.dev/v1/makan-pottery/hits/up')
             .then(function(response) { return response.json(); })
@@ -1714,15 +2218,5 @@
                 document.getElementById('visitor-count').textContent = '-';
             });
     </script>
-
-    <div id="lightbox" class="lightbox">
-        <div class="lightbox-content">
-            <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-            <img id="lightboxImg" src="" alt="صورة المنتج" />
-            <button class="lightbox-nav prev" onclick="navLightbox(-1)">❮</button>
-            <button class="lightbox-nav next" onclick="navLightbox(1)">❯</button>
-        </div>
-    </div>
-
 
 </body></html>
