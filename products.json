@@ -21,7 +21,7 @@
     "price": 20,
     "size": "📏 ارتفاع 55 سم | عرض 45 سم",
     "badge": "",
-    "images": ["images/product3-1.jpg", "images/product3-2.jpg", "images/product3-3.jpg"]
+    "images": ["images/product3-1.jpg", "images/product3-2.jpg", "images/product3-3.jpg", "images/product3-4.jpg"]
   },
   {
     "id": 4,
@@ -61,7 +61,7 @@
     "price": 25,
     "size": "📏 ارتفاع 80 سم | عرض 45 سم",
     "badge": "",
-    "images": ["images/product8-1.jpg", "images/product8-2.jpg", "images/product8-3.jpg"]
+    "images": ["images/product8-1.jpg", "images/product8-2.jpg", "images/product8-3.jpg", "images/product8-4.jpg", "images/product8-5.jpg", "images/product8-6.jpg", "images/product8-7.jpg", "images/product8-8.jpg"]
   },
   {
     "id": 9,
@@ -77,7 +77,7 @@
     "price": 15,
     "size": "📏 ارتفاع 50 سم | عرض 50 سم",
     "badge": "",
-    "images": ["images/product10-1.jpg", "images/product10-2.jpg", "images/product10-3.jpg"]
+    "images": ["images/product10-1.jpg", "images/product10-2.jpg", "images/product10-3.jpg", "images/product10-4.jpg"]
   },
   {
     "id": 11,

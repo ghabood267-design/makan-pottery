@@ -299,12 +299,15 @@
             if(!confirm('هل أنت متأكد من الحذف؟'))return;
             if(!TK){toast('أدخل Token','er');return;}
 
-            var parts=HTML.split('<div class="product-card');
-            if(idx<1||idx>=parts.length){toast('المنتج غير موجود','er');return;}
+            // Find each product card as a complete block (including its closing </div>).
+            // The card's closing tag is the only </div> indented with exactly 12 spaces,
+            // so the lazy match stops at the end of the card and never touches
+            // the sections/scripts after the products grid.
+            var cardRe=/<div class="product-card[\s\S]*?\n            <\/div>/g;
+            var blocks=HTML.match(cardRe)||[];
+            if(idx<1||idx>blocks.length){toast('المنتج غير موجود','er');return;}
 
-            var before=parts.slice(0,idx).join('<div class="product-card');
-            var after=parts.slice(idx+1).join('<div class="product-card');
-            var newHtml=before+after;
+            var newHtml=HTML.replace(blocks[idx-1],'');
 
             toast('جاري الحذف...','ok');
             var content=btoa(unescape(encodeURIComponent(newHtml)));
