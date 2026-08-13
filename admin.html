@@ -89,12 +89,18 @@
                         <input type="hidden" id="pBadge" value="">
                     </div>
                     <div class="mb">
-                        <label>صور المنتج (روابط URL) *</label>
-                        <p style="font-size:.8rem;color:#7A8A7C;margin-bottom:.3rem">أضف رابط صورة واحد على الأقل</p>
+                        <label>صور المنتج *</label>
+                        <p style="font-size:.8rem;color:#7A8A7C;margin-bottom:.3rem">أضف رابط صورة واحد على الأقل، أو ارفع صور من جهازك من الأسفل</p>
                         <div id="urlList">
                             <input type="url" class="pUrl mb" placeholder="https://example.com/image.jpg">
                         </div>
                         <button type="button" class="btn btn-g" onclick="addUrl()" style="font-size:.85rem">+ إضافة صورة</button>
+                        <div style="margin-top:1rem;padding-top:1rem;border-top:2px dashed #E8E2D8">
+                            <label style="font-size:.9rem">📤 أو ارفع صور من جهازك</label>
+                            <input type="file" id="pFiles" accept="image/*" multiple style="display:block;margin:.5rem 0;font-family:'Tajawal'">
+                            <button type="button" class="btn btn-p" id="upBtn" onclick="uploadImages()" style="font-size:.85rem">رفع الصور</button>
+                            <p id="upStatus" style="margin-top:.5rem;font-size:.85rem;font-weight:600"></p>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-p">إضافة للموقع</button>
                 </form>
@@ -162,6 +168,58 @@
             var inp=document.createElement('input');
             inp.type='url';inp.className='pUrl mb';inp.placeholder='https://example.com/image.jpg';
             document.getElementById('urlList').appendChild(inp);
+        }
+
+        function uploadImages(){
+            var files=document.getElementById('pFiles').files;
+            if(!files.length){toast('اختر صورة أولاً','er');return;}
+            if(!TK){toast('أدخل Token أولاً','er');return;}
+            var btn=document.getElementById('upBtn');
+            var status=document.getElementById('upStatus');
+            btn.disabled=true;
+            status.textContent='';
+            var total=files.length,done=0;
+            var base=Date.now();
+            Array.prototype.forEach.call(files,function(file,idx){
+                var reader=new FileReader();
+                reader.onload=function(){
+                    var img=new Image();
+                    img.onload=function(){
+                        var scale=Math.min(1,1200/Math.max(img.width,img.height));
+                        var canvas=document.createElement('canvas');
+                        canvas.width=Math.round(img.width*scale);
+                        canvas.height=Math.round(img.height*scale);
+                        canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+                        var data=canvas.toDataURL('image/jpeg',0.85).split(',')[1];
+                        var path='images/products/'+base+'-'+idx+'.jpg';
+                        status.textContent='جاري رفع '+(idx+1)+' من '+total+' ...';
+                        fetch('https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+path,{
+                            method:'PUT',
+                            headers:{'Authorization':'token '+TK,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},
+                            body:JSON.stringify({message:'Upload product image',content:data,branch:'master'})
+                        })
+                        .then(function(r){if(!r.ok)throw new Error('فشل الرفع ('+r.status+')');return r.json();})
+                        .then(function(){
+                            done++;
+                            var inp=document.createElement('input');
+                            inp.type='url';inp.className='pUrl mb';
+                            inp.value='https://raw.githubusercontent.com/'+OWNER+'/'+REPO+'/master/'+path;
+                            document.getElementById('urlList').appendChild(inp);
+                            status.textContent='تم رفع '+done+' من '+total+' ✓';
+                            if(done===total){
+                                btn.disabled=false;
+                                document.getElementById('pFiles').value='';
+                                toast('تم رفع جميع الصور ✓','ok');
+                            }
+                        })
+                        .catch(function(e){status.textContent='خطأ: '+e.message;btn.disabled=false;toast('خطأ: '+e.message,'er');});
+                    };
+                    img.onerror=function(){status.textContent='تعذر قراءة الصورة';btn.disabled=false;};
+                    img.src=reader.result;
+                };
+                reader.onerror=function(){status.textContent='تعذر قراءة الملف';btn.disabled=false;};
+                reader.readAsDataURL(file);
+            });
         }
 
         function pickBadge(el){
