@@ -1302,6 +1302,357 @@
             .card-actions { flex-direction: column; gap: 0.5rem; }
             .cart-btn { width: 42px; height: 42px; font-size: 1.1rem; }
         }
+
+        /* ===== Ambient Lighting (Day / Evening) ===== */
+        .theme-btn {
+            position: relative;
+            background: none;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            font-size: 1.15rem;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 0.6rem;
+            flex-shrink: 0;
+        }
+        .theme-btn:hover {
+            background: var(--gold);
+            color: var(--dark);
+            transform: rotate(20deg) scale(1.08);
+            box-shadow: 0 0 20px rgba(212, 163, 89, 0.4);
+        }
+        @media (max-width: 768px) {
+            .theme-btn { width: 42px; height: 42px; font-size: 1.05rem; }
+        }
+
+        html[data-theme="evening"] {
+            --cream: #2B211A;
+            --white: #3A2C22;
+            --border: #4C3B2E;
+            --text-muted: #B89C7D;
+            --olive-light: #CBB998;
+            --dark: #140E0A;
+            --gold: #E0B36B;
+            --gold-dark: #C99A4E;
+        }
+        html[data-theme="evening"] body {
+            color: #EDDFC9;
+            background: linear-gradient(180deg, #2B211A 0%, #241A14 100%);
+        }
+        html[data-theme="evening"] body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 120%, rgba(224, 150, 80, 0.18), transparent 60%);
+            pointer-events: none;
+            z-index: 1500;
+        }
+        html[data-theme="evening"] nav.scrolled {
+            background: rgba(43, 33, 26, 0.97);
+        }
+        html[data-theme="evening"] .product-slide img,
+        html[data-theme="evening"] .hero-slide {
+            filter: sepia(0.3) saturate(1.05) brightness(0.85);
+        }
+        html[data-theme="evening"] .nav-links a,
+        html[data-theme="evening"] .product-name,
+        html[data-theme="evening"] .feature-text h4,
+        html[data-theme="evening"] .contact-card h3,
+        html[data-theme="evening"] .cart-item-name,
+        html[data-theme="evening"] .cart-total,
+        html[data-theme="evening"] .cart-qty span,
+        html[data-theme="evening"] .quiz-result-name { color: #F0E2CC; }
+        html[data-theme="evening"] .nav-links a:hover { color: var(--terracotta); }
+        html[data-theme="evening"] .about-text p { color: #C9B89B; }
+        html[data-theme="evening"] .cart-qty button { background: #2B211A; color: #F0E2CC; border-color: var(--border); }
+        html[data-theme="evening"] .product-card,
+        html[data-theme="evening"] .contact-card,
+        html[data-theme="evening"] .cart-item { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35); }
+
+        /* ===== AR View ===== */
+        .ar-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 4000;
+            background: #000;
+            display: none;
+            flex-direction: column;
+        }
+        .ar-overlay.active { display: flex; }
+        .ar-info {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            z-index: 10;
+            text-align: center;
+            padding: 1rem;
+            color: #fff;
+            background: linear-gradient(180deg, rgba(0,0,0,0.55), transparent);
+            pointer-events: none;
+        }
+        .ar-name { font-weight: 800; font-size: 1.25rem; text-shadow: 0 2px 10px rgba(0,0,0,0.7); }
+        .ar-size { font-size: 0.9rem; color: #e8e2d8; text-shadow: 0 1px 6px rgba(0,0,0,0.7); }
+        .ar-hint { font-size: 0.8rem; color: var(--gold); margin-top: 0.3rem; }
+        .ar-video-wrap {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            touch-action: none;
+            overscroll-behavior: contain;
+        }
+        .ar-video { width: 100%; height: 100%; object-fit: cover; display: none; }
+        .ar-fallback {
+            position: absolute;
+            inset: 0;
+            display: none;
+            background: linear-gradient(165deg, #EBD9C2 0%, #C9A97F 45%, #7C8A6E 100%);
+        }
+        .ar-product {
+            position: absolute;
+            left: 50%;
+            top: 55%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            max-width: 60vw;
+            z-index: 5;
+            cursor: grab;
+            user-select: none;
+            -webkit-user-drag: none;
+            opacity: 0.85;
+            filter: drop-shadow(0 22px 26px rgba(0, 0, 0, 0.45));
+            touch-action: none;
+        }
+        .ar-product:active { cursor: grabbing; }
+        .ar-product img { width: 100%; height: auto; pointer-events: none; -webkit-user-drag: none; }
+        .ar-controls {
+            background: rgba(18, 14, 10, 0.95);
+            padding: 0.8rem 1rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            border-top: 2px solid rgba(212, 163, 89, 0.4);
+        }
+        .ar-control-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            color: #EDDFC9;
+            font-size: 0.9rem;
+            font-weight: 700;
+            flex-wrap: wrap;
+        }
+        .ar-control-row button {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #3A2C22;
+            color: var(--gold);
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Tajawal', sans-serif;
+        }
+        .ar-control-row button:hover { background: var(--gold); color: var(--dark); }
+        .ar-control-row input[type="range"] { width: 130px; accent-color: var(--gold); }
+        .ar-done {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--terracotta);
+            color: #fff;
+            border: 2px solid var(--terracotta);
+            border-radius: 12px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .ar-done:hover { background: transparent; color: var(--terracotta); }
+
+        /* ===== AR button on product cards ===== */
+        .ar-btn {
+            width: 100%;
+            margin-top: 0.6rem;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--dark);
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+        .ar-btn:hover {
+            background: transparent;
+            color: var(--gold);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 163, 89, 0.25);
+        }
+
+        /* ===== Quiz ===== */
+        .quiz-banner { text-align: center; margin: -1.5rem 0 3rem; }
+        .quiz-btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--terracotta), var(--terracotta-dark));
+            color: #fff;
+            border: 2px solid var(--terracotta);
+            border-radius: 50px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 25px rgba(200, 90, 50, 0.3);
+        }
+        .quiz-btn:hover {
+            background: transparent;
+            color: var(--terracotta);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(200, 90, 50, 0.4);
+        }
+        .quiz-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 4500;
+            background: rgba(20, 14, 10, 0.75);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .quiz-overlay.active { display: flex; }
+        .quiz-box {
+            background: var(--white);
+            color: var(--olive);
+            border-radius: 24px;
+            padding: 2rem 1.8rem;
+            max-width: 560px;
+            width: 100%;
+            max-height: 92vh;
+            overflow-y: auto;
+            position: relative;
+            text-align: center;
+            border: 1px solid var(--border);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+        }
+        .quiz-box h3 { font-size: 1.5rem; font-weight: 900; color: var(--terracotta); margin-bottom: 0.4rem; }
+        .quiz-sub { color: var(--text-muted); margin-bottom: 0.5rem; font-size: 0.95rem; }
+        .quiz-close {
+            position: absolute;
+            top: 12px; left: 12px;
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .quiz-close:hover { border-color: var(--terracotta); color: var(--terracotta); transform: rotate(90deg); }
+        .quiz-q { font-weight: 700; font-size: 1.15rem; margin: 1.3rem 0 1rem; color: var(--olive); }
+        .quiz-options { display: flex; flex-direction: column; gap: 0.8rem; }
+        .quiz-options button {
+            padding: 1rem;
+            border-radius: 14px;
+            border: 2px solid var(--border);
+            background: var(--cream);
+            color: var(--olive);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+        .quiz-options button:hover {
+            border-color: var(--terracotta);
+            background: rgba(200, 90, 50, 0.08);
+            transform: translateY(-2px);
+        }
+        .quiz-back {
+            margin-top: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.95rem;
+            text-decoration: underline;
+        }
+        .quiz-result-card {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            background: var(--cream);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 0.9rem;
+            margin-bottom: 0.9rem;
+            text-align: right;
+        }
+        .quiz-result-card img {
+            width: 76px;
+            height: 76px;
+            object-fit: cover;
+            border-radius: 12px;
+            flex-shrink: 0;
+            border: 1px solid var(--border);
+        }
+        .quiz-result-info { flex: 1; min-width: 0; }
+        .quiz-result-name { font-weight: 800; color: var(--olive); font-size: 1rem; }
+        .quiz-result-size { font-size: 0.78rem; color: var(--text-muted); margin: 0.15rem 0; }
+        .quiz-result-price { color: var(--terracotta); font-weight: 800; }
+        .quiz-result-actions { display: flex; gap: 0.5rem; margin-top: 0.6rem; }
+        .quiz-result-actions button {
+            flex: 1;
+            padding: 0.55rem;
+            border-radius: 10px;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 700;
+            font-size: 0.82rem;
+            cursor: pointer;
+            border: 2px solid var(--terracotta);
+            background: var(--terracotta);
+            color: #fff;
+            transition: all 0.25s;
+        }
+        .quiz-result-actions button:hover { background: transparent; color: var(--terracotta); }
+        .quiz-result-actions .qr-ar { border-color: var(--gold); background: var(--gold); color: var(--dark); }
+        .quiz-result-actions .qr-ar:hover { background: transparent; color: var(--gold); }
+        .quiz-again {
+            margin-top: 0.8rem;
+            padding: 0.7rem 2rem;
+            background: var(--gold);
+            color: var(--dark);
+            border: 2px solid var(--gold);
+            border-radius: 50px;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .quiz-again:hover { background: transparent; color: var(--gold); }
+        .quiz-note { font-size: 0.82rem; color: var(--text-muted); margin-top: 1rem; line-height: 1.8; }
+        @media (max-width: 768px) {
+            .quiz-result-card { flex-direction: column; text-align: center; }
+            .quiz-result-actions { width: 100%; }
+            .quiz-box { padding: 1.5rem 1rem; }
+        }
     </style>
 </head>
 <body>
@@ -1315,6 +1666,7 @@
                 <li><a href="#contact">تواصل معنا</a></li>
                 <li><a href="admin.html" style="color:var(--terracotta);font-weight:700;">الإدارة</a></li>
             </ul>
+            <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" aria-label="تبديل الإضاءة بين النهار والمساء">🌙</button>
             <button class="cart-btn" onclick="toggleCart()" aria-label="سلة المشتريات">🛒<span class="cart-count" id="cartCount">0</span></button>
             <button class="menu-btn" onclick="toggleMenu()">☰</button>
         </div>
@@ -1349,6 +1701,9 @@
         <div class="section-header fade-in">
             <h2>منتجاتنا</h2>
             <p>قواوير إسمنتية يدوية الصنع بتصميمات عصرية تجمع بين الأصالة والحداثة</p>
+        </div>
+        <div class="quiz-banner fade-in">
+            <button class="quiz-btn" onclick="openQuiz()">🌱 اختر القوار المناسب لنبتتك</button>
         </div>
         <div class="products-grid">
             <div class="product-card fade-in">
@@ -1937,6 +2292,65 @@
         </div>
     </div>
 
+    <!-- ===== AR View Modal ===== -->
+    <div class="ar-overlay" id="arOverlay">
+        <div class="ar-info">
+            <div class="ar-name" id="arName"></div>
+            <div class="ar-size" id="arSize"></div>
+            <div class="ar-hint">📌 اسحب لتحريك • قرّص أو استخدم + / − للتكبير</div>
+        </div>
+        <div class="ar-video-wrap" id="arVideoWrap">
+            <video class="ar-video" id="arVideo" autoplay playsinline muted></video>
+            <div class="ar-fallback" id="arFallback"></div>
+            <div class="ar-product" id="arProduct">
+                <img id="arImg" src="" alt="القوار في بيتك" />
+            </div>
+        </div>
+        <div class="ar-controls">
+            <div class="ar-control-row">
+                <span>🔍 التكبير</span>
+                <button onclick="arZoom(0.87)" aria-label="تصغير">−</button>
+                <button onclick="arZoom(1.15)" aria-label="تكبير">+</button>
+                <span style="margin-inline-start:1rem;">👁 الشفافية</span>
+                <input type="range" min="0.2" max="1" step="0.05" value="0.85" oninput="document.getElementById('arProduct').style.opacity=this.value" aria-label="الشفافية" />
+            </div>
+            <button class="ar-done" onclick="closeAR()">✕ إغلاق المعاينة</button>
+        </div>
+    </div>
+
+    <!-- ===== Plant & Pot Quiz Modal ===== -->
+    <div class="quiz-overlay" id="quizOverlay">
+        <div class="quiz-box">
+            <button class="quiz-close" onclick="closeQuiz()">✕</button>
+            <div id="quizStep1">
+                <h3>🌱 اختر القوار المناسب لنبتتك</h3>
+                <p class="quiz-sub">سؤالين فقط.. ونقترح عليك أفضل 3 خيارات</p>
+                <div class="quiz-q">📍 وين راح تحط القوار؟</div>
+                <div class="quiz-options">
+                    <button onclick="quizPick('loc','indoor')">🏠 داخل المنزل</button>
+                    <button onclick="quizPick('loc','outdoor')">🌤 خارج المنزل (شرفة / حديقة)</button>
+                    <button onclick="quizPick('loc','both')">🔄 الاثنين معاً</button>
+                </div>
+            </div>
+            <div id="quizStep2" style="display:none;">
+                <h3>🌱 اختر القوار المناسب لنبتتك</h3>
+                <div class="quiz-q">🪴 ما حجم نبتتك؟</div>
+                <div class="quiz-options">
+                    <button onclick="quizPick('size','small')">🌿 صغيرة</button>
+                    <button onclick="quizPick('size','medium')">🌳 متوسطة</button>
+                    <button onclick="quizPick('size','large')">🌴 كبيرة</button>
+                </div>
+                <button class="quiz-back" onclick="quizBack()">→ رجوع</button>
+            </div>
+            <div id="quizStep3" style="display:none;">
+                <h3>✨ أفضل الاختيارات لك</h3>
+                <div id="quizResultCards"></div>
+                <button class="quiz-again" onclick="quizRestart()">🔁 إعادة الاختبار</button>
+                <div class="quiz-note">الأسعار تقريبية وتشمل التوصيل عند التواصل • للطلب اضغط "اطلب الآن"</div>
+            </div>
+        </div>
+    </div>
+
     <script>
         var heroSlides = document.querySelectorAll('.hero-slide');
         var currentHeroSlide = 0;
@@ -2227,6 +2641,261 @@
             .catch(function() {
                 document.getElementById('visitor-count').textContent = '-';
             });
+
+        // ===== AR View (شاهد القوار في بيتك) =====
+        var arStream = null;
+        var arProductEl = document.getElementById('arProduct');
+        var arScale = 1;
+        var arDragging = false;
+        var arStartX = 0;
+        var arStartY = 0;
+        var arPinchDist = null;
+
+        function openARView(imgSrc, name, size) {
+            document.getElementById('arImg').src = imgSrc;
+            document.getElementById('arName').textContent = name;
+            document.getElementById('arSize').textContent = size;
+            arProductEl.style.width = '200px';
+            arProductEl.style.left = '50%';
+            arProductEl.style.top = '55%';
+            arProductEl.style.transform = 'translate(-50%, -50%)';
+            arProductEl.style.opacity = '0.85';
+            arScale = 1;
+            document.getElementById('arOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            startARCamera();
+        }
+
+        function openARFromCard(btn) {
+            var card = btn.closest('.product-card');
+            var imgEl = card.querySelector('.product-slide.active img') || card.querySelector('.product-slide img');
+            var name = card.querySelector('.product-name').textContent.trim();
+            var size = card.querySelector('.product-size').textContent.trim().replace('📏 ', '');
+            openARView(imgEl.src, name, size);
+        }
+
+        function startARCamera() {
+            var video = document.getElementById('arVideo');
+            var fallback = document.getElementById('arFallback');
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                fallback.style.display = 'block';
+                return;
+            }
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false })
+                .then(function(stream) {
+                    arStream = stream;
+                    video.srcObject = stream;
+                    video.style.display = 'block';
+                    video.play().catch(function() {});
+                })
+                .catch(function() {
+                    fallback.style.display = 'block';
+                });
+        }
+
+        function closeAR() {
+            document.getElementById('arOverlay').classList.remove('active');
+            if (arStream) {
+                arStream.getTracks().forEach(function(t) { t.stop(); });
+                arStream = null;
+            }
+            var video = document.getElementById('arVideo');
+            video.srcObject = null;
+            video.style.display = 'none';
+            document.getElementById('arFallback').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        function arZoom(mult) {
+            arScale = Math.min(4, Math.max(0.35, arScale * mult));
+            arProductEl.style.width = Math.round(200 * arScale) + 'px';
+        }
+
+        arProductEl.addEventListener('pointerdown', function(e) {
+            e.preventDefault();
+            arDragging = true;
+            var rect = arProductEl.getBoundingClientRect();
+            arProductEl.style.left = rect.left + 'px';
+            arProductEl.style.top = rect.top + 'px';
+            arProductEl.style.transform = 'none';
+            arStartX = e.clientX - rect.left;
+            arStartY = e.clientY - rect.top;
+            arProductEl.setPointerCapture(e.pointerId);
+        });
+        arProductEl.addEventListener('pointermove', function(e) {
+            if (!arDragging) return;
+            arProductEl.style.left = (e.clientX - arStartX) + 'px';
+            arProductEl.style.top = (e.clientY - arStartY) + 'px';
+        });
+        arProductEl.addEventListener('pointerup', function() { arDragging = false; });
+        arProductEl.addEventListener('pointercancel', function() { arDragging = false; });
+
+        var arWrap = document.getElementById('arVideoWrap');
+        arWrap.addEventListener('wheel', function(e) {
+            e.preventDefault();
+            arZoom(e.deltaY < 0 ? 1.1 : 0.9);
+        }, { passive: false });
+
+        arWrap.addEventListener('touchstart', function(e) {
+            if (e.touches.length === 2) {
+                arPinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+            }
+        }, { passive: true });
+        arWrap.addEventListener('touchmove', function(e) {
+            if (e.touches.length === 2 && arPinchDist) {
+                var d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                arZoom(d / arPinchDist);
+                arPinchDist = d;
+            }
+        }, { passive: false });
+        arWrap.addEventListener('touchend', function() { arPinchDist = null; });
+
+        // إضافة زر AR تلقائياً لكل بطاقة منتج
+        document.querySelectorAll('.product-card').forEach(function(card) {
+            var actions = card.querySelector('.card-actions');
+            var btn = document.createElement('button');
+            btn.className = 'ar-btn';
+            btn.textContent = '📷 شاهد القوار في بيتك';
+            btn.setAttribute('aria-label', 'شاهد القوار في بيتك بالواقع المعزز');
+            btn.onclick = function() { openARFromCard(btn); };
+            if (actions) {
+                actions.insertAdjacentElement('afterend', btn);
+            } else {
+                var info = card.querySelector('.product-info');
+                info.appendChild(btn);
+            }
+        });
+
+        // ===== Plant & Pot Quiz (اختر القوار المناسب لنبتتك) =====
+        var quizLoc = '';
+        var quizSize = '';
+        var quizProducts = [
+            { name: 'قوار زرع طويل', price: 18, size: 'ارتفاع 64 سم | عرض 40 سم', img: 'images/product1-1.jpg', loc: ['outdoor'], plants: ['medium'] },
+            { name: 'قوار كلاسيكي أبيض', price: 30, size: 'ارتفاع 76 سم | عرض 57 سم', img: 'images/product2-1.jpg', loc: ['both'], plants: ['large'] },
+            { name: 'قوار مزخرف بالورود', price: 20, size: 'ارتفاع 55 سم | عرض 45 سم', img: 'images/product3-1.jpg', loc: ['indoor'], plants: ['medium'] },
+            { name: 'قوار متر', price: 20, size: 'ارتفاع 34 سم | عرض 32 سم', img: 'images/product4-1.jpg', loc: ['both'], plants: ['small'] },
+            { name: 'قوار متر', price: 20, size: 'ارتفاع 39 سم | عرض 31 سم', img: 'images/product5-1.jpg', loc: ['both'], plants: ['small'] },
+            { name: 'قوار طويل', price: 25, size: 'ارتفاع 95 سم | عرض 38 سم', img: 'images/product6-1.jpg', loc: ['outdoor'], plants: ['large'] },
+            { name: 'قوار متوسط', price: 15, size: 'ارتفاع 45 سم | عرض 40 سم', img: 'images/product7-1.jpg', loc: ['both'], plants: ['medium'] },
+            { name: 'قوار ضخم', price: 30, size: 'ارتفاع 95 سم | عرض 63 سم', img: 'images/product9-1.jpg', loc: ['outdoor'], plants: ['large'] },
+            { name: 'قوار مربع', price: 15, size: 'ارتفاع 50 سم | عرض 50 سم', img: 'images/product10-1.jpg', loc: ['both'], plants: ['medium'] },
+            { name: 'قوار عالي ونحيف', price: 25, size: 'ارتفاع 84-90 سم | عرض 38-50 سم', img: 'images/product11-1.jpg', loc: ['both'], plants: ['medium'] },
+            { name: 'قوار زرع طويل', price: 22, size: 'ارتفاع 64 سم | عرض 40 سم', img: 'images/product13-1.jpg', loc: ['outdoor'], plants: ['medium'] },
+            { name: 'قوار مناسب', price: 15, size: 'ارتفاع 25 سم | عرض 25 سم | طول 90 سم', img: 'images/product15-1.jpg', loc: ['both'], plants: ['small'] },
+            { name: 'قوار متر مزخرف', price: 20, size: 'ارتفاع 37 سم | عرض 36 سم', img: 'images/product16-1.jpg', loc: ['both'], plants: ['small'] },
+            { name: 'قوار مستطيل', price: 25, size: '80 سم طول | 45 سم ارتفاع | 40 سم عرض', img: 'https://raw.githubusercontent.com/ghabood267-design/makan-pottery/master/images/products/1786619011535-3.jpg', loc: ['outdoor'], plants: ['medium'] },
+            { name: 'قوار مناسل', price: 50, size: '65 سم × 65 سم × 65 سم', img: 'https://raw.githubusercontent.com/ghabood267-design/makan-pottery/master/images/products/1786621649822-0.jpg', loc: ['both'], plants: ['large'] },
+            { name: 'قوار وردة', price: 20, size: 'ارتفاع 43 سم | عرض 55 سم', img: 'https://raw.githubusercontent.com/ghabood267-design/makan-pottery/master/images/products/1786622502295-0.jpg', loc: ['indoor'], plants: ['medium'] }
+        ];
+
+        function quizPick(type, value) {
+            if (type === 'loc') {
+                quizLoc = value;
+                quizNext();
+            } else {
+                quizSize = value;
+                quizShowResult();
+            }
+        }
+
+        function quizNext() {
+            document.getElementById('quizStep1').style.display = 'none';
+            document.getElementById('quizStep2').style.display = '';
+        }
+
+        function quizBack() {
+            document.getElementById('quizStep2').style.display = 'none';
+            document.getElementById('quizStep1').style.display = '';
+        }
+
+        function openQuiz() {
+            quizRestart();
+            document.getElementById('quizOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeQuiz() {
+            document.getElementById('quizOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function quizRestart() {
+            quizLoc = '';
+            quizSize = '';
+            document.getElementById('quizStep1').style.display = '';
+            document.getElementById('quizStep2').style.display = 'none';
+            document.getElementById('quizStep3').style.display = 'none';
+        }
+
+        function quizShowResult() {
+            var pool = quizProducts.filter(function(p) {
+                return quizLoc === 'both' || p.loc.indexOf('both') !== -1 || p.loc.indexOf(quizLoc) !== -1;
+            });
+            var scored = pool.map(function(p) {
+                var s = 1;
+                if (p.plants.indexOf(quizSize) !== -1) s += 2;
+                return { p: p, s: s };
+            });
+            scored.sort(function(a, b) {
+                if (b.s !== a.s) return b.s - a.s;
+                return a.p.price - b.p.price;
+            });
+            var picks = scored.slice(0, 3);
+            var medals = ['🥇', '🥈', '🥉'];
+            var html = '';
+            picks.forEach(function(item, i) {
+                var p = item.p;
+                html += '<div class="quiz-result-card">' +
+                    '<img src="' + p.img + '" alt="' + p.name + '" />' +
+                    '<div class="quiz-result-info">' +
+                        '<div class="quiz-result-name">' + medals[i] + ' ' + p.name + '</div>' +
+                        '<div class="quiz-result-size">' + p.size + '</div>' +
+                        '<div class="quiz-result-price">' + p.price + ' دينار</div>' +
+                        '<div class="quiz-result-actions">' +
+                            '<button onclick="orderProduct(\'' + p.name + ' - ' + p.price + ' دينار\')">🛒 اطلب الآن</button>' +
+                            '<button class="qr-ar" onclick="openARView(\'' + p.img + '\',\'' + p.name + '\',\'' + p.size + '\')">📷 شاهد في بيتك</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            });
+            document.getElementById('quizResultCards').innerHTML = html;
+            document.getElementById('quizStep1').style.display = 'none';
+            document.getElementById('quizStep2').style.display = 'none';
+            document.getElementById('quizStep3').style.display = '';
+        }
+
+        // إغلاق النوافذ بزر Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (document.getElementById('arOverlay').classList.contains('active')) closeAR();
+                if (document.getElementById('quizOverlay').classList.contains('active')) closeQuiz();
+            }
+        });
+
+        // ===== Ambient Lighting Theme (إضاءة نهارية / دفء مسائي) =====
+        function toggleTheme() {
+            var root = document.documentElement;
+            if (root.getAttribute('data-theme') === 'evening') {
+                root.removeAttribute('data-theme');
+                localStorage.setItem('makan_theme', 'day');
+            } else {
+                root.setAttribute('data-theme', 'evening');
+                localStorage.setItem('makan_theme', 'evening');
+            }
+            updateThemeBtn();
+        }
+
+        function updateThemeBtn() {
+            var btn = document.getElementById('themeBtn');
+            var evening = document.documentElement.getAttribute('data-theme') === 'evening';
+            btn.textContent = evening ? '☀️' : '🌙';
+            btn.title = evening ? 'الإضاءة النهارية المشمسة' : 'الدفء المسائي';
+        }
+
+        if (localStorage.getItem('makan_theme') === 'evening') {
+            document.documentElement.setAttribute('data-theme', 'evening');
+        }
+        updateThemeBtn();
     </script>
 
 </body></html>
