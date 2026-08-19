@@ -4,111 +4,316 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MAKAN - إدارة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800;900&display=swap" rel="stylesheet">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Tajawal',sans-serif;background:#FDFBF7;color:#2C3E2E}
-        .header{background:#2C3E2E;color:#FDFBF7;padding:1.5rem 2rem;display:flex;justify-content:space-between;align-items:center}
-        .header h1{font-size:1.5rem;font-weight:900;letter-spacing:3px}
-        .header a{color:#D4A359;text-decoration:none;font-weight:600}
-        .container{max-width:900px;margin:2rem auto;padding:0 1rem}
-        .card{background:#fff;border-radius:16px;padding:2rem;margin-bottom:2rem;box-shadow:0 4px 20px rgba(0,0,0,.06);border:1px solid #E8E2D8}
-        .card h2{font-size:1.3rem;font-weight:800;color:#C85A32;margin-bottom:1rem;border-bottom:3px solid #D4A359;padding-bottom:.5rem;display:inline-block}
-        label{font-weight:600;display:block;margin-bottom:.3rem}
-        input[type=text],input[type=number],input[type=url],input[type=password]{width:100%;padding:.7rem;border:2px solid #E8E2D8;border-radius:8px;font-family:'Tajawal';font-size:1rem}
-        input:focus{border-color:#C85A32;outline:none}
+        body{font-family:'Tajawal',sans-serif;background:#F0EDE6;color:#2C3E2E;min-height:100vh}
+
+        /* ===== Lock Screen ===== */
+        .lock{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#1A1A1A 0%,#2C3E2E 100%)}
+        .lock-box{background:#fff;border-radius:24px;padding:3rem;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);max-width:420px;width:90%}
+        .lock-box .icon{font-size:4rem;margin-bottom:1rem}
+        .lock-box input{text-align:center;font-size:1.5rem;letter-spacing:8px;margin:1rem 0;width:100%;padding:.8rem;border:2px solid #E8E2D8;border-radius:12px;font-family:'Tajawal'}
+        .lock-box input:focus{border-color:#C85A32;outline:none}
+        .lock-box .err{color:#e74c3c;font-weight:700;margin-top:.5rem;display:none}
+
+        /* ===== Header ===== */
+        .header{background:linear-gradient(135deg,#2C3E2E 0%,#1A1A1A 100%);color:#FDFBF7;padding:1.2rem 2rem;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 20px rgba(0,0,0,.2);position:sticky;top:0;z-index:100}
+        .header h1{font-size:1.4rem;font-weight:900;letter-spacing:3px}
+        .header-links{display:flex;gap:1rem;align-items:center}
+        .header-links a{color:#D4A359;text-decoration:none;font-weight:700;padding:.5rem 1rem;border-radius:8px;transition:all .3s;font-size:.9rem}
+        .header-links a:hover{background:rgba(212,163,89,.15)}
+        .header-links a.active-link{background:rgba(212,163,89,.2);border:1px solid rgba(212,163,89,.4)}
+
+        /* ===== Navigation Tabs ===== */
+        .nav-tabs{display:flex;gap:.5rem;padding:1rem 2rem;background:#fff;border-bottom:2px solid #E8E2D8;overflow-x:auto}
+        .nav-tab{padding:.7rem 1.5rem;border-radius:10px;border:2px solid #E8E2D8;background:#FDFBF7;color:#7A8A7C;font-weight:700;cursor:pointer;transition:all .3s;font-family:'Tajawal';font-size:.9rem;white-space:nowrap}
+        .nav-tab:hover{border-color:#C85A32;color:#C85A32}
+        .nav-tab.active{background:#C85A32;color:#fff;border-color:#C85A32}
+
+        /* ===== Container ===== */
+        .container{max-width:1100px;margin:1.5rem auto;padding:0 1rem}
+
+        /* ===== Dashboard Cards ===== */
+        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:2rem}
+        .stat-card{background:#fff;border-radius:16px;padding:1.5rem;box-shadow:0 4px 15px rgba(0,0,0,.05);border:1px solid #E8E2D8;transition:all .3s;position:relative;overflow:hidden}
+        .stat-card:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,.1)}
+        .stat-card::before{content:'';position:absolute;top:0;right:0;width:4px;height:100%;border-radius:0 16px 16px 0}
+        .stat-card.orange::before{background:#C85A32}
+        .stat-card.gold::before{background:#D4A359}
+        .stat-card.green::before{background:#27ae60}
+        .stat-card.blue::before{background:#3498db}
+        .stat-icon{font-size:2.2rem;margin-bottom:.5rem}
+        .stat-value{font-size:2.2rem;font-weight:900;color:#2C3E2E;line-height:1}
+        .stat-label{font-size:.85rem;color:#7A8A7C;margin-top:.3rem;font-weight:600}
+        .stat-sub{font-size:.75rem;color:#B89C7D;margin-top:.3rem}
+
+        /* ===== Cards ===== */
+        .card{background:#fff;border-radius:16px;padding:2rem;margin-bottom:1.5rem;box-shadow:0 4px 15px rgba(0,0,0,.05);border:1px solid #E8E2D8}
+        .card h2{font-size:1.2rem;font-weight:800;color:#C85A32;margin-bottom:1rem;border-bottom:3px solid #D4A359;padding-bottom:.5rem;display:inline-block}
+        .card-full{display:none}
+        .card-full.active{display:block}
+
+        /* ===== Forms ===== */
+        label{font-weight:700;display:block;margin-bottom:.3rem;font-size:.9rem}
+        input[type=text],input[type=number],input[type=url],input[type=password],textarea{width:100%;padding:.7rem;border:2px solid #E8E2D8;border-radius:10px;font-family:'Tajawal';font-size:1rem;transition:border-color .3s}
+        input:focus,textarea:focus{border-color:#C85A32;outline:none}
         .row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
         .mb{margin-bottom:1rem}
-        .btn{padding:.7rem 1.5rem;border:none;border-radius:8px;font-family:'Tajawal';font-size:1rem;font-weight:700;cursor:pointer}
+
+        /* ===== Buttons ===== */
+        .btn{padding:.7rem 1.5rem;border:none;border-radius:10px;font-family:'Tajawal';font-size:1rem;font-weight:700;cursor:pointer;transition:all .3s}
         .btn-p{background:#C85A32;color:#fff}
         .btn-g{background:#D4A359;color:#1A1A1A}
         .btn-d{background:#e74c3c;color:#fff}
-        .btn:hover{opacity:.85}
+        .btn-s{background:#27ae60;color:#fff}
+        .btn:hover{opacity:.85;transform:translateY(-1px)}
+        .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+        /* ===== Badges ===== */
         .badges{display:flex;gap:.5rem;flex-wrap:wrap}
-        .badge-opt{padding:.3rem .8rem;border:2px solid #E8E2D8;border-radius:20px;cursor:pointer;font-size:.85rem}
-        .badge-opt.on{border-color:#D4A359;background:#D4A359;color:#1A1A1A;font-weight:700}
-        .item{display:flex;align-items:center;gap:1rem;padding:1rem;background:#FDFBF7;border-radius:10px;border:1px solid #E8E2D8;margin-bottom:.5rem}
-        .item .info{flex:1}
-        .item .info h4{font-size:1rem}
-        .item .info p{font-size:.85rem;color:#7A8A7C}
-        .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);padding:1rem 2rem;border-radius:10px;color:#fff;font-weight:600;z-index:9999}
+        .badge-opt{padding:.4rem 1rem;border:2px solid #E8E2D8;border-radius:20px;cursor:pointer;font-size:.85rem;font-weight:600;transition:all .2s}
+        .badge-opt.on{border-color:#D4A359;background:#D4A359;color:#1A1A1A;font-weight:800}
+        .badge-opt:hover{border-color:#C85A32}
+
+        /* ===== Product List ===== */
+        .item{display:flex;align-items:center;gap:1rem;padding:1rem;background:#FDFBF7;border-radius:12px;border:1px solid #E8E2D8;margin-bottom:.5rem;transition:all .3s}
+        .item:hover{border-color:#C85A32;box-shadow:0 4px 12px rgba(200,90,50,.08)}
+        .item img{width:60px;height:60px;object-fit:cover;border-radius:10px;border:1px solid #E8E2D8;flex-shrink:0}
+        .item .info{flex:1;min-width:0}
+        .item .info h4{font-size:1rem;font-weight:700;color:#2C3E2E}
+        .item .info p{font-size:.82rem;color:#7A8A7C}
+        .item-actions{display:flex;gap:.4rem;flex-shrink:0}
+
+        /* ===== Health Check ===== */
+        .health-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+        .health-item{display:flex;align-items:center;gap:.8rem;padding:1rem;background:#FDFBF7;border-radius:12px;border:1px solid #E8E2D8}
+        .health-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+        .health-dot.ok{background:#27ae60}
+        .health-dot.warn{background:#f39c12}
+        .health-dot.err{background:#e74c3c}
+        .health-dot.loading{background:#BDC3C7;animation:pulse 1s infinite}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+        .health-text h4{font-size:.9rem;font-weight:700}
+        .health-text p{font-size:.78rem;color:#7A8A7C}
+
+        /* ===== Toast ===== */
+        .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);padding:1rem 2rem;border-radius:12px;color:#fff;font-weight:700;z-index:9999;opacity:0;transition:all .3s;box-shadow:0 8px 25px rgba(0,0,0,.2)}
+        .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
         .ok{background:#27ae60}
         .er{background:#e74c3c}
-        .lock{display:flex;align-items:center;justify-content:center;min-height:100vh}
-        .lock-box{background:#fff;border-radius:20px;padding:3rem;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.1);max-width:400px;width:90%}
-        .lock-box .icon{font-size:4rem;margin-bottom:1rem}
-        .lock-box input{text-align:center;font-size:1.5rem;letter-spacing:5px;margin:1rem 0;width:100%}
-        .lock-box .err{color:#e74c3c;font-weight:600;margin-top:.5rem;display:none}
-        .hidden{display:none!important}
+        .info-t{background:#3498db}
+
+        /* ===== Responsive ===== */
+        @media(max-width:768px){
+            .row{grid-template-columns:1fr}
+            .stats-grid{grid-template-columns:1fr 1fr}
+            .health-grid{grid-template-columns:1fr}
+            .nav-tabs{padding:.8rem 1rem}
+            .item{flex-direction:column;text-align:center}
+            .item-actions{width:100%}
+            .item-actions .btn{flex:1}
+        }
     </style>
 </head>
 <body>
+    <!-- ===== Lock Screen ===== -->
     <div id="lockScreen" class="lock">
         <div class="lock-box">
-            <div class="icon">🔒</div>
-            <h2>MAKAN - إدارة</h2>
-            <p>أدخل كلمة السر</p>
+            <div class="icon">🏺</div>
+            <h2 style="font-size:1.5rem;font-weight:900;letter-spacing:3px;color:#C85A32">MAKAN</h2>
+            <p style="color:#7A8A7C;margin-top:.3rem">لوحة التحكم الإدارية</p>
             <input type="password" id="pwd" placeholder="••••" onkeypress="if(event.key==='Enter')login()">
-            <button class="btn btn-p" style="width:100%;margin-top:.5rem" onclick="login()">دخول</button>
+            <button class="btn btn-p" style="width:100%;margin-top:.5rem;font-size:1.1rem" onclick="login()">🔒 دخول</button>
             <div id="err" class="err">كلمة السر خاطئة!</div>
         </div>
     </div>
 
-    <div id="app" class="hidden">
+    <!-- ===== App ===== -->
+    <div id="app" style="display:none">
         <div class="header">
-            <h1>MAKAN - إدارة</h1>
-            <a href="index.html">الموقع</a>
+            <h1>🏺 MAKAN - إدارة</h1>
+            <div class="header-links">
+                <a href="index.html" target="_blank">🌐 الموقع</a>
+                <a href="#" onclick="location.reload()" style="color:#e74c3c">🚪 خروج</a>
+            </div>
         </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('dashboard',this)">📊 لوحة التحكم</button>
+            <button class="nav-tab" onclick="showTab('products',this)">📦 المنتجات</button>
+            <button class="nav-tab" onclick="showTab('add',this)">➕ إضافة منتج</button>
+            <button class="nav-tab" onclick="showTab('health',this)">🔍 فحص الموقع</button>
+            <button class="nav-tab" onclick="showTab('settings',this)">⚙️ الإعدادات</button>
+        </div>
+
         <div class="container">
-            <div class="card" style="background:rgba(212,163,89,.1);border-color:#D4A359">
-                <h2 style="border-color:#2C3E2E">GitHub Token</h2>
-                <p style="color:#7A8A7C;margin-bottom:.8rem;font-size:.9rem">لتضيف/تحذف منتجات من الموقع. <a href="https://github.com/settings/tokens/new?scopes=repo" target="_blank" style="color:#C85A32">أنشئ من هنا</a></p>
-                <div style="display:flex;gap:.5rem">
-                    <input type="password" id="token" placeholder="ghp_xxxxxxxx" style="flex:1">
-                    <button class="btn btn-g" onclick="saveToken()">حفظ</button>
+            <!-- ===== Dashboard Tab ===== -->
+            <div class="card-full active" id="tab-dashboard">
+                <div class="stats-grid">
+                    <div class="stat-card orange">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-value" id="statVisitors">...</div>
+                        <div class="stat-label">عدد الزوار</div>
+                        <div class="stat-sub">المجموع الكلي</div>
+                    </div>
+                    <div class="stat-card gold">
+                        <div class="stat-icon">📦</div>
+                        <div class="stat-value" id="statProducts">...</div>
+                        <div class="stat-label">المنتجات</div>
+                        <div class="stat-sub">عدد المنتجات المعروضة</div>
+                    </div>
+                    <div class="stat-card green">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-value" id="statRevenue">...</div>
+                        <div class="stat-label">إجمالي الأسعار</div>
+                        <div class="stat-sub">مجموع أسعار المنتجات</div>
+                    </div>
+                    <div class="stat-card blue">
+                        <div class="stat-icon">🕐</div>
+                        <div class="stat-value" id="statTime" style="font-size:1.4rem">...</div>
+                        <div class="stat-label">آخر تحديث</div>
+                        <div class="stat-sub">من GitHub</div>
+                    </div>
                 </div>
-                <p id="tokStatus" style="margin-top:.5rem;font-size:.85rem;font-weight:600"></p>
+
+                <!-- Quick Actions -->
+                <div class="card">
+                    <h2>⚡ إجراءات سريعة</h2>
+                    <div style="display:flex;gap:1rem;flex-wrap:wrap">
+                        <button class="btn btn-p" onclick="showTab('add',document.querySelectorAll('.nav-tab')[2])">➕ إضافة منتج جديد</button>
+                        <button class="btn btn-g" onclick="showTab('products',document.querySelectorAll('.nav-tab')[1])">📦 إدارة المنتجات</button>
+                        <button class="btn btn-s" onclick="runHealthCheck()">🔍 فحص الموقع</button>
+                        <button class="btn" style="background:#3498db;color:#fff" onclick="exportData()">📋 تصدير البيانات</button>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="card">
+                    <h2>📝 معلومات الموقع</h2>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+                        <div style="padding:1rem;background:#FDFBF7;border-radius:10px;border:1px solid #E8E2D8">
+                            <p style="font-size:.85rem;color:#7A8A7C">المالك</p>
+                            <p style="font-weight:800;font-size:1.1rem">MAKAN</p>
+                        </div>
+                        <div style="padding:1rem;background:#FDFBF7;border-radius:10px;border:1px solid #E8E2D8">
+                            <p style="font-size:.85rem;color:#7A8A7C">المطور</p>
+                            <p style="font-weight:800;font-size:1.1rem">MZ Studio</p>
+                        </div>
+                        <div style="padding:1rem;background:#FDFBF7;border-radius:10px;border:1px solid #E8E2D8">
+                            <p style="font-size:.85rem;color:#7A8A7C">الرقم الجيهي</p>
+                            <p style="font-weight:800;font-size:1.1rem">0795028192</p>
+                        </div>
+                        <div style="padding:1rem;background:#FDFBF7;border-radius:10px;border:1px solid #E8E2D8">
+                            <p style="font-size:.85rem;color:#7A8A7C">المستودع</p>
+                            <p style="font-weight:800;font-size:1.1rem">GitHub Pages</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="card">
-                <h2>إضافة منتج</h2>
-                <form onsubmit="addProduct(event)">
-                    <div class="row mb">
-                        <div><label>الاسم *</label><input type="text" id="pName" required placeholder="قوار زرع"></div>
-                        <div><label>السعر *</label><input type="number" id="pPrice" required min="0" placeholder="18"></div>
+            <!-- ===== Products Tab ===== -->
+            <div class="card-full" id="tab-products">
+                <div class="card">
+                    <h2>📦 كل المنتجات (<span id="prodCount">0</span>)</h2>
+                    <div style="display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap">
+                        <button class="btn btn-p" onclick="showTab('add',document.querySelectorAll('.nav-tab')[2])">➕ إضافة منتج</button>
+                        <button class="btn btn-g" onclick="loadHtml()">🔄 تحديث القائمة</button>
                     </div>
-                    <div class="mb"><label>المقاس *</label><input type="text" id="pSize" required placeholder="📏 ارتفاع 64 سم | عرض 40 سم"></div>
-                    <div class="mb">
-                        <label>الشارة</label>
-                        <div class="badges">
-                            <span class="badge-opt on" data-v="" onclick="pickBadge(this)">بدون</span>
-                            <span class="badge-opt" data-v="جديد" onclick="pickBadge(this)">جديد</span>
-                            <span class="badge-opt" data-v="الأكثر مبيعاً" onclick="pickBadge(this)">الأكثر مبيعاً</span>
-                            <span class="badge-opt" data-v="عرض خاص" onclick="pickBadge(this)">عرض خاص</span>
-                        </div>
-                        <input type="hidden" id="pBadge" value="">
-                    </div>
-                    <div class="mb">
-                        <label>صور المنتج *</label>
-                        <p style="font-size:.8rem;color:#7A8A7C;margin-bottom:.3rem">أضف رابط صورة واحد على الأقل، أو ارفع صور من جهازك من الأسفل</p>
-                        <div id="urlList">
-                            <input type="url" class="pUrl mb" placeholder="https://example.com/image.jpg">
-                        </div>
-                        <button type="button" class="btn btn-g" onclick="addUrl()" style="font-size:.85rem">+ إضافة صورة</button>
-                        <div style="margin-top:1rem;padding-top:1rem;border-top:2px dashed #E8E2D8">
-                            <label style="font-size:.9rem">📤 أو ارفع صور من جهازك</label>
-                            <input type="file" id="pFiles" accept="image/*" multiple style="display:block;margin:.5rem 0;font-family:'Tajawal'">
-                            <button type="button" class="btn btn-p" id="upBtn" onclick="uploadImages()" style="font-size:.85rem">رفع الصور</button>
-                            <p id="upStatus" style="margin-top:.5rem;font-size:.85rem;font-weight:600"></p>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-p">إضافة للموقع</button>
-                </form>
+                    <div id="delList"><p style="color:#7A8A7C">جاري التحميل...</p></div>
+                </div>
             </div>
 
-            <div class="card">
-                <h2>حذف منتج</h2>
-                <div id="delList"><p style="color:#7A8A7C">جاري التحميل...</p></div>
+            <!-- ===== Add Product Tab ===== -->
+            <div class="card-full" id="tab-add">
+                <div class="card">
+                    <h2>➕ إضافة منتج جديد</h2>
+                    <form onsubmit="addProduct(event)">
+                        <div class="row mb">
+                            <div><label>اسم المنتج *</label><input type="text" id="pName" required placeholder="قوار زرع"></div>
+                            <div><label>السعر (دينار) *</label><input type="number" id="pPrice" required min="0" placeholder="18"></div>
+                        </div>
+                        <div class="mb"><label>المقاس *</label><input type="text" id="pSize" required placeholder="📏 ارتفاع 64 سم | عرض 40 سم"></div>
+                        <div class="mb">
+                            <label>الشارة (اختياري)</label>
+                            <div class="badges">
+                                <span class="badge-opt on" data-v="" onclick="pickBadge(this)">بدون</span>
+                                <span class="badge-opt" data-v="جديد" onclick="pickBadge(this)">🆕 جديد</span>
+                                <span class="badge-opt" data-v="الأكثر مبيعاً" onclick="pickBadge(this)">🔥 الأكثر مبيعاً</span>
+                                <span class="badge-opt" data-v="عرض خاص" onclick="pickBadge(this)">💰 عرض خاص</span>
+                            </div>
+                            <input type="hidden" id="pBadge" value="">
+                        </div>
+                        <div class="mb">
+                            <label>صور المنتج *</label>
+                            <p style="font-size:.8rem;color:#7A8A7C;margin-bottom:.3rem">أضف رابط صورة واحد على الأقل، أو ارفع صور من جهازك</p>
+                            <div id="urlList">
+                                <input type="url" class="pUrl mb" placeholder="https://example.com/image.jpg">
+                            </div>
+                            <button type="button" class="btn btn-g" onclick="addUrl()" style="font-size:.85rem">+ إضافة رابط صورة</button>
+                            <div style="margin-top:1rem;padding-top:1rem;border-top:2px dashed #E8E2D8">
+                                <label style="font-size:.9rem">📤 أو ارفع صور من جهازك</label>
+                                <input type="file" id="pFiles" accept="image/*" multiple style="display:block;margin:.5rem 0;font-family:'Tajawal'">
+                                <button type="button" class="btn btn-p" id="upBtn" onclick="uploadImages()" style="font-size:.85rem">رفع الصور</button>
+                                <p id="upStatus" style="margin-top:.5rem;font-size:.85rem;font-weight:600"></p>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-p" style="font-size:1.1rem;padding:1rem 2rem">✅ إضافة للموقع</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- ===== Health Check Tab ===== -->
+            <div class="card-full" id="tab-health">
+                <div class="card">
+                    <h2>🔍 فحص شامل للموقع</h2>
+                    <button class="btn btn-s" onclick="runHealthCheck()" style="margin-bottom:1rem">▶️ بدء الفحص</button>
+                    <div class="health-grid" id="healthGrid">
+                        <div class="health-item"><div class="health-dot loading"></div><div class="health-text"><h4>جاري الفحص...</h4><p>انتظر</p></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== Settings Tab ===== -->
+            <div class="card-full" id="tab-settings">
+                <div class="card" style="background:rgba(212,163,89,.08);border-color:#D4A359">
+                    <h2 style="border-color:#2C3E2E">🔑 GitHub Token</h2>
+                    <p style="color:#7A8A7C;margin-bottom:.8rem;font-size:.9rem">لتضيف/تحذف منتجات من الموقع. <a href="https://github.com/settings/tokens/new?scopes=repo" target="_blank" style="color:#C85A32;font-weight:700">أنشئ من هنا</a></p>
+                    <div style="display:flex;gap:.5rem">
+                        <input type="password" id="token" placeholder="ghp_xxxxxxxx" style="flex:1">
+                        <button class="btn btn-g" onclick="saveToken()">💾 حفظ</button>
+                    </div>
+                    <p id="tokStatus" style="margin-top:.5rem;font-size:.85rem;font-weight:600"></p>
+                </div>
+
+                <div class="card">
+                    <h2>ℹ️ معلومات النظام</h2>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+                        <div style="padding:1rem;background:#FDFBF7;border-radius:10px;border:1px solid #E8E2D8">
+                            <p style="font-size:.85rem;color:#7A8A7C">المستودع</p>
+                            <p style="font-weight:800">ghabood267-design/makan-pottery</p>
+                        </div>
+                        <div style="padding:1rem;background:#FDFBF7;border-radius:10px;border:1px solid #E8E2D8">
+                            <p style="font-size:.85rem;color:#7A8A7C">الفرع</p>
+                            <p style="font-weight:800">master</p>
+                        </div>
+                        <div style="padding:1rem;background:#FDFBF7;border-radius:10px;border:1px solid #E8E2D8">
+                            <p style="font-size:.85rem;color:#7A8A7C">API</p>
+                            <p style="font-weight:800">GitHub REST API v3</p>
+                        </div>
+                        <div style="padding:1rem;background:#FDFBF7;border-radius:10px;border:1px solid #E8E2D8">
+                            <p style="font-size:.85rem;color:#7A8A7C">عداد الزوار</p>
+                            <p style="font-weight:800">countapi.mileshilliard.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>🗑️ خطر - حذف الكل</h2>
+                    <p style="color:#e74c3c;font-weight:700;margin-bottom:1rem">⚠️ هذا الزر يحذف جميع المنتجات! استخدمه بحذر</p>
+                    <button class="btn btn-d" onclick="if(confirm('هل أنت متأكد جداً من حذف جميع المنتجات؟')){deleteAllProducts()}">🗑️ حذف جميع المنتجات</button>
+                </div>
             </div>
         </div>
     </div>
@@ -119,10 +324,11 @@
         var REPO='makan-pottery';
         var SHA='',HTML='';
 
+        // ===== Login =====
         function login(){
             if(document.getElementById('pwd').value==='2050'){
-                document.getElementById('lockScreen').classList.add('hidden');
-                document.getElementById('app').classList.remove('hidden');
+                document.getElementById('lockScreen').style.display='none';
+                document.getElementById('app').style.display='';
                 init();
             }else{
                 document.getElementById('err').style.display='block';
@@ -130,54 +336,137 @@
             }
         }
 
+        // ===== Tab Navigation =====
+        function showTab(name,btn){
+            document.querySelectorAll('.card-full').forEach(function(c){c.classList.remove('active')});
+            document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active')});
+            document.getElementById('tab-'+name).classList.add('active');
+            if(btn)btn.classList.add('active');
+        }
+
+        // ===== Init =====
         function init(){
-            if(TK){document.getElementById('token').value=TK;document.getElementById('tokStatus').textContent='Token محفوظ ✓';document.getElementById('tokStatus').style.color='#27ae60';}
-            else{document.getElementById('tokStatus').textContent='أدخل Token أولاً';document.getElementById('tokStatus').style.color='#e74c3c';}
+            if(TK){
+                document.getElementById('token').value=TK;
+                document.getElementById('tokStatus').textContent='✓ Token محفوظ';
+                document.getElementById('tokStatus').style.color='#27ae60';
+            }else{
+                document.getElementById('tokStatus').textContent='⚠ أدخل Token أولاً';
+                document.getElementById('tokStatus').style.color='#e74c3c';
+            }
+            loadVisitorCount();
             loadHtml();
         }
 
+        // ===== Token =====
         function saveToken(){
             var v=document.getElementById('token').value.trim();
-            if(v){TK=v;localStorage.setItem('gh_token',TK);document.getElementById('tokStatus').textContent='تم الحفظ ✓';document.getElementById('tokStatus').style.color='#27ae60';toast('تم الحفظ','ok');}
+            if(v){TK=v;localStorage.setItem('gh_token',TK);document.getElementById('tokStatus').textContent='✓ تم الحفظ';document.getElementById('tokStatus').style.color='#27ae60';toast('تم حفظ Token ✓','ok');}
         }
 
+        // ===== Visitor Count =====
+        function loadVisitorCount(){
+            document.getElementById('statVisitors').textContent='...';
+            fetch('https://countapi.mileshilliard.com/api/v1/get/makan_pottery_visits')
+                .then(function(r){return r.json()})
+                .then(function(d){
+                    document.getElementById('statVisitors').textContent=Number(d.value||0).toLocaleString();
+                })
+                .catch(function(){
+                    document.getElementById('statVisitors').textContent='—';
+                });
+        }
+
+        // ===== Load HTML from GitHub =====
         function loadHtml(){
-            if(!TK){document.getElementById('delList').innerHTML='<p style="color:#e74c3c">أدخل Token أولاً</p>';return;}
+            if(!TK){
+                document.getElementById('delList').innerHTML='<p style="color:#e74c3c;font-weight:700">⚠ أدخل Token من تبويب الإعدادات أولاً</p>';
+                document.getElementById('statProducts').textContent='—';
+                return;
+            }
+            document.getElementById('delList').innerHTML='<p style="color:#7A8A7C">⏳ جاري تحميل المنتجات...</p>';
             fetch('https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/index.html',{headers:{'Authorization':'token '+TK,'Accept':'application/vnd.github.v3+json'}})
             .then(function(r){if(!r.ok)throw new Error('Token خاطئ أو لا يوجد صلاحية ('+r.status+')');return r.json();})
-            .then(function(d){SHA=d.sha;HTML=decodeURIComponent(escape(atob(d.content)));showProducts();})
-            .catch(function(e){document.getElementById('delList').innerHTML='<p style="color:#e74c3c">خطأ: '+e.message+'</p>';});
+            .then(function(d){
+                SHA=d.sha;
+                HTML=decodeURIComponent(escape(atob(d.content)));
+                showProducts();
+                updateStats();
+            })
+            .catch(function(e){document.getElementById('delList').innerHTML='<p style="color:#e74c3c">❌ خطأ: '+e.message+'</p>';});
         }
 
+        // ===== Parse & Show Products =====
         function showProducts(){
             var list=document.getElementById('delList');
             var parts=HTML.split('<div class="product-card');
             var html='';
-            if(parts.length<=1){list.innerHTML='<p>لا يوجد منتجات</p>';return;}
+            var count=0;
+            if(parts.length<=1){list.innerHTML='<p style="color:#7A8A7C">لا يوجد منتجات</p>';document.getElementById('prodCount').textContent='0';return;}
             for(var i=1;i<parts.length;i++){
                 var nameMatch=parts[i].match(/<h3 class="product-name">(.*?)<\/h3>/);
                 var name=nameMatch?nameMatch[1]:'منتج '+i;
                 var priceMatch=parts[i].match(/<p class="product-price">(\d+)/);
-                var price=priceMatch?priceMatch[1]:'';
-                html+='<div class="item"><div class="info"><h4>'+name+'</h4><p>'+price+' دينار</p></div><button class="btn btn-d" onclick="delProduct('+i+')">حذف '+name+'</button></div>';
+                var price=priceMatch?priceMatch[1]:'?';
+                var imgMatch=parts[i].match(/<img src="([^"]+)"/);
+                var img=imgMatch?imgMatch[1]:'';
+                var sizeMatch=parts[i].match(/<p class="product-size">(.*?)<\/p>/);
+                var size=sizeMatch?sizeMatch[1]:'';
+                count++;
+                html+='<div class="item">'+
+                    (img?'<img src="'+img+'" alt="'+name+'">':'<div style="width:60px;height:60px;background:#E8E2D8;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0">🏺</div>')+
+                    '<div class="info"><h4>'+name+'</h4><p>💰 '+price+' دينار</p><p style="font-size:.75rem">'+size+'</p></div>'+
+                    '<div class="item-actions">'+
+                    '<button class="btn btn-d" style="font-size:.85rem;padding:.5rem 1rem" onclick="delProduct('+i+',\''+name.replace(/'/g,"\\'")+'\')">🗑️ حذف</button>'+
+                    '</div></div>';
             }
             list.innerHTML=html;
+            document.getElementById('prodCount').textContent=count;
+            document.getElementById('statProducts').textContent=count;
         }
 
+        // ===== Update Dashboard Stats =====
+        function updateStats(){
+            var parts=HTML.split('<div class="product-card');
+            var count=Math.max(0,parts.length-1);
+            document.getElementById('statProducts').textContent=count;
+
+            // Calculate total revenue
+            var totalRevenue=0;
+            for(var i=1;i<parts.length;i++){
+                var priceMatch=parts[i].match(/<p class="product-price">(\d+)/);
+                if(priceMatch){totalRevenue+=parseInt(priceMatch[1])||0;}
+            }
+            document.getElementById('statRevenue').textContent=totalRevenue+' دينار';
+
+            // Last update time
+            fetch('https://api.github.com/repos/'+OWNER+'/'+REPO+'/commits?path=index.html&per_page=1',{headers:{'Authorization':'token '+TK,'Accept':'application/vnd.github.v3+json'}})
+            .then(function(r){return r.json()})
+            .then(function(d){
+                if(d&&d[0]&&d[0].commit&&d[0].commit.committer){
+                    var date=new Date(d[0].commit.committer.date);
+                    var months=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+                    document.getElementById('statTime').textContent=date.getDate()+' '+months[date.getMonth()]+'\n'+date.getHours()+':'+String(date.getMinutes()).padStart(2,'0');
+                }
+            })
+            .catch(function(){document.getElementById('statTime').textContent='—';});
+        }
+
+        // ===== Add URL Field =====
         function addUrl(){
             var inp=document.createElement('input');
             inp.type='url';inp.className='pUrl mb';inp.placeholder='https://example.com/image.jpg';
             document.getElementById('urlList').appendChild(inp);
         }
 
+        // ===== Upload Images =====
         function uploadImages(){
             var files=document.getElementById('pFiles').files;
             if(!files.length){toast('اختر صورة أولاً','er');return;}
             if(!TK){toast('أدخل Token أولاً','er');return;}
             var btn=document.getElementById('upBtn');
             var status=document.getElementById('upStatus');
-            btn.disabled=true;
-            status.textContent='';
+            btn.disabled=true;status.textContent='';
             var total=files.length,done=0;
             var base=Date.now();
             Array.prototype.forEach.call(files,function(file,idx){
@@ -192,52 +481,45 @@
                         canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
                         var data=canvas.toDataURL('image/jpeg',0.85).split(',')[1];
                         var path='images/products/'+base+'-'+idx+'.jpg';
-                        status.textContent='جاري رفع '+(idx+1)+' من '+total+' ...';
+                        status.textContent='⏳ رفع '+(idx+1)+' من '+total+' ...';
                         fetch('https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+path,{
-                            method:'PUT',
-                            headers:{'Authorization':'token '+TK,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},
+                            method:'PUT',headers:{'Authorization':'token '+TK,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},
                             body:JSON.stringify({message:'Upload product image',content:data,branch:'master'})
                         })
-                        .then(function(r){if(!r.ok)throw new Error('فشل الرفع ('+r.status+')');return r.json();})
+                        .then(function(r){if(!r.ok)throw new Error('فشل ('+r.status+')');return r.json();})
                         .then(function(){
                             done++;
                             var inp=document.createElement('input');
                             inp.type='url';inp.className='pUrl mb';
                             inp.value='https://raw.githubusercontent.com/'+OWNER+'/'+REPO+'/master/'+path;
                             document.getElementById('urlList').appendChild(inp);
-                            status.textContent='تم رفع '+done+' من '+total+' ✓';
-                            if(done===total){
-                                btn.disabled=false;
-                                document.getElementById('pFiles').value='';
-                                toast('تم رفع جميع الصور ✓','ok');
-                            }
+                            status.textContent='✅ تم رفع '+done+' من '+total;
+                            if(done===total){btn.disabled=false;document.getElementById('pFiles').value='';toast('تم رفع جميع الصور ✓','ok');}
                         })
-                        .catch(function(e){status.textContent='خطأ: '+e.message;btn.disabled=false;toast('خطأ: '+e.message,'er');});
-                    };
-                    img.onerror=function(){status.textContent='تعذر قراءة الصورة';btn.disabled=false;};
+                        .catch(function(e){status.textContent='❌ خطأ: '+e.message;btn.disabled=false;toast('خطأ: '+e.message,'er');});
+                    };img.onerror=function(){status.textContent='تعذر قراءة الصورة';btn.disabled=false;};
                     img.src=reader.result;
-                };
-                reader.onerror=function(){status.textContent='تعذر قراءة الملف';btn.disabled=false;};
+                };reader.onerror=function(){status.textContent='تعذر قراءة الملف';btn.disabled=false;};
                 reader.readAsDataURL(file);
             });
         }
 
+        // ===== Pick Badge =====
         function pickBadge(el){
-            document.querySelectorAll('.badge-opt').forEach(function(b){b.classList.remove('on');});
+            document.querySelectorAll('.badge-opt').forEach(function(b){b.classList.remove('on')});
             el.classList.add('on');
             document.getElementById('pBadge').value=el.dataset.v;
         }
 
+        // ===== Add Product =====
         function addProduct(e){
             e.preventDefault();
             if(!TK){toast('أدخل Token أولاً','er');return;}
             if(!HTML){toast('جاري التحميل...','er');return;}
-
             var name=document.getElementById('pName').value.trim();
             var price=document.getElementById('pPrice').value;
             var size=document.getElementById('pSize').value.trim();
             var badge=document.getElementById('pBadge').value;
-
             var urls=[];
             document.querySelectorAll('.pUrl').forEach(function(i){if(i.value.trim())urls.push(i.value.trim());});
             if(!urls.length){toast('أضف صورة واحدة على الأقل','er');return;}
@@ -248,85 +530,160 @@
                 slides+='                        <div class="product-slide'+(j===0?' active':'')+'"><img src="'+u+'" alt="'+name+'"></div>\n';
                 dots+='                            <button class="slider-dot'+(j===0?' active':'')+'" onclick="goToSlide(this,'+j+')"></button>\n';
             });
-
             var card='\n            <div class="product-card fade-in">\n'+
-                '                <div class="product-image">\n'+
-                badgeH+
-                '                    <div class="product-slider">\n'+
-                slides+
+                '                <div class="product-image">\n'+badgeH+
+                '                    <div class="product-slider">\n'+slides+
                 '                        <button class="slider-arrow prev" onclick="changeSlide(this,-1)">❮</button>\n'+
                 '                        <button class="slider-arrow next" onclick="changeSlide(this,1)">❯</button>\n'+
-                '                        <div class="slider-dots">\n'+
-                dots+
-                '                        </div>\n'+
-                '                    </div>\n'+
+                '                        <div class="slider-dots">\n'+dots+
+                '                        </div>\n                    </div>\n'+
                 '                </div>\n'+
                 '                <div class="product-info">\n'+
                 '                    <h3 class="product-name">'+name+'</h3>\n'+
                 '                    <p class="product-size">'+size+'</p>\n'+
                 '                    <p class="product-price">'+price+' <span>دينار</span></p>\n'+
                 '                    <button class="order-btn" onclick="orderProduct(\''+name.replace(/'/g,"\\'")+' - '+price+' دينار\')">اطلب الآن</button>\n'+
-                '                </div>\n'+
-                '            </div>';
+                '                </div>\n            </div>';
 
-            var newHtml=HTML.replace(
-                /\n\s*<\/div>\s*\n\s*<\/section>\s*\n\s*<section class="about-section"/,
-                '\n'+card+'\n        </div>\n    </section>\n\n    <section class="about-section"'
-            );
-
+            var newHtml=HTML.replace(/\n\s*<\/div>\s*\n\s*<\/section>\s*\n\s*<section class="about-section"/,
+                '\n'+card+'\n        </div>\n    </section>\n\n    <section class="about-section"');
             if(newHtml===HTML){toast('خطأ في موقع الإدراج','er');return;}
 
-            toast('جاري الحفظ...','ok');
+            toast('⏳ جاري الحفظ...','info-t');
             var content=btoa(unescape(encodeURIComponent(newHtml)));
             fetch('https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/index.html',{
-                method:'PUT',
-                headers:{'Authorization':'token '+TK,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},
+                method:'PUT',headers:{'Authorization':'token '+TK,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},
                 body:JSON.stringify({message:'Add: '+name,content:content,sha:SHA})
             })
             .then(function(r){if(!r.ok)throw new Error(r.status);return r.json();})
             .then(function(){
-                toast('تمت الإضافة! ستظهر بعد دقائق','ok');
-                document.querySelector('form').reset();
-                document.querySelectorAll('.badge-opt').forEach(function(b){b.classList.remove('on');});
+                toast('✅ تمت الإضافة! ستظهر بعد دقائق','ok');
+                document.querySelector('#tab-add form').reset();
+                document.querySelectorAll('.badge-opt').forEach(function(b){b.classList.remove('on')});
                 document.querySelector('.badge-opt').classList.add('on');
                 document.getElementById('urlList').innerHTML='<input type="url" class="pUrl mb" placeholder="https://example.com/image.jpg">';
                 loadHtml();
             })
-            .catch(function(e){toast('خطأ: '+e.message,'er');});
+            .catch(function(e){toast('❌ خطأ: '+e.message,'er');});
         }
 
-        function delProduct(idx){
-            if(!confirm('هل أنت متأكد من الحذف؟'))return;
+        // ===== Delete Product =====
+        function delProduct(idx,name){
+            if(!confirm('هل أنت متأكد من حذف «'+name+'»؟'))return;
             if(!TK){toast('أدخل Token','er');return;}
-
-            // Find each product card as a complete block (including its closing </div>).
-            // The card's closing tag is the only </div> indented with exactly 12 spaces,
-            // so the lazy match stops at the end of the card and never touches
-            // the sections/scripts after the products grid.
             var cardRe=/<div class="product-card[\s\S]*?\n            <\/div>/g;
             var blocks=HTML.match(cardRe)||[];
             if(idx<1||idx>blocks.length){toast('المنتج غير موجود','er');return;}
-
             var newHtml=HTML.replace(blocks[idx-1],'');
-
-            toast('جاري الحذف...','ok');
+            toast('⏳ جاري الحذف...','info-t');
             var content=btoa(unescape(encodeURIComponent(newHtml)));
             fetch('https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/index.html',{
-                method:'PUT',
-                headers:{'Authorization':'token '+TK,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},
-                body:JSON.stringify({message:'Delete product',content:content,sha:SHA})
+                method:'PUT',headers:{'Authorization':'token '+TK,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},
+                body:JSON.stringify({message:'Delete: '+name,content:content,sha:SHA})
             })
             .then(function(r){if(!r.ok)throw new Error(r.status);return r.json();})
-            .then(function(){toast('تم الحذف!','ok');loadHtml();})
-            .catch(function(e){toast('خطأ: '+e.message,'er');});
+            .then(function(){toast('✅ تم الحذف!','ok');loadHtml();})
+            .catch(function(e){toast('❌ خطأ: '+e.message,'er');});
         }
 
+        // ===== Delete All Products =====
+        function deleteAllProducts(){
+            if(!TK){toast('أدخل Token','er');return;}
+            var parts=HTML.split('<div class="product-card');
+            if(parts.length<=1){toast('لا يوجد منتجات','er');return;}
+            var newHtml=HTML.replace(/<section class="products-section" id="products">[\s\S]*?<\/section>/,
+                '<section class="products-section" id="products">\n        <div class="section-header fade-in">\n            <h2>منتجاتنا</h2>\n            <p>قواور إسمنتية يدوية الصنع بتصميمات عصرية تجمع بين الأصالة والحداثة</p>\n        </div>\n    </section>');
+            toast('⏳ جاري حذف الكل...','info-t');
+            var content=btoa(unescape(encodeURIComponent(newHtml)));
+            fetch('https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/index.html',{
+                method:'PUT',headers:{'Authorization':'token '+TK,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},
+                body:JSON.stringify({message:'Delete all products',content:content,sha:SHA})
+            })
+            .then(function(r){if(!r.ok)throw new Error(r.status);return r.json();})
+            .then(function(){toast('✅ تم حذف جميع المنتجات','ok');loadHtml();})
+            .catch(function(e){toast('❌ خطأ: '+e.message,'er');});
+        }
+
+        // ===== Health Check =====
+        function runHealthCheck(){
+            showTab('health',document.querySelectorAll('.nav-tab')[3]);
+            var grid=document.getElementById('healthGrid');
+            grid.innerHTML='';
+            var checks=[
+                {name:'رابط الموقع',desc:'الوصول للموقع الرئيسي',url:'https://ghabood267-design.github.io/makan-pottery/',check:function(r){return r.ok?'ok':'err'}},
+                {name:'صفحة الإدارة',desc:'الوصول لadmin.html',url:'https://ghabood267-design.github.io/makan-pottery/admin.html',check:function(r){return r.ok?'ok':'err'}},
+                {name:'GitHub API',desc:'الاتصال بخادم GitHub',url:'https://api.github.com/',check:function(r){return r.ok?'ok':'warn'}},
+                {name:'عداد الزوار',desc:'خدمة countapi',url:'https://countapi.mileshilliard.com/api/v1/get/makan_pottery_visits',check:function(r){return r.ok?'ok':'warn'}},
+                {name:'الخط العربي',desc:'خط Tajawal من Google',url:'https://fonts.googleapis.com/css2?family=Tajawal',check:function(r){return r.ok?'ok':'warn'}},
+                {name:'GitHub Token',desc:'صلاحية الوصول',url:'',check:function(){return TK?'ok':'err'}}
+            ];
+
+            checks.forEach(function(c,i){
+                var item=document.createElement('div');
+                item.className='health-item';
+                item.innerHTML='<div class="health-dot loading"></div><div class="health-text"><h4>'+c.name+'</h4><p>'+c.desc+'</p></div>';
+                grid.appendChild(item);
+
+                setTimeout(function(){
+                    if(!c.url){
+                        var dot=item.querySelector('.health-dot');
+                        dot.classList.remove('loading');
+                        dot.classList.add(c.check());
+                        return;
+                    }
+                    fetch(c.url,{mode:'no-cors'}).then(function(r){
+                        var dot=item.querySelector('.health-dot');
+                        dot.classList.remove('loading');
+                        dot.classList.add(c.check(r));
+                    }).catch(function(){
+                        var dot=item.querySelector('.health-dot');
+                        dot.classList.remove('loading');
+                        dot.classList.add('err');
+                    });
+                },300+i*400);
+            });
+
+            setTimeout(function(){toast('✅ اكتمل الفحص','ok');},300+checks.length*400+200);
+        }
+
+        // ===== Export Data =====
+        function exportData(){
+            if(!HTML){toast('حمّل البيانات أولاً','er');return;}
+            var parts=HTML.split('<div class="product-card');
+            var products=[];
+            for(var i=1;i<parts.length;i++){
+                var nameMatch=parts[i].match(/<h3 class="product-name">(.*?)<\/h3>/);
+                var priceMatch=parts[i].match(/<p class="product-price">(\d+)/);
+                var sizeMatch=parts[i].match(/<p class="product-size">(.*?)<\/p>/);
+                products.push({
+                    name:nameMatch?nameMatch[1]:'',
+                    price:priceMatch?priceMatch[1]+' دينار':'',
+                    size:sizeMatch?sizeMatch[1]:''
+                });
+            }
+            var text='=== MAKAN - تقرير المنتجات ===\n\n';
+            text+='عدد المنتجات: '+products.length+'\n\n';
+            products.forEach(function(p,i){text+=(i+1)+'. '+p.name+' - '+p.price+' - '+p.size+'\n';});
+            var blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+            var a=document.createElement('a');
+            a.href=URL.createObjectURL(blob);
+            a.download='makan-products-report.txt';
+            a.click();
+            toast('✅ تم تصدير التقرير','ok');
+        }
+
+        // ===== Toast =====
         function toast(msg,type){
             var t=document.createElement('div');
-            t.className='toast '+type;t.textContent=msg;
+            t.className='toast '+(type||'ok');
+            t.textContent=msg;
             document.body.appendChild(t);
-            setTimeout(function(){t.remove();},3000);
+            requestAnimationFrame(function(){t.classList.add('show')});
+            setTimeout(function(){t.classList.remove('show');setTimeout(function(){t.remove()},300)},3000);
         }
+
+        // ===== Enter key on password =====
+        document.getElementById('pwd').addEventListener('keypress',function(e){if(e.key==='Enter')login()});
     </script>
 </body>
 </html>

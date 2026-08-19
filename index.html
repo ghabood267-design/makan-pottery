@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&amp;display=swap" rel="stylesheet" />
     <style>
         :root {
-            --cream: #FDFBF7;
+            --cream: #E8DDD0;
             --olive: #2C3E2E;
             --olive-light: #4A5F4D;
             --terracotta: #C85A32;
@@ -16,8 +16,8 @@
             --gold: #D4A359;
             --gold-dark: #B8893D;
             --dark: #1A1A1A;
-            --white: #FFFFFF;
-            --border: #E8E2D8;
+            --white: #F2EBE1;
+            --border: #D4C8B8;
             --text-muted: #7A8A7C;
         }
 
@@ -32,6 +32,9 @@
             background: var(--cream);
             color: var(--olive);
             overflow-x: hidden;
+        }
+        body.intro-active {
+            overflow: hidden !important;
         }
 
         ::-webkit-scrollbar { width: 8px; }
@@ -49,7 +52,7 @@
         }
 
         nav.scrolled {
-            background: rgba(253, 251, 247, 0.97);
+            background: rgba(232, 221, 208, 0.97);
             backdrop-filter: blur(15px);
             box-shadow: 0 2px 30px rgba(200, 90, 50, 0.1);
             border-bottom: 1px solid var(--border);
@@ -1653,9 +1656,308 @@
             .quiz-result-actions { width: 100%; }
             .quiz-box { padding: 1.5rem 1rem; }
         }
+
+        /* ===== Cinematic Intro (دخول سينمائي) ===== */
+        .intro-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: #0A0A0A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: none;
+        }
+        .intro-screen.opening-left {
+            transition: transform 1.2s cubic-bezier(0.76, 0, 0.24, 1);
+            transform: translateX(-100%);
+        }
+        .intro-screen.opening-right {
+            transition: transform 1.2s cubic-bezier(0.76, 0, 0.24, 1);
+            transform: translateX(100%);
+        }
+        .intro-screen.hidden { display: none; }
+
+        .intro-gate-left, .intro-gate-right {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: #0A0A0A;
+            z-index: 1;
+        }
+        .intro-gate-left { left: 0; transform-origin: left; }
+        .intro-gate-right { right: 0; transform-origin: right; }
+
+        .intro-gate-left.split {
+            animation: gateLeft 1.4s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+        }
+        .intro-gate-right.split {
+            animation: gateRight 1.4s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+        }
+
+        @keyframes gateLeft {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-105%); }
+        }
+        @keyframes gateRight {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(105%); }
+        }
+
+        .intro-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .intro-content.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .intro-content.fade-out {
+            opacity: 0;
+            transform: scale(1.1);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .intro-logo-text {
+            font-size: 7rem;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 20px;
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+        }
+
+        .intro-logo-text::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 163, 89, 0.6), rgba(200, 90, 50, 0.4), transparent);
+            animation: lightSweep 1.8s ease-in-out 0.8s forwards;
+        }
+
+        @keyframes lightSweep {
+            0% { left: -100%; }
+            100% { left: 150%; }
+        }
+
+        .intro-tagline {
+            font-size: 1.6rem;
+            color: #D4A359;
+            font-weight: 300;
+            letter-spacing: 8px;
+            margin-top: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease 1.8s;
+        }
+        .intro-tagline.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .intro-sub {
+            font-size: 1rem;
+            color: #7A8A7C;
+            letter-spacing: 4px;
+            margin-top: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.8s ease 2.4s;
+        }
+        .intro-sub.visible { opacity: 1; }
+
+        .intro-line {
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #D4A359, transparent);
+            margin: 1.5rem auto 0;
+            transition: width 1s ease 2s;
+        }
+        .intro-line.visible { width: 200px; }
+
+        /* Sparkle particles around logo */
+        .intro-sparkles {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 3;
+        }
+        .intro-sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #D4A359;
+            border-radius: 50%;
+            opacity: 0;
+            animation: sparkle 2s ease-in-out forwards;
+        }
+
+        @keyframes sparkle {
+            0% { opacity: 0; transform: scale(0) translate(0, 0); }
+            20% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0) translate(var(--tx), var(--ty)); }
+        }
+
+        /* ===== Floating Background Elements ===== */
+        .floating-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .floating-el {
+            position: absolute;
+            animation: floatDrift linear infinite;
+            will-change: transform;
+            filter: blur(0px);
+        }
+        .floating-el.emoji {
+            font-size: 2.5rem;
+            opacity: 0.35;
+        }
+        .floating-el.dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+        .floating-el.ring {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid;
+            opacity: 0.2;
+        }
+        .floating-el.leaf {
+            width: 38px;
+            height: 18px;
+            border-radius: 50% 0;
+            opacity: 0.22;
+            transform: rotate(45deg);
+        }
+
+        @keyframes floatDrift {
+            0% { transform: translateY(110vh) translateX(0) rotate(0deg) scale(1); }
+            25% { transform: translateY(75vh) translateX(30px) rotate(90deg) scale(1.05); }
+            50% { transform: translateY(40vh) translateX(-20px) rotate(180deg) scale(0.95); }
+            75% { transform: translateY(15vh) translateX(25px) rotate(270deg) scale(1.03); }
+            100% { transform: translateY(-10vh) translateX(0) rotate(360deg) scale(1); }
+        }
+        @keyframes floatSway {
+            0% { transform: translateY(110vh) translateX(0) rotate(0deg); }
+            25% { transform: translateY(80vh) translateX(-40px) rotate(60deg); }
+            50% { transform: translateY(50vh) translateX(35px) rotate(120deg); }
+            75% { transform: translateY(20vh) translateX(-30px) rotate(240deg); }
+            100% { transform: translateY(-10vh) translateX(0) rotate(360deg); }
+        }
+        @keyframes floatPulse {
+            0%, 100% { transform: translateY(110vh) scale(1); opacity: 0.15; }
+            50% { transform: translateY(50vh) scale(1.3); opacity: 0.25; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0.15; }
+        }
+
+        /* ===== Products Section Explosion ===== */
+        .clay-particles-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9998;
+            pointer-events: none;
+            display: none;
+        }
+        .clay-particles-overlay.active { display: block; }
+        .clay-particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0;
+        }
+        .clay-particle.animate {
+            animation: clayExplode var(--dur) ease-out forwards;
+        }
+
+        @keyframes clayExplode {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+            50% {
+                opacity: 0.9;
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) scale(0.2) rotate(var(--rot));
+            }
+        }
+
+        .brand-form-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(10, 10, 10, 0.6);
+            pointer-events: none;
+        }
+        .brand-form-overlay.active { display: flex; }
+        .brand-form-text {
+            font-size: 6rem;
+            font-weight: 900;
+            color: var(--terracotta);
+            letter-spacing: 15px;
+            text-shadow: 0 0 60px rgba(200, 90, 50, 0.5);
+            opacity: 0;
+            transform: scale(3);
+            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .brand-form-text.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .brand-form-text.fade-out {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        @media (max-width: 768px) {
+            .intro-logo-text { font-size: 4rem; letter-spacing: 10px; }
+            .intro-tagline { font-size: 1.1rem; letter-spacing: 4px; }
+            .brand-form-text { font-size: 3.5rem; letter-spacing: 8px; }
+        }
     </style>
 </head>
-<body>
+<body class="intro-active">
+    <!-- ===== Cinematic Intro Screen ===== -->
+    <div class="intro-screen" id="introScreen">
+        <div class="intro-gate-left" id="gateLeft"></div>
+        <div class="intro-gate-right" id="gateRight"></div>
+        <div class="intro-sparkles" id="introSparkles"></div>
+        <div class="intro-content" id="introContent">
+            <div class="intro-logo-text">MAKAN</div>
+            <p class="intro-tagline" id="introTagline">قوار يحكي قصة أرضنا</p>
+            <p class="intro-sub" id="introSub">Where Clay Meets Soul</p>
+            <div class="intro-line" id="introLine"></div>
+        </div>
+    </div>
+
+    <!-- ===== Floating Background Elements ===== -->
+    <div class="floating-bg" id="floatingBg"></div>
+
+    <!-- ===== Products Section Explosion Overlay ===== -->
+    <div class="clay-particles-overlay" id="clayOverlay"></div>
+    <div class="brand-form-overlay" id="brandFormOverlay">
+        <div class="brand-form-text" id="brandFormText">MAKAN</div>
+    </div>
+
     <nav id="navbar">
         <div class="nav-content">
             <div class="logo">MAKAN</div>
@@ -2291,6 +2593,25 @@
         </div>
     </section>
 
+    <section style="background: linear-gradient(135deg, #1A1A1A 0%, #2C3E2E 50%, #1A1A1A 100%); padding: 3rem 2rem; border-top: 3px solid var(--gold); position: relative; overflow: hidden;">
+        <div style="position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(212,163,89,0.08), transparent 70%); pointer-events: none;"></div>
+        <div style="max-width: 900px; margin: 0 auto; text-align: center; position: relative; z-index: 1;">
+            <div style="font-size: 3rem; margin-bottom: 0.8rem; animation: spin 6s linear infinite; display: inline-block;">✦</div>
+            <h3 style="font-size: 2rem; font-weight: 900; color: #D4A359; letter-spacing: 6px; margin-bottom: 0.5rem;">MZ Studio</h3>
+            <p style="color: #B89C7D; font-size: 1rem; letter-spacing: 2px; margin-bottom: 1.5rem;">تصميم وتطوير المواقع والتطبيقات</p>
+            <div style="display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                <a href="https://www.instagram.com/mz2.vv?utm_source=qr" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.8rem 2rem; background: rgba(212,163,89,0.15); border: 1px solid rgba(212,163,89,0.4); border-radius: 50px; color: #D4A359; text-decoration: none; font-weight: 700; transition: all 0.3s; font-family: 'Tajawal', sans-serif;">
+                    <span>📷</span> إنستغرام
+                </a>
+                <a href="https://wa.me/962795028192" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.8rem 2rem; background: rgba(37,211,102,0.15); border: 1px solid rgba(37,211,102,0.4); border-radius: 50px; color: #25D366; text-decoration: none; font-weight: 700; transition: all 0.3s; font-family: 'Tajawal', sans-serif;">
+                    <span>💬</span> واتساب
+                </a>
+            </div>
+            <div style="width: 80px; height: 2px; background: linear-gradient(90deg, transparent, #D4A359, transparent); margin: 0 auto 1rem;"></div>
+            <p style="color: #7A8A7C; font-size: 0.85rem; letter-spacing: 1px;">© 2026 MZ Studio — All Rights Reserved</p>
+        </div>
+    </section>
+
     <footer>
         <div class="footer-content">
             <div class="footer-logo">MAKAN</div>
@@ -2300,10 +2621,6 @@
                 <a href="#about">عن المكان</a>
                 <a href="#contact">تواصل معنا</a>
                 <a href="admin.html" style="color:var(--gold);">الإدارة</a>
-            </div>
-            <div style="margin: 1.5rem 0;">
-                <span style="color: var(--text-muted); font-size: 0.9rem;">عدد الزوار: </span>
-                <span id="visitor-count" style="color: var(--gold); font-weight: 700; font-size: 1.1rem;">-</span>
             </div>
             <p class="copyright">© 2026 MAKAN - محل قوار</p>
         </div>
@@ -2677,15 +2994,6 @@
 
         updateCartUI();
 
-        fetch('https://countapi.mileshilliard.com/api/v1/hit/makan_pottery_visits')
-            .then(function(response) { return response.json(); })
-            .then(function(data) {
-                document.getElementById('visitor-count').textContent = data.value;
-            })
-            .catch(function() {
-                document.getElementById('visitor-count').textContent = '-';
-            });
-
         // ===== AR View (شاهد القوار في بيتك) =====
         var arStream = null;
         var arProductEl = document.getElementById('arProduct');
@@ -2940,6 +3248,246 @@
             document.documentElement.setAttribute('data-theme', 'evening');
         }
         updateThemeBtn();
+
+        // ===== Cinematic Intro Sequence =====
+        (function() {
+            var introScreen = document.getElementById('introScreen');
+            var introContent = document.getElementById('introContent');
+            var introTagline = document.getElementById('introTagline');
+            var introSub = document.getElementById('introSub');
+            var introLine = document.getElementById('introLine');
+            var gateLeft = document.getElementById('gateLeft');
+            var gateRight = document.getElementById('gateRight');
+            var sparklesContainer = document.getElementById('introSparkles');
+
+            // Create sparkle particles around logo
+            function createSparkles() {
+                var count = 30;
+                for (var i = 0; i < count; i++) {
+                    var s = document.createElement('div');
+                    s.className = 'intro-sparkle';
+                    var angle = (Math.PI * 2 * i) / count;
+                    var dist = 80 + Math.random() * 120;
+                    s.style.left = '50%';
+                    s.style.top = '50%';
+                    s.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+                    s.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
+                    s.style.animationDelay = (0.6 + Math.random() * 1.5) + 's';
+                    s.style.width = (2 + Math.random() * 4) + 'px';
+                    s.style.height = s.style.width;
+                    sparklesContainer.appendChild(s);
+                }
+            }
+
+            // Main timeline
+            setTimeout(function() {
+                // 0.3s: Show logo content
+                introContent.classList.add('visible');
+                createSparkles();
+            }, 300);
+
+            setTimeout(function() {
+                introTagline.classList.add('visible');
+            }, 300);
+
+            setTimeout(function() {
+                introSub.classList.add('visible');
+                introLine.classList.add('visible');
+            }, 300);
+
+            // After light sweep + tagline, split the gates
+            setTimeout(function() {
+                introContent.classList.add('fade-out');
+            }, 3500);
+
+            setTimeout(function() {
+                gateLeft.classList.add('split');
+                gateRight.classList.add('split');
+            }, 4000);
+
+            // Remove intro screen after gate animation
+            setTimeout(function() {
+                introScreen.classList.add('hidden');
+                document.body.classList.remove('intro-active');
+                document.body.style.overflow = '';
+                initFloatingBg();
+            }, 5600);
+        })();
+
+        // ===== Floating Background Elements =====
+        function initFloatingBg() {
+            var container = document.getElementById('floatingBg');
+            var emojis = ['🏺', '🌿', '🌸', '🍃', '🌺', '🪴', '🌱', '🍂', '🌾', '✨', '🌼', '🪻', '🌵', '🍄', '🌻'];
+            var dotColors = ['#C85A32', '#D4A359', '#4A5F4D', '#E8662E', '#B8893D', '#A03820'];
+            var leafColors = ['#4A5F4D', '#2C3E2E', '#6B8F6B', '#8FAF8F'];
+            var ringColors = ['#C85A32', '#D4A359', '#4A5F4D'];
+
+            // Emojis - ورد واقور وعناصر طبيعية
+            for (var i = 0; i < 16; i++) {
+                var el = document.createElement('div');
+                el.className = 'floating-el emoji';
+                el.textContent = emojis[i % emojis.length];
+                el.style.left = (Math.random() * 95) + '%';
+                el.style.fontSize = (2 + Math.random() * 2.5) + 'rem';
+                el.style.opacity = (0.25 + Math.random() * 0.2);
+                var dur = 14 + Math.random() * 18;
+                el.style.animationDuration = dur + 's';
+                el.style.animationDelay = (-Math.random() * dur) + 's';
+                el.style.animationName = i % 3 === 0 ? 'floatSway' : 'floatDrift';
+                container.appendChild(el);
+            }
+
+            // Dots - نقاط طينية ملونة
+            for (var i = 0; i < 25; i++) {
+                var el = document.createElement('div');
+                el.className = 'floating-el dot';
+                el.style.left = (Math.random() * 100) + '%';
+                var size = 6 + Math.random() * 14;
+                el.style.width = size + 'px';
+                el.style.height = size + 'px';
+                el.style.background = dotColors[Math.floor(Math.random() * dotColors.length)];
+                el.style.opacity = (0.2 + Math.random() * 0.2);
+                var dur = 18 + Math.random() * 22;
+                el.style.animationDuration = dur + 's';
+                el.style.animationDelay = (-Math.random() * dur) + 's';
+                el.style.animationName = i % 2 === 0 ? 'floatDrift' : 'floatSway';
+                container.appendChild(el);
+            }
+
+            // Rings - حلقات دائرية
+            for (var i = 0; i < 10; i++) {
+                var el = document.createElement('div');
+                el.className = 'floating-el ring';
+                el.style.left = (Math.random() * 100) + '%';
+                var size = 30 + Math.random() * 45;
+                el.style.width = size + 'px';
+                el.style.height = size + 'px';
+                el.style.borderColor = ringColors[i % ringColors.length];
+                el.style.opacity = (0.12 + Math.random() * 0.13);
+                var dur = 20 + Math.random() * 16;
+                el.style.animationDuration = dur + 's';
+                el.style.animationDelay = (-Math.random() * dur) + 's';
+                el.style.animationName = 'floatPulse';
+                container.appendChild(el);
+            }
+
+            // Leaf shapes - أوراق
+            for (var i = 0; i < 12; i++) {
+                var el = document.createElement('div');
+                el.className = 'floating-el leaf';
+                el.style.left = (Math.random() * 100) + '%';
+                el.style.background = leafColors[i % leafColors.length];
+                el.style.width = (25 + Math.random() * 25) + 'px';
+                el.style.height = (12 + Math.random() * 12) + 'px';
+                el.style.opacity = (0.15 + Math.random() * 0.15);
+                var dur = 16 + Math.random() * 20;
+                el.style.animationDuration = dur + 's';
+                el.style.animationDelay = (-Math.random() * dur) + 's';
+                el.style.animationName = 'floatSway';
+                container.appendChild(el);
+            }
+        }
+
+        // ===== Products Section Clay/Flower Explosion =====
+        var productsExploded = false;
+        var productsSection = document.getElementById('products');
+        var clayOverlay = document.getElementById('clayOverlay');
+        var brandOverlay = document.getElementById('brandFormOverlay');
+        var brandText = document.getElementById('brandFormText');
+
+        function triggerClayExplosion() {
+            if (productsExploded) return;
+            productsExploded = true;
+
+            clayOverlay.classList.add('active');
+            brandOverlay.classList.add('active');
+
+            var colors = ['#C85A32', '#D4A359', '#2C3E2E', '#E8662E', '#B8893D', '#8B6F47', '#A03820'];
+            var emojis = ['🏺', '🌸', '🌿', '🍃', '🌺', '✨', '🪴'];
+            var particles = 50;
+            var centerX = window.innerWidth / 2;
+            var centerY = window.innerHeight / 2;
+
+            for (var i = 0; i < particles; i++) {
+                var p = document.createElement('div');
+                p.className = 'clay-particle';
+                var size = 6 + Math.random() * 18;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.left = centerX + 'px';
+                p.style.top = centerY + 'px';
+
+                var useEmoji = Math.random() > 0.5;
+                if (useEmoji) {
+                    p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    p.style.fontSize = (size + 6) + 'px';
+                    p.style.background = 'none';
+                    p.style.borderRadius = '0';
+                    p.style.display = 'flex';
+                    p.style.alignItems = 'center';
+                    p.style.justifyContent = 'center';
+                } else {
+                    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                }
+
+                var angle = Math.random() * Math.PI * 2;
+                var dist = 100 + Math.random() * (Math.max(window.innerWidth, window.innerHeight) * 0.6);
+                p.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+                p.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
+                p.style.setProperty('--rot', (Math.random() * 720 - 360) + 'deg');
+                p.style.setProperty('--dur', (0.8 + Math.random() * 1.2) + 's');
+                p.style.animationDelay = (Math.random() * 0.3) + 's';
+
+                clayOverlay.appendChild(p);
+
+                // Force reflow then add animation
+                void p.offsetWidth;
+                p.classList.add('animate');
+            }
+
+            // After particles explode, form the brand name
+            setTimeout(function() {
+                brandText.classList.add('visible');
+            }, 600);
+
+            // Fade out brand and clean up
+            setTimeout(function() {
+                brandText.classList.add('fade-out');
+            }, 2400);
+
+            setTimeout(function() {
+                clayOverlay.classList.remove('active');
+                brandOverlay.classList.remove('active');
+                // Clean up particles
+                var particles = clayOverlay.querySelectorAll('.clay-particle');
+                particles.forEach(function(p) { p.remove(); });
+                brandText.classList.remove('visible', 'fade-out');
+            }, 3200);
+        }
+
+        // Observe products section
+        if (productsSection) {
+            var productsObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        triggerClayExplosion();
+                        productsObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+            productsObserver.observe(productsSection);
+        }
+
+        // ===== Skip intro on click/touch =====
+        document.getElementById('introScreen').addEventListener('click', function() {
+            var introScreen = document.getElementById('introScreen');
+            if (!introScreen.classList.contains('hidden')) {
+                introScreen.classList.add('hidden');
+                document.body.classList.remove('intro-active');
+                document.body.style.overflow = '';
+                initFloatingBg();
+            }
+        });
     </script>
 
 </body></html>
